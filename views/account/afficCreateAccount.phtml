@@ -1,5 +1,5 @@
 <div class="content">
-    <form id="form_login" method="post" action="index.php?controller=account&action=doCreate">
+    <form id="form_login" method="post" action="/account/doCreate">
         <input type="text" aria-hidden="true" name="jwt" value="<?= $jwt ?>">
         <h1 class="mb-3">Créer un compte</h1>
         <?php
@@ -23,7 +23,7 @@
         ?>
         <p class="form-text text-danger" id="unknown-field"><strong></strong></p>
         <div class="mb-3">
-            <a href="index.php?controller=account" class="form-text"><< Retour</a>
+            <a href="/account" class="form-text"><< Retour</a>
         </div>
         <div class="row mb-3">
             <label for="cLogin" class="form-label col mt-2">Identifiant</label>

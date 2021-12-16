@@ -3,15 +3,7 @@ Options +FollowSymlinks
 RewriteEngine on
 RewriteRule ^(.*)/$ /$1 [L,R]
 
-# map neat URL to internal URL
-#RewriteRule ^connexion/$   index.php?action=authentification [nc]
-#RewriteRule ^evenementsFuturs/$   index.php?data=evenementsFuturs [nc]
 RewriteRule ^categorie/(.*)$   index.php?controller=categorie&categorie=$1 [nc]
-#RewriteRule ^categorie/(.*)$   index.php?controller=categorie&categorie=$1 [nc]
 RewriteRule ^produit/(.*)$   index.php?controller=produit&produit=$1 [nc]
-#RewriteRule ^personne/insert/$   index.php?action=ajoutPersonne [nc]
-#RewriteRule ^mesCoVoiturages/([0-9]+)/$   index.php?data=mesCoVoiturages&idPers=$1 [nc,qsa]
-#RewriteRule ^coVoiturage/delete/([0-9]+)/$   index.php?idCoVoit=$1 [nc,qsa]
-#RewriteRule ^coVoiturages/([0-9]+)/$   index.php?data=coVoiturages&idEvent=$1 [nc,qsa]
-#RewriteRule ^evenement/([0-9]+)/$   index.php?data=evenement&idEven=$1 [nc,qsa]
-#RewriteRule ^personne/([0-9]+)/$   index.php?data=personne&idPers=$1 [nc,qsa]
+RewriteRule ^account/(.*)$   index.php?controller=account&action=$1 [nc]
+RewriteRule ^account$   index.php?controller=account [nc]

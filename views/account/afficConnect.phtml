@@ -1,5 +1,5 @@
 <div class="content">
-    <form id="form_login" method="post" action="index.php?controller=account&action=doLogin">
+    <form id="form_login" method="post" action="/account/doLogin">
         <input type="text" aria-hidden="true" name="jwt" value="<?= $jwt ?>">
         <h1 class="mb-3">Se connecter</h1>
         <p class="form-text text-danger" id="unknown-field" aria-hidden="true"><strong>Identifiant ou mot de passe inconnu</strong></p>
@@ -35,7 +35,7 @@
             <input type="password" class="form-control col" id="password" name="password">
         </div>
         <div class="mb-3">
-            <a href="index.php?controller=account&action=create" class="form-text">Pas de compte ? Créez-en un</a>
+            <a href="/account/create" class="form-text">Pas de compte ? Créez-en un</a>
         </div>
         <button name="form-login-submitted" type="submit" class="btn btn-jct-orange" id="btn-connect">Se connecter</button>
     </form>

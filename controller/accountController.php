@@ -12,13 +12,13 @@ class accountController extends Controller
     private static function isLoggedIn()
     {
         if (isset($_SESSION['logged-in-user-id']))
-            Utils::redirect("index.php?controller=account");
+            Utils::redirect("/account");
     }
 
     public static function draw()
     {
         if (!isset($_SESSION['logged-in-user-id']))
-            Utils::redirect("index.php?controller=account&action=login");
+            Utils::redirect("/account/login");
 
         $params = array();
 
@@ -90,7 +90,7 @@ class accountController extends Controller
                 $_SESSION["error-login-token"] = true;
             }
         }
-        Utils::redirect("index.php?controller=account");
+        Utils::redirect("/account");
     }
 
     public static function create()
@@ -185,7 +185,7 @@ class accountController extends Controller
                         ClientManager::AddLeClient($login, $password, $mail);
 
                         $_SESSION["success-create"] = true;
-                        Utils::redirect("index.php?controller=account&action=login");
+                        Utils::redirect("/account/login");
                     }
                     catch(Exception $e)
                     {
@@ -197,15 +197,15 @@ class accountController extends Controller
             {
                 $_SESSION["error-create-token"] = true;
             }
-            Utils::redirect("index.php?controller=account&action=create");
+            Utils::redirect("/account/create");
         }
         //Si on ne vient pas du formulaire
-        Utils::redirect("index.php?controller=account");
+        Utils::redirect("/account");
     }
 
     //On logout, when clicking disconnect button
     //Redirect to
-    //  index.php?controller=account
+    //  /account
     public static function doLogout()
     {
         if (isset($_POST["form-disconnect"]))
@@ -213,6 +213,6 @@ class accountController extends Controller
             session_destroy();
         }
 
-        Utils::redirect("index.php?controller=account");
+        Utils::redirect("/account");
     }
 }
