@@ -42,7 +42,7 @@ class ClientManager
         $cnx = Database::GetConnection();
         $query = "
             SELECT idClient \n
-            FROM Client \n
+            FROM client \n
             WHERE loginClient = :l";
         $stmt = $cnx->prepare($query);
         $stmt->bindParam(":l", $login);
@@ -60,7 +60,7 @@ class ClientManager
         $cnx = Database::GetConnection();
         $query = "
             SELECT idClient \n
-            FROM Client \n
+            FROM client \n
             WHERE mailClient = :m";
         $stmt = $cnx->prepare($query);
         $stmt->bindParam(":m", $mail);
@@ -74,7 +74,7 @@ class ClientManager
         $cnx = Database::GetConnection();
         $query = "
             SELECT idClient, loginClient, passwordClient, mailClient, idRoleClient \n
-            FROM Client \n
+            FROM client \n
             WHERE idClient = :id";
         $stmt = $cnx->prepare($query);
         $stmt->bindParam(":id", $id);

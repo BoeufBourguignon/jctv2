@@ -42,8 +42,6 @@ class accountController extends Controller
 
     public static function doLogin()
     {
-        self::$modal = new ClassModalManager();
-
         if (isset($_POST["form-login-submitted"]))
             //On vient du formulaire de connection
         {
@@ -81,7 +79,7 @@ class accountController extends Controller
                 }
                 catch (Exception $ex)
                 {
-                    self::$modal->getModalError($ex->getMessage())->buildModal();
+                    $_SESSION["error-login"] = "Une erreur est intervenue, veuillez contacter le webmaster";
                 }
             }
             else
@@ -167,7 +165,8 @@ class accountController extends Controller
                     catch(Exception $e)
                         //Problème avec la bdd
                     {
-                        self::$modal->getModalError($e->getMessage())->buildModal();
+                        $_SESSION["error-create"] = "Une erreur est intervenue, veuillez contacter le webmaster";
+                        $noError = false;
                     }
                 }
                 else

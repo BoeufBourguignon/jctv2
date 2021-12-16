@@ -12,10 +12,19 @@
         }
         if(isset($_SESSION["error-create"]))
         {
-            foreach($_SESSION["error-create"] as $str)
+            if(is_array($_SESSION["error-create"]))
+            {
+                foreach($_SESSION["error-create"] as $str)
+                {
+                    ?>
+                    <p class="form-text text-danger" id="unknown-field"><strong><?=$str?></strong></p>
+                    <?php
+                }
+            }
+            else
             {
                 ?>
-                <p class="form-text text-danger" id="unknown-field"><strong><?=$str?></strong></p>
+                <p class="form-text text-danger" id="unknown-field"><strong><?=$_SESSION["error-create"]?></strong></p>
                 <?php
             }
         unset($_SESSION["error-create"]);
