@@ -7,7 +7,7 @@ class ClientManager
         $cnx = Database::GetConnection();
         $query = "
             SELECT idClient, loginClient, passwordClient, mailClient, idRoleClient \n
-            FROM Client \n
+            FROM client \n
             WHERE loginClient = :l ";
         $stmt = $cnx->prepare($query);
         $stmt->bindParam(":l", $login);
@@ -21,7 +21,7 @@ class ClientManager
     {
         $cnx = Database::GetConnection();
         $query = "
-            INSERT INTO Client (loginClient, passwordClient, mailClient, idRoleClient) \n
+            INSERT INTO client (loginClient, passwordClient, mailClient, idRoleClient) \n
             VALUES (:l, :p, :m, 2)";
         $stmt = $cnx->prepare($query);
         $stmt->bindParam(":l", $login);
