@@ -1,5 +1,5 @@
 
-    <a class="card fiche_produit" style="width: 18rem;" href="index.php?controller=produit&produit=<?=$produit->GetReference()?>">
+    <a class="card fiche_produit" style="width: 18rem;" href="/produit/<?=$produit->GetReference()?>">
         <img src="/assets/<?=$produit->GetImagePath()?>" class="card-img-top" alt="<?=$produit->GetReference()?>">
         <div class="card-body">
             <h5 class="card-title"><?=$produit->GetLibelle()?></h5>
