@@ -188,7 +188,7 @@ class accountController extends Controller
                     }
                     catch(Exception $e)
                     {
-                        self::$modal->getModalError($e->getMessage())->buildModal();
+                        $_SESSION["error-create"] = "Une erreur est intervenue, veuillez contacter le webmaster";
                     }
                 }
             }
