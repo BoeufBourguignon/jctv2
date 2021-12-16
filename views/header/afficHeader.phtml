@@ -20,7 +20,7 @@
             if (isset($_GET["categorie"]) && !empty($_GET["categorie"]) && $_GET["categorie"] == $categ->GetRef())
                 $html .= " active";
             $html .=
-                "\" href=\"index.php?controller=categorie&categorie=".$categ->GetRef()."\">\n".
+                "\" href=\"/categorie/".$categ->GetRef()."\">\n".
                 $categ->GetLibelle().
                 "</a>\n";
         }
