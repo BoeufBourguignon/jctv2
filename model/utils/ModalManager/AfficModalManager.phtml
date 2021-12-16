@@ -1,0 +1,57 @@
+<div class="modal" id="alertModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?=$title?></h5>
+                <?php
+                if ($headerHasCloseBt)
+                {
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <?php
+                }
+                ?>
+            </div>
+            <div class="modal-body">
+                <p><?=$content?></p>
+            </div>
+            <?php
+            if ($footerHasCloseBt || $footerHasOkBt)
+            {
+            ?>
+            <div class="modal-footer">
+                <?php
+                if ($footerHasCloseBt)
+                {
+                ?>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <?php
+                }
+                if ($footerHasOkBt)
+                {
+                ?>
+                <button type="button" class="btn btn-primary">Ok</button>
+                    <?php
+                }
+                ?>
+            </div>
+                <?php
+            }
+            ?>
+        </div>
+    </div>
+    <script>
+            let alertModalEl = document.getElementById("alertModal");
+            console.log(alertModalEl);
+            let alertModal = new bootstrap.Modal(alertModalEl, {
+                keyboard:<?php echo isset($escapeKeyEnabled) && $escapeKeyEnabled?"true":"false"; ?>,
+                backdrop:<?php echo isset($backdropEnabled) && $backdropEnabled===true?"true":"\"".$backdropEnabled."\""; ?>
+            });
+            console.log(alertModal);
+            alertModalEl.addEventListener("hidden.bs.modal", function() {
+                $("#alertModal").remove();
+                <?php echo strlen($onClose)?$onClose:""; ?>
+            });
+            alertModal.show();
+    </script>
+</div>

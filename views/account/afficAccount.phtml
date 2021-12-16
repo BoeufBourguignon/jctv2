@@ -1,0 +1,27 @@
+<?php
+// views/account/afficAccount.phtml
+
+/**
+ * @var $client Client
+ */
+?>
+<div class="content">
+    <h1 class="mb-4">Mes informations</h1>
+    <div class="mb-5">
+        <div class="row mb-3">
+            <h2>Nom d'utilisateur</h2>
+            <p><?=$client->GetLogin()?></p>
+        </div>
+        <hr>
+        <div class="row mb-3">
+            <h2>Adresse mail</h2>
+            <p><?=$client->GetMail()?></p>
+        </div>
+    </div>
+    <form action="#" class="mb-3">
+        <button name="form-change-account-infos" type="submit" class="btn btn-jct-orange">Changer mes informations</button>
+    </form>
+    <form action="index.php?controller=account&action=doLogout" method="post">
+        <button name="form-disconnect" type="submit" class="btn btn-danger">Se déconnecter</button>
+    </form>
+</div>

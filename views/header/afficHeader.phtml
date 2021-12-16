@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var $categs
+ * @var $accountMsg
+ */
+?>
+<header id="main_header">
+    <div id="header_left">
+        <a id="header_title" href="index.php">
+            Jean Casse-Tête
+        </a>
+        <?php
+        $html = "";
+        /**
+         * @var $categ Categorie
+         */
+        foreach($categs as $categ) {
+            $html .=
+                "<a id=\"".$categ->GetId()."\" class=\"header_item";
+            if (isset($_GET["categorie"]) && !empty($_GET["categorie"]) && $_GET["categorie"] == $categ->GetRef())
+                $html .= " active";
+            $html .=
+                "\" href=\"index.php?controller=categorie&categorie=".$categ->GetRef()."\">\n".
+                $categ->GetLibelle().
+                "</a>\n";
+        }
+        echo $html;
+        ?>
+    </div>
+    <div id="header_right">
+        <a href="index.php?controller=panier"><i class="fas fa-shopping-cart"></i></a>
+        <a href="index.php?controller=account"><i class="fas fa-user"></i><span id="accountMsg"><?=$accountMsg?></span></a>
+    </div>
+</header>

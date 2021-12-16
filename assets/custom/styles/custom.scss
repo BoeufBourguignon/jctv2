@@ -1,0 +1,18 @@
+$primary: #262B2F;
+$primaryLight: #3d4450;
+$secondary: #f0f0f0;
+$myOrange: #F93;
+$hoverNavItem: #909295;
+$hoverNavItemBorder: #515559;
+
+@import "../../others/bootstrap-5.1.0/scss/functions";
+@import "../../others/bootstrap-5.1.0/scss/variables";
+@import "../../others/bootstrap-5.1.0/scss/mixins";
+
+$custom-bootstrap-colors: (
+        "jct-orange": $myOrange
+);
+$theme-colors: map-merge($theme-colors, $custom-bootstrap-colors);
+
+@import "../../others/bootstrap-5.1.0/scss/bootstrap";
+

@@ -1,0 +1,29 @@
+<?php
+/**
+ * @var array $selection
+ * @var Produit $produit
+ */
+?>
+<div id="affic_produit">
+    <div id="produit" class="mb-5">
+        <img class="mb-3" src="assets/<?=$produit->GetImagePath()?>">
+        <h1 class="mb-3"><?=$produit->GetLibelle()?></h1>
+        <p class="mb-3">Difficulté <?=$produit->GetDifficulte()->GetLibelle()?></p>
+        <div class="mb-3"><?=$produit->GetDescription()?></div>
+
+        <div class="input-group mb-3 add_to_basket">
+            <button type="button" class="btn btn-primary">Ajouter au panier</button>
+            <input type="number" class="form-control" value="0" min="0">
+        </div>
+    </div>
+    <h1>Produits fréquemment achetés ensemble</h1>
+    <div id="selection">
+        <?php
+        /** @var Produit $produit */
+        foreach($selection as $produit)
+        {
+            include ROOT."/views/produit/ficheProduit.inc";
+        }
+        ?>
+    </div>
+</div>

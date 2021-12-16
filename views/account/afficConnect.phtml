@@ -1,0 +1,42 @@
+<div class="content">
+    <form id="form_login" method="post" action="index.php?controller=account&action=doLogin">
+        <input type="text" aria-hidden="true" name="jwt" value="<?= $jwt ?>">
+        <h1 class="mb-3">Se connecter</h1>
+        <p class="form-text text-danger" id="unknown-field" aria-hidden="true"><strong>Identifiant ou mot de passe inconnu</strong></p>
+        <?php
+        if (isset($_SESSION["success-create"]) && $_SESSION["success-create"])
+        {
+                ?>
+                <p class="form-text text-success"><strong>Votre compte a été correctement créé !</strong></p>
+                <?php
+            unset($_SESSION["success-create"]);
+        }
+        if (isset($_SESSION["error-login-token"]) && $_SESSION["error-login-token"])
+        {
+                ?>
+                <p class="form-text text-danger"><strong>Une erreur a eu lieu. Veuillez réessayer</strong></p>
+                <?php
+            unset($_SESSION["error-login-token"]);
+        }
+        if (isset($_SESSION["error-login"]) && !empty($_SESSION["error-login"]))
+        {
+            ?>
+            <p class="form-text text-danger"><strong><?= $_SESSION["error-login"]; ?></strong></p>
+            <?php
+            unset($_SESSION["error-login"]);
+        }
+        ?>
+        <div class="row mb-3">
+            <label for="login" class="form-label col mt-2">Identifiant</label>
+            <input type="text" class="form-control col" id="login" name="login">
+        </div>
+        <div class="row mb-3">
+            <label for="password" class="form-label col mt-2">Mot de passe</label>
+            <input type="password" class="form-control col" id="password" name="password">
+        </div>
+        <div class="mb-3">
+            <a href="index.php?controller=account&action=create" class="form-text">Pas de compte ? Créez-en un</a>
+        </div>
+        <button name="form-login-submitted" type="submit" class="btn btn-jct-orange" id="btn-connect">Se connecter</button>
+    </form>
+</div>
