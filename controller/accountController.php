@@ -167,6 +167,7 @@ class accountController extends Controller
                     {
                         $_SESSION["error-create"] = "Une erreur est intervenue, veuillez contacter le webmaster";
                         $noError = false;
+                        die();
                     }
                 }
                 else
