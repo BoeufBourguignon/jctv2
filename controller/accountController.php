@@ -138,6 +138,18 @@ class accountController extends Controller
                                     $_SESSION["error-create"][] = "Les mots de passe ne correspondent pas";
                                     $noError = false;
                                 }
+                                else if (strlen($password) >= 40) {
+                                    $_SESSION["error-create"][] = "Le mot de passe doit faire moins de 40 caractères";
+                                    $noError = false;
+                                }
+                                else if (strlen($password) < 6) {
+                                    $_SESSION["error-create"][] = "Le mot de passe doit faire 6 caractères ou plus";
+                                    $noError = false;
+                                }
+                                else if (strlen($login) > 20) {
+                                    $_SESSION["error-create"][] = "L'identifiant doit faire moins de 20 caractères";
+                                    $noError = false;
+                                }
                             }
                             else
                                 //Mot de passe pas au bon format
