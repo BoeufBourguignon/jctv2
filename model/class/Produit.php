@@ -53,7 +53,7 @@ class Produit
 
     public function GetDescription():string
     {
-        return "<ul>".str_replace(["§s","§p","§e"],["<li>","</li><li>","</li>"],$this->descProduit)."</ul>";
+        return "<ul><li>".str_replace("§p","</li><li>",$this->descProduit)."</li></ul>";
     }
     public function SetDescription(string $description)
     {

@@ -1,6 +1,6 @@
 function loadEventsTri() {
     $("#filters_button>.btn").on("click", function () {
-        let categ = (new URLSearchParams(window.location.search)).get("categorie"),
+        let categ = window.location.href.substring(window.location.href.lastIndexOf('/') + 1),
             subcategs = $("input[name=subcateg]:checked"),
             difficulties = $("input[name=difficulty]:checked"),
             order = $("select[name=filters_tri_order]"),
@@ -11,9 +11,10 @@ function loadEventsTri() {
             difficultiesArray = difficulties.get().map(function (item) {
                 return Number(item.value);
             });
+        console.log(categ);
 
         $.post(
-            "model/ajax/doTri.php",
+            "/model/ajax/doTri.php",
             {
                 "categ": categ,
                 "order": order.val(),
@@ -30,6 +31,7 @@ function loadEventsTri() {
         );
     });
 
+    //Select/unselect all categ
     $("#filters_select_categs").on("click", function() {
         let _this = $(this),
             categs = $("input[name=subcateg]");
@@ -42,6 +44,7 @@ function loadEventsTri() {
             _this.data("state",1);
         }
     });
+    //Select/unselect all difficulties
     $("#filters_select_difficulties").on("click", function() {
         let _this = $(this),
             difficulties = $("input[name=difficulty]");

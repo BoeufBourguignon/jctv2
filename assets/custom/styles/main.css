@@ -11341,7 +11341,7 @@ div#main_wrapper #affic_produit #selection {
   display: flex;
 }
 div#main_wrapper .fiche_produit {
-  margin: 16px 8px;
+  margin: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -11355,6 +11355,9 @@ div#main_wrapper .fiche_produit img {
 div#main_wrapper .fiche_produit .difficulte {
   font-size: 1rem;
   font-family: "Merriweather Sans", sans-serif;
+}
+div#main_wrapper .fiche_produit h5.card-title, div#main_wrapper .fiche_produit .card-title.h5 {
+  text-align: center;
 }
 div#main_wrapper .fiche_produit .prix_produit {
   color: #F93;

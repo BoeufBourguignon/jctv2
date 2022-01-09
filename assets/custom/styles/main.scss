@@ -156,7 +156,7 @@ div#main_wrapper {
 
   //FICHE PRODUIT
   .fiche_produit {
-    margin: 16px 8px;
+    margin: 8px;
     cursor: pointer;
     display:flex;
     align-items: center;
@@ -171,7 +171,9 @@ div#main_wrapper {
       font-size: 1rem;
       font-family: "Merriweather Sans", sans-serif;
     }
-
+    h5.card-title {
+      text-align: center;
+    }
     .prix_produit {
       color: $myOrange;
       font-size: 1.4rem;

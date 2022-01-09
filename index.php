@@ -77,7 +77,7 @@ echo "</div>";
 
 
 <!--MY JS-->
-<script src="assets/custom/js/tri.js"></script>
-<script src="assets/custom/js/mainJS.js"></script>
+<script src="/assets/custom/js/tri.js"></script>
+<script src="/assets/custom/js/mainJS.js"></script>
 </body>
 </html>
