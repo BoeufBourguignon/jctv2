@@ -1,31 +1,30 @@
 <?php
 
-class DifficultiesManager
+class DifficultiesManager extends BaseManager
 {
-    public static function GetLesDifficultes():array
+    public function GetDifficulteById(int $idDifficulte)
     {
-        $cnx = Database::GetConnection();
         $query = "
-            SELECT idDifficulte, libDifficulte \n
-            FROM difficulte";
-        $stmt = $cnx->prepare($query);
-        $stmt->execute();
+            SELECT idDifficulte, libDifficulte
+            FROM difficulte
+            WHERE idDifficulte = :id
+        ";
+        $stmt = $this->cnx->prepare($query);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Difficulty::class);
+        $stmt->execute([":id" => $idDifficulte]);
 
-
-        return $stmt->fetchAll(PDO::FETCH_CLASS, "Difficulty");
+        return $stmt->fetch();
     }
 
-    public static function GetDifficultyLibelle(int $idDifficulty) {
-        $cnx = Database::GetConnection();
+    public function GetLesDifficultes(): array
+    {
         $query = "
-            SELECT libDifficulte \n
-            FROM difficulte \n
-            WHERE idDifficulte = :difficulte";
-        $stmt = $cnx->prepare($query);
-        $stmt->bindParam(":difficulte", $idDifficulty, PDO::PARAM_INT);
+            SELECT idDifficulte, libDifficulte
+            FROM difficulte";
+        $stmt = $this->cnx->prepare($query);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Difficulty::class);
         $stmt->execute();
 
-
-        return $stmt->fetch(PDO::FETCH_DEFAULT)[0];
+        return $stmt->fetchAll();
     }
 }

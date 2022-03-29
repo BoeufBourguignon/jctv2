@@ -2,27 +2,16 @@
 
 class Categorie
 {
-    private int $idCateg;
-    private ?Categorie $parent = null;
     private string $refCateg;
     private string $libCateg;
+    private ?string $refParent;
+    private ?Categorie $parent = null;
 
-    public function __construct() {}
-
-    public function GetId():int
-    {
-        return $this->idCateg;
-    }
-    public function SetId($id)
-    {
-        $this->idCateg = $id;
-    }
-
-    public function GetParent():Categorie
+    public function GetParent(): Categorie
     {
         return $this->parent;
     }
-    public function SetParent($parent)
+    public function SetParent(Categorie $parent)
     {
         $this->parent = $parent;
     }
@@ -34,6 +23,15 @@ class Categorie
     public function SetRef($ref)
     {
         $this->refCateg = $ref;
+    }
+
+    public function getRefParent(): ?string
+    {
+        return $this->refParent;
+    }
+    public function SetRefParent(?string $ref)
+    {
+        $this->refParent = $ref;
     }
 
     public function GetLibelle():string

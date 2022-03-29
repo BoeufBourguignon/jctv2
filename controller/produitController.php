@@ -2,32 +2,29 @@
 
 class produitController extends Controller
 {
-    public static function draw($params)
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function draw()
     {
-        /**
-         * @var $produit
-         */
-        extract($params);
-        try
-        {
-            $produit = ProduitManager::GetProduitByRef($produit);
-            $selection = array();
+        $refProduit = $this->Request()->get("produit");
+        $produit = null;
+        $selection = array();
+        if($refProduit != false) {
+            $produit = $this->ProduitManager()->GetProduitByRef($refProduit);
             for($i = 0; $i < 3; $i++)
             {
-                $selection[] = ProduitManager::GetRandomProduit();
+                $selection[] = $this->ProduitManager()->GetRandomProduit();
             }
-        }
-        catch (Exception $e)
-        {
-            $modal = new ClassModalManager();
-            $modal->getModalError($e->getMessage())->buildModal();
-            die();
+        } else {
+            throw new Exception("Aucun produit spécifiée");
         }
 
-        $view = ROOT."/views/produit/afficProduit.phtml";
-        $params = array();
-        $params["produit"] = $produit;
-        $params["selection"] = $selection;
-        self::render($view, $params);
+        self::render(
+            "produit/afficProduit.phtml", [
+                "produit" => $produit,
+                "selection" => $selection
+        ]);
     }
 }

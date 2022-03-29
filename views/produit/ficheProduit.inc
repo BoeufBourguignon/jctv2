@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var array $produit
+ */
+?>
 
     <a class="card fiche_produit" style="width: 18rem;" href="/produit/<?=$produit->GetReference()?>">
         <img src="/assets/<?=$produit->GetImagePath()?>" class="card-img-top" alt="<?=$produit->GetReference()?>">

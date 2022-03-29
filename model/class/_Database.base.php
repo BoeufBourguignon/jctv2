@@ -1,7 +1,7 @@
 <?php
 
 
-class Database
+class Database_base
 {
     private const HOST = '';
     private const PORT = '';

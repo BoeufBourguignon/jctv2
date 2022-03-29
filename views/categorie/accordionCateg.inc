@@ -19,9 +19,9 @@
             {
                 $html =
                     "<div class=\"form-check\">".
-                    "  <input name=\"subcateg\" class=\"form-check-input\" type=\"checkbox\" value=\"".$sousCateg->GetId()."\" id=\"subcateg-".$sousCateg->GetId()."\">".
-                    "  <label class=\"form-check-label\" for=\"subcateg-".$sousCateg->GetId()."\">".
-                    $sousCateg->GetLibelle().
+                    "  <input name=\"subcateg\" class=\"form-check-input\" type=\"checkbox\" value=\"" . $sousCateg->GetRef() . "\" id=\"subcateg-" . $sousCateg->GetRef() . "\">".
+                    "  <label class=\"form-check-label\" for=\"subcateg-" . $sousCateg->GetRef() . "\">".
+                    $sousCateg->GetLibelle() .
                     "  </label>".
                     "</div>";
                 echo $html;

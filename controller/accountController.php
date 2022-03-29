@@ -8,6 +8,24 @@
  */
 class accountController extends Controller
 {
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function draw()
+    {
+        //Si pas connecté, on redirige vers la page de connexion
+        if (!isset($_SESSION['logged-in-user-id'])) {
+            $this->redirect("/account/login");
+        } else {
+            $this->render(
+                "/account/afficAccount.phtml", [
+                    "client" => ClientManager::GetUserById($_SESSION['logged-in-user-id'])
+                ]
+            );
+        }
+    }
+
     //Si connecté on redirige vers page du compte
     private static function isLoggedIn()
     {
@@ -15,42 +33,37 @@ class accountController extends Controller
             Utils::redirect("/account");
     }
 
-    public static function draw()
-    {
-        if (!isset($_SESSION['logged-in-user-id']))
-            Utils::redirect("/account/login");
-
-        $params = array();
-
-        $params["client"] = ClientManager::GetUserById($_SESSION['logged-in-user-id']);
-        $view = ROOT."/views/account/afficAccount.phtml";
-
-        self::render($view, $params);
-    }
-
-    public static function login()
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function login()
     {
         self::isLoggedIn();
 
         $params = array();
 
         $params["jwt"] = Encoder::createJWT();
-        $view = ROOT."/views/account/afficConnect.phtml";
+        $view = "/account/afficConnect.phtml";
 
         self::render($view, $params);
     }
 
-    public static function doLogin()
+    /**
+     * @return void
+     */
+    public function doLogin()
     {
-        if (isset($_POST["form-login-submitted"]))
+        if ($this->Request()->post("form-login-submitted") != false)
             //On vient du formulaire de connection
         {
-            if (isset($_POST["jwt"]) && Encoder::verifyJWT($_POST["jwt"]))
+            if ($this->Request()->post("jwt") && Encoder::verifyJWT($this->Request()->post("jwt")))
                 //Je vérifie le token
             {
                 try {
-                    $inUsername = isset($_POST["login"]) ? Utils::nettoyerStr($_POST["login"]) : "";
-                    $inPassword = isset($_POST["password"]) ? Utils::nettoyerStr($_POST["password"]) : "";
+                    $inUsername = $this->Request()->post("login") != false ? Utils::nettoyerStr($this->Request()->post("login")) : "";
+                    $inPassword = $this->Request()->post("password") != false ? Utils::nettoyerStr($this->Request()->post("password")) : "";
+                    $_SESSION["lastUsername"] = $inUsername;
 
                     if (strlen($inUsername) && strlen($inPassword))
                     {

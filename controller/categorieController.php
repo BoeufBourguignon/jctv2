@@ -2,37 +2,26 @@
 
 class categorieController extends Controller
 {
-    public static function draw($params)
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function draw()
     {
-        /**
-         * @var $categorie
-         */
-        extract($params);
-        try
-        {
-            if($idCateg = CategorieManager::GetIdByRef($categorie))
-            {
-                $produits = ProduitManager::GetProduitsByCateg($idCateg);
-                $sousCategs = CategorieManager::GetSousCategories(CategorieManager::GetIdByRef($categorie));
-                $difficulties = DifficultiesManager::GetLesDifficultes();
-            }
-            else
-            {
-                throw new Exception("La catégorie n'existe pas");
-            }
-        }
-        catch (Exception $e)
-        {
-            $modal = new ClassModalManager();
-            $modal->getModalError($e->getMessage())->buildModal();
-            die();
+        $refCateg = $this->Request()->get("categorie");
+        if($refCateg != false) {
+            $produits = $this->ProduitManager()->GetProduitsByCateg($refCateg);
+            $sousCategs = $this->CategorieManager()->GetSousCategories($refCateg);
+            $difficulties = $this->DifficultiesManager()->GetLesDifficultes();
+        } else {
+            throw new Exception("Aucune catégorie spécifiée");
         }
 
-        $view = ROOT."/views/categorie/afficCategorie.phtml";
-        $params = array();
-        $params["produits"] = $produits;
-        $params["sousCategs"] = $sousCategs;
-        $params["difficulties"] = $difficulties;
-        self::render($view, $params);
+        $this->render(
+            "/categorie/afficCategorie.phtml", [
+                "produits" => $produits,
+                "sousCategs" => $sousCategs,
+                "difficulties" => $difficulties
+        ]);
     }
 }

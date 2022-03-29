@@ -1,8 +1,7 @@
 <?php
-/**
- * @var $categs
- * @var $accountMsg
- */
+$categs = $this->CategorieManager()->GetLesCategories();
+$user = $this->Request()->user();
+$panier = $this->Panier()->Panier();
 ?>
 <header id="main_header">
     <div id="header_left">
@@ -16,7 +15,7 @@
          */
         foreach($categs as $categ) {
             $html .=
-                "<a id=\"".$categ->GetId()."\" class=\"header_item";
+                "<a id=\"".$categ->GetRef()."\" class=\"header_item";
             if (isset($_GET["categorie"]) && !empty($_GET["categorie"]) && $_GET["categorie"] == $categ->GetRef())
                 $html .= " active";
             $html .=
@@ -28,7 +27,38 @@
         ?>
     </div>
     <div id="header_right">
-        <a href="/panier"><i class="fas fa-shopping-cart"></i></a>
-        <a href="/account"><i class="fas fa-user"></i><span id="accountMsg"><?=$accountMsg?></span></a>
+<!--        <a href="/panier"><i class="fas fa-shopping-cart"></i> --><?php //echo count($this->Panier()->Panier()); ?><!--</a>-->
+        <a data-bs-toggle="offcanvas" href="#offcanvasPanier" role="button" aria-controls="offcanvasPanier">
+            <i class="fas fa-shopping-cart"></i> <?php echo $this->Panier()->QteTotale(); ?>
+        </a>
+        <a href="/account"><i class="fas fa-user"></i><span id="accountMsg"><?php echo $user ? $user->GetLogin() : "Connectez-vous" ?></span></a>
     </div>
 </header>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPanier" aria-labelledby="offcanvasPanierLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasPanierLabel">Panier</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <?php
+        if(count($panier) == 0) {
+            echo "<div>Le panier est vide</div>";
+        } else {
+            foreach($panier as $lignePanier) {
+                /** @var Produit $produitPanier */
+                $produitPanier = $lignePanier["produit"];
+                $html  = "<div class='panier_produit py-2'>";
+                $html .= "    <img src='/assets/" . $produitPanier->GetImagePath() . "' alt='" . $produitPanier->GetReference() . "'>";
+                $html .= "    <div class='ms-2'>";
+                $html .= "        <p class='fs-4 mb-1 fw-bold'>" . $produitPanier->GetLibelle() . "</p>";
+                $html .= "        <span class='text-muted'>Qte : " . $lignePanier["qte"] . "</span>";
+                $html .= "    </div>";
+                $html .= "</div>";
+                echo $html;
+            }
+        }
+        ?>
+        <a class="btn btn-warning py-1 px-2 mt-2" href="/panier">Accèder au panier</a>
+    </div>
+</div>

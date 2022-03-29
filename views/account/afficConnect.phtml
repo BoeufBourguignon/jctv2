@@ -28,7 +28,7 @@
         ?>
         <div class="row mb-3">
             <label for="login" class="form-label col mt-2">Identifiant</label>
-            <input type="text" class="form-control col" id="login" name="login">
+            <input type="text" class="form-control col" id="login" name="login" value="<?php if(isset($_SESSION["lastUsername"])) echo $_SESSION["lastUsername"] ?>">
         </div>
         <div class="row mb-3">
             <label for="password" class="form-label col mt-2">Mot de passe</label>

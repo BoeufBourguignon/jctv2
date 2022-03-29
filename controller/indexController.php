@@ -2,13 +2,22 @@
 
 class indexController extends Controller
 {
-    public static function draw()
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function draw()
     {
-        $produit = ProduitManager::GetRandomProduit();
+        $produit = $this->ProduitManager()->GetRandomProduit();
 
-        $view = ROOT."/views/accueil/afficAccueil.phtml";
-        $params = array();
-        $params["produit"] = $produit;
-        self::render($view, $params);
+        $this->render(
+            "/accueil/afficAccueil.phtml", [
+                "produit" => $produit
+        ]);
+    }
+
+    public static function error()
+    {
+
     }
 }

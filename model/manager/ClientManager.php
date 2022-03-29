@@ -1,4 +1,6 @@
 <?php
+require_once(_CLASS . "/Client.php");
+
 
 class ClientManager
 {
@@ -16,6 +18,8 @@ class ClientManager
 
         return $stmt->fetch();
     }
+
+
 
     public static function AddLeClient(string $login, string $password, string $mail)
     {

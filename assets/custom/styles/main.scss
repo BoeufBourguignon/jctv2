@@ -74,6 +74,26 @@ header#main_header {
   }
 }
 
+#offcanvasPanier {
+  .panier_produit {
+    height: 100px;
+    display: flex;
+    border-top: solid 1px whitesmoke;
+    img {
+      height: 100%;
+    }
+  }
+}
+#update_panier {
+  .panier_produit {
+    height:160px;
+    display: flex;
+    border-top: solid 1px whitesmoke;
+    img {
+      height: 100%;
+    }
+  }
+}
 
 div#main_wrapper {
   flex: 1;

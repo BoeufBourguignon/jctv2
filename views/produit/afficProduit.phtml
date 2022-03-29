@@ -11,10 +11,12 @@
         <p class="mb-3">Difficulté <?=$produit->GetDifficulte()->GetLibelle()?></p>
         <div class="mb-3"><?=$produit->GetDescription()?></div>
 
-        <div class="input-group mb-3 add_to_basket">
-            <button type="button" class="btn btn-primary">Ajouter au panier</button>
-            <input type="number" class="form-control" value="0" min="0">
-        </div>
+        <form class="input-group mb-3 add_to_basket" method="post" action="/panier/add">
+            <button type="submit" class="btn btn-primary">Ajouter au panier</button>
+            <label class="sr-only" for="qte">Quantité</label>
+            <input type="number" name="qte" id="qte" class="form-control" value="0" min="0">
+            <input type="hidden" name="refProduit" value="<?php echo $produit->GetReference() ?>">
+        </form>
     </div>
     <h1>Produits fréquemment achetés ensemble</h1>
     <div id="selection">

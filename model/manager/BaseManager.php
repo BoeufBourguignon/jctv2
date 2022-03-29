@@ -1,33 +1,17 @@
 <?php
 
-use JetBrains\PhpStorm\NoReturn;
-
-abstract class Controller
+abstract class BaseManager
 {
-    private Request $request;
+    protected PDO $cnx;
 
     private CategorieManager $CategorieManager;
     private ClientManager $ClientManager;
     private DifficultiesManager $DifficultiesManager;
     private ProduitManager $ProduitManager;
 
-    private PanierManager $Panier;
-
     public function __construct()
     {
-        $this->request = new Request();
-
-        $this->Panier = new PanierManager($this->request->user());
-    }
-
-    protected function Panier(): PanierManager
-    {
-        return $this->Panier;
-    }
-
-    protected function Request(): Request
-    {
-        return $this->request;
+        $this->cnx = Database::GetConnection();
     }
 
     protected function CategorieManager(): CategorieManager
@@ -60,27 +44,5 @@ abstract class Controller
             $this->ProduitManager = new ProduitManager();
         }
         return $this->ProduitManager;
-    }
-
-    /**
-     * @param string $view
-     * @param array $params
-     * @return void
-     * @throws Exception
-     */
-    protected function render(string $view, array $params = array())
-    {
-        extract($params);
-        require_once(VUES . "/base.php");
-    }
-
-    /**
-     * @param string $url
-     * @return void
-     */
-    #[NoReturn] protected function redirect(string $url)
-    {
-        header("Location: ".$url);
-        exit;
     }
 }

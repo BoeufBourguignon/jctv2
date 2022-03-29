@@ -1,16 +1,19 @@
 <?php
-require_once(ROOT . "/model/class/_Database.php");
+require_once(_CLASS . "/_Database.php");
 
-require_once(ROOT . "/model/class/Categorie.php");
-require_once(ROOT . "/model/class/Difficulty.php");
-require_once(ROOT . "/model/class/Produit.php");
-require_once(ROOT . "/model/class/Client.php");
+require_once(_CLASS . "/Categorie.php");
+require_once(_CLASS . "/Difficulty.php");
+require_once(_CLASS . "/Produit.php");
+require_once(_CLASS . "/Client.php");
 
-require_once(ROOT."/model/Utils.php");
-// Déjà fait dans l'index -- require_once(ROOT."/model/utils/autoload.php");
-require_once(ROOT."/model/manager/CategorieManager.php");
-require_once(ROOT."/model/manager/DifficultiesManager.php");
-require_once(ROOT."/model/manager/ProduitManager.php");
-require_once(ROOT."/model/manager/ClientManager.php");
+require_once(MODEL . "/Utils.php");
+require_once(MANAGERS . "/BaseManager.php");
+require_once(MANAGERS . "/CategorieManager.php");
+require_once(MANAGERS . "/DifficultiesManager.php");
+require_once(MANAGERS . "/ProduitManager.php");
+require_once(MANAGERS . "/ClientManager.php");
+require_once(MANAGERS . "/PanierManager.php");
 
-require_once(ROOT."/controller/_Controller.php");
+require_once(CONTROL . "/_Controller.php");
+require_once(UTILS . "/Request.php");
+require_once(UTILS . "/Encoder.php");

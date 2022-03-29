@@ -2,13 +2,30 @@
 
 class panierController extends Controller
 {
-    public static function draw()
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function draw()
     {
+        $this->render("/panier/afficPanier.phtml");
+    }
 
+    public function add()
+    {
+        $produit = $this->Request()->post("refProduit");
+        $qte = $this->Request()->post("qte");
+        if($produit != false && $qte != false) {
+            $this->Panier()->Add($produit, $qte);
+        }
 
-        $view = ROOT."/views/panier/afficPanier.phtml";
-        $params = array();
+        $this->redirect("/produit/" . $produit);
+    }
 
-        self::render($view, $params);
+    public function update()
+    {
+        $this->Panier()->Update($this->Request()->post("panier"));
+
+        $this->redirect("/panier");
     }
 }
