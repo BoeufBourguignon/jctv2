@@ -21,9 +21,9 @@ CREATE TABLE IF NOT EXISTS `categorie` (
     `refCateg` varchar(20) NOT NULL,
     `libCateg` varchar(50) NOT NULL,
     `refParent` int(11) NULL,
-    CONSTRAINT PRIMARY KEY (`refCateg`),
-    CONSTRAINT `fk_categorie_parent` FOREIGN KEY (`refCateg`) REFERENCES categorie(`refCateg`)
+    CONSTRAINT PRIMARY KEY (`refCateg`)
 );
+ALTER TABLE categorie ADD CONSTRAINT fk_categorie_parent FOREIGN KEY (refParent) REFERENCES categorie(refCateg);
 
 CREATE TABLE IF NOT EXISTS `role` (
     `idRole` int(11) NOT NULL AUTO_INCREMENT,
@@ -37,9 +37,9 @@ CREATE TABLE IF NOT EXISTS `client` (
     `passwordClient` varchar(100) DEFAULT NULL,
     `mailClient` varchar(40) DEFAULT NULL,
     `idRoleClient` int(11) DEFAULT NULL,
-    CONSTRAINT PRIMARY KEY (`idClient`),
-    CONSTRAINT `fk_client_role` FOREIGN KEY (`idRoleClient`) REFERENCES role(`idRole`)
+    CONSTRAINT PRIMARY KEY (`idClient`)
 ) AUTO_INCREMENT=1;
+ALTER TABLE client ADD CONSTRAINT fk_client_role FOREIGN KEY (idRoleClient) REFERENCES roel(idRole);
 
 CREATE TABLE IF NOT EXISTS `difficulte` (
     `idDifficulte` int(11) NOT NULL AUTO_INCREMENT,
@@ -56,11 +56,11 @@ CREATE TABLE IF NOT EXISTS `etatCommande` (
 CREATE TABLE IF NOT EXISTS `commande` (
     `idCommande` int(11) NOT NULL AUTO_INCREMENT,
     `idClient` int(11) NOT NULL,
-    `idEtatCommand` int(11) NOT NULL,
-    CONSTRAINT PRIMARY KEY (`idCommande`),
-    CONSTRAINT `fk_commande_client` FOREIGN KEY (`idClient`) REFERENCES client(`idClient`),
-    CONSTRAINT `fk_commande_etatCommande` FOREIGN KEY (`idEtatCommand`) REFERENCES etatCommande(`idEtatCommande`)
+    `idEtatCommande` int(11) NOT NULL,
+    CONSTRAINT PRIMARY KEY (`idCommande`)
 ) AUTO_INCREMENT=1;
+ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFRENCES client(idClient);
+ALTER TABLE commande ADD CONSTRAINT fk_commande_etatcommande FOREIGN KEY (idEtatCommande) REFERENCES (idEtatCommande);
 
 CREATE TABLE IF NOT EXISTS `produit` (
     `refProduit` varchar(20) NOT NULL,
@@ -72,24 +72,22 @@ CREATE TABLE IF NOT EXISTS `produit` (
     `idDifficulte` int(11) DEFAULT NULL,
     `qteStock` int(11) DEFAULT 0,
     `seuilAlerte` int(11) DEFAULT NULL,
-    CONSTRAINT PRIMARY KEY (`refProduit`),
-    CONSTRAINT `fk_produit_categ` FOREIGN KEY (`refCateg`) REFERENCES categorie(`refCateg`),
-    CONSTRAINT `fk_produit_difficulte` FOREIGN KEY (`idDifficulte`) REFERENCES difficulte(`idDifficulte`)
+    CONSTRAINT PRIMARY KEY (`refProduit`)
 );
+ALTER TABLE produit ADD CONSTRAINT fk_produit_categorie FOREIGN KEY (refCateg) REFERENCES categorie(refCateg);
+ALTER TABLE produit ADD CONSTRAINT fk_produit_dificulte FOREIGN KEY (idDifficulte) REFERENCES difficulte(idDifficulte);
 
 CREATE TABLE IF NOT EXISTS `ligneCommande` (
     `idCommande` int(11) NOT NULL,
     `refProduit` int(11) NOT NULL,
-    CONSTRAINT PRIMARY KEY (`idCommande`, `refProduit`),
-    CONSTRAINT `fk_ligneCommande_commande` FOREIGN KEY (`idCommande`) REFERENCES commande(`idCommande`),
-    CONSTRAINT `fk_ligneCommande_produit` FOREIGN KEY (`refProduit`) REFERENCES produit(`refProduit`)
+    CONSTRAINT PRIMARY KEY (`idCommande`, `refProduit`)
 ) AUTO_INCREMENT=1;
+ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
+ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_produit FOREIGN KEY (refProduit) REFERENCES produit(refProduit);
 
 
 
 DROP VIEW IF EXISTS V_Produits;
-
-
 
 CREATE VIEW IF NOT EXISTS V_Produits
 AS
