@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS `etatCommande`;
 CREATE TABLE IF NOT EXISTS `categorie` (
     `refCateg` varchar(20) NOT NULL,
     `libCateg` varchar(50) NOT NULL,
-    `refParent` int(11) NULL,
+    `refParent` varchar(20) NULL,
     CONSTRAINT PRIMARY KEY (`refCateg`)
 );
 ALTER TABLE categorie ADD CONSTRAINT fk_categorie_parent FOREIGN KEY (refParent) REFERENCES categorie(refCateg);
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `produit` (
     `imgPath` varchar(100) DEFAULT NULL,
     `libProduit` varchar(50) NOT NULL,
     `descProduit` varchar(2000) DEFAULT NULL,
-    `refCateg` int(11) DEFAULT NULL,
+    `refCateg` varchar(20) DEFAULT NULL,
     `prix` decimal(5,2) DEFAULT NULL,
     `idDifficulte` int(11) DEFAULT NULL,
     `qteStock` int(11) DEFAULT 0,
@@ -79,7 +79,7 @@ ALTER TABLE produit ADD CONSTRAINT fk_produit_dificulte FOREIGN KEY (idDifficult
 
 CREATE TABLE IF NOT EXISTS `ligneCommande` (
     `idCommande` int(11) NOT NULL,
-    `refProduit` int(11) NOT NULL,
+    `refProduit` varchar(20) NOT NULL,
     CONSTRAINT PRIMARY KEY (`idCommande`, `refProduit`)
 ) AUTO_INCREMENT=1;
 ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
