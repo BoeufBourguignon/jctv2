@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `commande` (
     `idEtatCommande` int(11) NOT NULL,
     CONSTRAINT PRIMARY KEY (`idCommande`)
 ) AUTO_INCREMENT=1;
-ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFRENCES client(idClient);
+ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFERENCES client(idClient);
 ALTER TABLE commande ADD CONSTRAINT fk_commande_etatcommande FOREIGN KEY (idEtatCommande) REFERENCES (idEtatCommande);
 
 CREATE TABLE IF NOT EXISTS `produit` (
