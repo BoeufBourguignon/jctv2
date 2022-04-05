@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `commande` (
     CONSTRAINT PRIMARY KEY (`idCommande`)
 ) AUTO_INCREMENT=1;
 ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFERENCES client(idClient);
-ALTER TABLE commande ADD CONSTRAINT fk_commande_etatcommande FOREIGN KEY (idEtatCommande) REFERENCES (idEtatCommande);
+ALTER TABLE commande ADD CONSTRAINT fk_commande_etatcommande FOREIGN KEY (idEtatCommande) REFERENCES etatCommande(idEtatCommande);
 
 CREATE TABLE IF NOT EXISTS `produit` (
     `refProduit` varchar(20) NOT NULL,
@@ -137,7 +137,7 @@ INSERT INTO `etatCommande` (`libelleEtatCommande`) VALUES
     ('En cours d\'acheminement'),
     ('Livré');
 
-INSERT INTO `produit` (`refProduit`, `imgPath`, `libProduit`, `descProduit`, `refCateg`, `prix`, `difficulte`) VALUES
+INSERT INTO `produit` (`refProduit`, `imgPath`, `libProduit`, `descProduit`, `refCateg`, `prix`, `idDifficulte`) VALUES
     ('RC2', 'img/produits/rc/2.png', 'Rubik’s Cube 2x2x2',
         'Le Rubik’s Cube est un casse-tête composé de 8 petits cubes de couleur, chaque face comportant 4 cubes, fixés à un axe central qui permet leur déplacement, afin de les disposer par couleur sur chaque face du cube.
         §pParfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
