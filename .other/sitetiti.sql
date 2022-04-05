@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `client` (
     `idRoleClient` int(11) DEFAULT NULL,
     CONSTRAINT PRIMARY KEY (`idClient`)
 ) AUTO_INCREMENT=1;
-ALTER TABLE client ADD CONSTRAINT fk_client_role FOREIGN KEY (idRoleClient) REFERENCES roel(idRole);
+ALTER TABLE client ADD CONSTRAINT fk_client_role FOREIGN KEY (idRoleClient) REFERENCES role(idRole);
 
 CREATE TABLE IF NOT EXISTS `difficulte` (
     `idDifficulte` int(11) NOT NULL AUTO_INCREMENT,
