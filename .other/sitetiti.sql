@@ -64,7 +64,7 @@ ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) RE
 CREATE TABLE IF NOT EXISTS `suiviEtatCommande` (
     `idCommande` int(11) NOT NULL,
     `idEtatCommande` int(11) NOT NULL,
-    `date` date NOT NULL,
+    `date` datetime NOT NULL,
     CONSTRAINT PRIMARY KEY (`idCommande`, `idEtatCommande`)
 );
 ALTER TABLE suiviEtatCommande ADD CONSTRAINT fk_suivietatcommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
