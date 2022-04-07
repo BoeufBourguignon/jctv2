@@ -6,7 +6,7 @@ USE `JeanCasseTete`;
 
 
 DROP TABLE IF EXISTS `ligneCommande`; -- Pas utilisé
-DROP TABLE IF EXISTS `suiviEtatCommande`
+DROP TABLE IF EXISTS `suiviEtatCommande`;
 DROP TABLE IF EXISTS `commande`; -- Utilisé dans ligneCommande
 DROP TABLE IF EXISTS `etatCommande`; -- Utilisé dans commande
 DROP TABLE IF EXISTS `produit`; -- Utilisé dans ligneCommande
