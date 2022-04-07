@@ -56,11 +56,18 @@ CREATE TABLE IF NOT EXISTS `etatCommande` (
 CREATE TABLE IF NOT EXISTS `commande` (
     `idCommande` int(11) NOT NULL AUTO_INCREMENT,
     `idClient` int(11) NOT NULL,
-    `idEtatCommande` int(11) NOT NULL,
     CONSTRAINT PRIMARY KEY (`idCommande`)
 ) AUTO_INCREMENT=1;
 ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFERENCES client(idClient);
-ALTER TABLE commande ADD CONSTRAINT fk_commande_etatcommande FOREIGN KEY (idEtatCommande) REFERENCES etatCommande(idEtatCommande);
+
+CREATE TABLE IF NOT EXISTS `suiviEtatCommande` (
+    `idCommande` int(11) NOT NULL,
+    `idEtatCommande` int(11) NOT NULL,
+    `date` date NOT NULL,
+    CONSTRAINT PRIMARY KEY (`idCommande`, `idEtatCommande`)
+);
+ALTER TABLE suiviEtatCommande ADD CONSTRAINT fk_suivietatcommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
+ALTER TABLE suiviEtatCommande ADD CONSTRAINT fk_suivietatcommande_etatcommande FOREIGN KEY (idEtatCommande) REFERENCES etatCommande(idEtatCommande);
 
 CREATE TABLE IF NOT EXISTS `produit` (
     `refProduit` varchar(20) NOT NULL,
