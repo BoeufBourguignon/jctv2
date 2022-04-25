@@ -4,7 +4,6 @@ CREATE DATABASE IF NOT EXISTS `JeanCasseTete`;
 USE `JeanCasseTete`;
 
 
-
 DROP TABLE IF EXISTS `ligneCommande`; -- Pas utilisé
 DROP TABLE IF EXISTS `commande`; -- Utilisé dans ligneCommande
 DROP TABLE IF EXISTS `etatCommade`; -- Utilisé dans commande
@@ -18,80 +17,73 @@ DROP TABLE IF EXISTS `etatCommande`;
 
 
 CREATE TABLE IF NOT EXISTS `categorie` (
-    `refCateg` varchar(20) NOT NULL,
+    `refCateg` varchar(20) NOT NULL PRIMARY KEY,
     `libCateg` varchar(50) NOT NULL,
-    `refParent` int(11) NULL,
-    CONSTRAINT PRIMARY KEY (`refCateg`),
-    CONSTRAINT `fk_categorie_parent` FOREIGN KEY (`refCateg`) REFERENCES categorie(`refCateg`)
+    `refParent` varchar(20) NULL
 );
+ALTER TABLE `categorie` ADD CONSTRAINT `fk_categorie_parent` FOREIGN KEY (`refCateg`) REFERENCES `categorie`(`refParent`);
 
 CREATE TABLE IF NOT EXISTS `role` (
-    `idRole` int(11) NOT NULL AUTO_INCREMENT,
-    `libRole` varchar(20) DEFAULT NULL,
-    CONSTRAINT PRIMARY KEY (`idRole`)
+    `idRole` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `libRole` varchar(20) DEFAULT NULL
 ) AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `client` (
-    `idClient` int(11) NOT NULL AUTO_INCREMENT,
+    `idClient` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `loginClient` varchar(20) DEFAULT NULL,
     `passwordClient` varchar(100) DEFAULT NULL,
     `mailClient` varchar(40) DEFAULT NULL,
-    `idRoleClient` int(11) DEFAULT NULL,
-    CONSTRAINT PRIMARY KEY (`idClient`),
-    CONSTRAINT `fk_client_role` FOREIGN KEY (`idRoleClient`) REFERENCES role(`idRole`)
+    `idRoleClient` int(11) DEFAULT NULL
 ) AUTO_INCREMENT=1;
+ALTER TABLE client ADD CONSTRAINT fk_client_role FOREIGN KEY (idRoleClient) REFERENCES role(idRole);
 
 CREATE TABLE IF NOT EXISTS `difficulte` (
-    `idDifficulte` int(11) NOT NULL AUTO_INCREMENT,
-    `libDifficulte` varchar(50) NOT NULL,
-    CONSTRAINT PRIMARY KEY (`idDifficulte`)
+    `idDifficulte` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `libDifficulte` varchar(50) NOT NULL
 ) AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `etatCommande` (
-    `idEtatCommande` INT(11) NOT NULL AUTO_INCREMENT,
-    `libelleEtatCommande` VARCHAR(30) NOT NULL,
-    CONSTRAINT PRIMARY KEY (`idEtatCommande`)
+    `idEtatCommande` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `libelleEtatCommande` VARCHAR(30) NOT NULL
 ) AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `commande` (
-    `idCommande` int(11) NOT NULL AUTO_INCREMENT,
+    `idCommande` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `idClient` int(11) NOT NULL,
-    `idEtatCommand` int(11) NOT NULL,
-    CONSTRAINT PRIMARY KEY (`idCommande`),
-    CONSTRAINT `fk_commande_client` FOREIGN KEY (`idClient`) REFERENCES client(`idClient`),
-    CONSTRAINT `fk_commande_etatCommande` FOREIGN KEY (`idEtatCommand`) REFERENCES etatCommande(`idEtatCommande`)
+    `idEtatCommand` int(11) NOT NULL
 ) AUTO_INCREMENT=1;
+ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFERENCES client(idClient);
+ALTER TABLE commande ADD CONSTRAINT fk_commande_etatcommande FOREIGN KEY (idEtatCommand) REFERENCES etatCommande(idEtatCommande);
 
 CREATE TABLE IF NOT EXISTS `produit` (
-    `refProduit` varchar(20) NOT NULL,
+    `refProduit` varchar(20) NOT NULL PRIMARY KEY,
     `imgPath` varchar(100) DEFAULT NULL,
     `libProduit` varchar(50) NOT NULL,
     `descProduit` varchar(2000) DEFAULT NULL,
-    `refCateg` int(11) DEFAULT NULL,
+    `refCateg` varchar(20) DEFAULT NULL,
     `prix` decimal(5,2) DEFAULT NULL,
     `idDifficulte` int(11) DEFAULT NULL,
     `qteStock` int(11) DEFAULT 0,
-    `seuilAlerte` int(11) DEFAULT NULL,
-    CONSTRAINT PRIMARY KEY (`refProduit`),
-    CONSTRAINT `fk_produit_categ` FOREIGN KEY (`refCateg`) REFERENCES categorie(`refCateg`),
-    CONSTRAINT `fk_produit_difficulte` FOREIGN KEY (`idDifficulte`) REFERENCES difficulte(`idDifficulte`)
+    `seuilAlerte` int(11) DEFAULT NULL
 );
+ALTER TABLE produit ADD CONSTRAINT fk_produit_categorie FOREIGN KEY (refCateg) REFERENCES categorie(refCateg);
+ALTER TABLE produit ADD CONSTRAINT fk_produit_difficulte FOREIGN KEY (idDifficulte) REFERENCES difficulte(idDifficulte);
 
 CREATE TABLE IF NOT EXISTS `ligneCommande` (
     `idCommande` int(11) NOT NULL,
-    `refProduit` int(11) NOT NULL,
-    CONSTRAINT PRIMARY KEY (`idCommande`, `refProduit`),
-    CONSTRAINT `fk_ligneCommande_commande` FOREIGN KEY (`idCommande`) REFERENCES commande(`idCommande`),
-    CONSTRAINT `fk_ligneCommande_produit` FOREIGN KEY (`refProduit`) REFERENCES produit(`refProduit`)
+    `refProduit` varchar(20) NOT NULL,
+    PRIMARY KEY (`idCommande`, `refProduit`)
 ) AUTO_INCREMENT=1;
+ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
+ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_produit FOREIGN KEY (refProduit) REFERENCES produit(refProduit);
 
 
 
-DROP VIEW IF EXISTS V_Produits;
+DROP VIEW IF EXISTS v_produits;
 
 
 
-CREATE VIEW IF NOT EXISTS V_Produits
+CREATE VIEW IF NOT EXISTS v_produits
 AS
 SELECT refProduit, p.refCateg as refCateg, null as refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, seuilAlerte, qteStock
 FROM produit p
@@ -139,7 +131,7 @@ INSERT INTO `etatCommande` (`libelleEtatCommande`) VALUES
     ('En cours d\'acheminement'),
     ('Livré');
 
-INSERT INTO `produit` (`refProduit`, `imgPath`, `libProduit`, `descProduit`, `refCateg`, `prix`, `difficulte`) VALUES
+INSERT INTO `produit` (`refProduit`, `imgPath`, `libProduit`, `descProduit`, `refCateg`, `prix`, `idDifficulte`) VALUES
     ('RC2', 'img/produits/rc/2.png', 'Rubik’s Cube 2x2x2',
         'Le Rubik’s Cube est un casse-tête composé de 8 petits cubes de couleur, chaque face comportant 4 cubes, fixés à un axe central qui permet leur déplacement, afin de les disposer par couleur sur chaque face du cube.
         §pParfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
