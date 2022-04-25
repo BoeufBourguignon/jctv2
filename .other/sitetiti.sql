@@ -5,8 +5,9 @@ USE `JeanCasseTete`;
 
 
 DROP TABLE IF EXISTS `ligneCommande`; -- Pas utilisé
+DROP TABLE IF EXISTS `suiviEtatCommande`;
 DROP TABLE IF EXISTS `commande`; -- Utilisé dans ligneCommande
-DROP TABLE IF EXISTS `etatCommade`; -- Utilisé dans commande
+DROP TABLE IF EXISTS `etatCommande`; -- Utilisé dans commande
 DROP TABLE IF EXISTS `produit`; -- Utilisé dans ligneCommande
 DROP TABLE IF EXISTS `difficulte`; -- Utilisée dans produit
 DROP TABLE IF EXISTS `categorie`; -- Utilisé dans produit
@@ -49,11 +50,18 @@ CREATE TABLE IF NOT EXISTS `etatCommande` (
 
 CREATE TABLE IF NOT EXISTS `commande` (
     `idCommande` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `idClient` int(11) NOT NULL,
-    `idEtatCommand` int(11) NOT NULL
+    `idClient` int(11) NOT NULL
 ) AUTO_INCREMENT=1;
 ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFERENCES client(idClient);
-ALTER TABLE commande ADD CONSTRAINT fk_commande_etatcommande FOREIGN KEY (idEtatCommand) REFERENCES etatCommande(idEtatCommande);
+
+CREATE TABLE IF NOT EXISTS `suiviEtatCommande` (
+    `idCommande` int(11) NOT NULL,
+    `idEtatCommande` int(11) NOT NULL,
+    `date` datetime NOT NULL,
+    PRIMARY KEY (`idCommande`, `idEtatCommande`)
+);
+ALTER TABLE suiviEtatCommande ADD CONSTRAINT fk_suivietatcommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
+ALTER TABLE suiviEtatCommande ADD CONSTRAINT fk_suivietatcommande_etatcommande FOREIGN KEY (idEtatCommande) REFERENCES etatCommande(idEtatCommande);
 
 CREATE TABLE IF NOT EXISTS `produit` (
     `refProduit` varchar(20) NOT NULL PRIMARY KEY,
@@ -80,7 +88,6 @@ ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_produit FOREIGN KEY (r
 
 
 DROP VIEW IF EXISTS v_produits;
-
 
 
 CREATE VIEW IF NOT EXISTS v_produits
