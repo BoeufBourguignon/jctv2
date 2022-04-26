@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `etatCommande` (
 ) AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `commande` (
-    `idCommande` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `idCommande` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `idClient` int(11) NOT NULL
 ) AUTO_INCREMENT=1;
 ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFERENCES client(idClient);
@@ -86,11 +86,8 @@ ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_commande FOREIGN KEY (
 ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_produit FOREIGN KEY (refProduit) REFERENCES produit(refProduit);
 
 
-
 DROP VIEW IF EXISTS v_produits;
-
-
-CREATE VIEW IF NOT EXISTS v_produits
+CREATE VIEW v_produits
 AS
 SELECT refProduit, p.refCateg as refCateg, null as refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, seuilAlerte, qteStock
 FROM produit p
@@ -102,7 +99,6 @@ FROM produit p
     JOIN categorie c on p.refCateg = c.refCateg
 WHERE c.refParent IS NOT NULL
 ;
-
 
 
 INSERT INTO `categorie` (`refCateg`, `libCateg`) VALUES
@@ -122,7 +118,10 @@ INSERT INTO `role` (`idRole`, `libRole`) VALUES
      (2, 'Client');
 
 INSERT INTO `client` (`loginClient`, `passwordClient`, `mailClient`, `idRoleClient`) VALUES
-    ('Thibaud', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'thibaud.leclere@gmail.com', 2);
+    ('Thibaud', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'thibaud.leclere@gmail.com', 2),
+    ('Baptiste', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'bapt.bray@gmail.com', 1),
+    ('Gregory', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'grego.mache@gmail.com', 1),
+    ('Dorian', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'dodo.president@gmail.com', 1);
 
 INSERT INTO `difficulte` (`idDifficulte`, `libDifficulte`) VALUES
     (1, '&starf;&star;&star;&star;&star;'),

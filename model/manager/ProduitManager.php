@@ -129,4 +129,28 @@ class ProduitManager extends BaseManager
 
         return $produit;
     }
+
+    public function GetProduitsBySearch(string $r): array
+    {
+        $query = "
+            SELECT refProduit, imgPath, libProduit, descProduit, refCateg, prix, idDifficulte, qteStock, seuilAlerte
+            FROM produit
+            WHERE libProduit LIKE :r
+            OR descProduit LIKE :r
+        ";
+        $stmt = $this->cnx->prepare($query);
+        $stmt->bindValue(":r", "%" . $r . "%");
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Produit::class);
+        $stmt->execute();
+
+        $produits = array();
+
+        /** @var Produit $produit */
+        foreach($stmt->fetchAll() as $produit) {
+            $produit->SetDifficulte($this->DifficultiesManager()->GetDifficulteById($produit->GetIdDifficulte()));
+            $produits[] = $produit;
+        }
+
+        return $produits;
+    }
 }

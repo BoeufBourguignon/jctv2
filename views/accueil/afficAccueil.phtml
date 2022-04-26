@@ -1,6 +1,35 @@
-<div id="main_affic">
-    <h1>Notre sélection</h1>
+<div id="accueil">
+    <div id="search_accueil" class="border-bottom">
+        <div class="w-50 mx-auto pt-4 pb-5">
+            <h1><label for="search-product" class="form-label">Rechercher un produit</label></h1>
+            <form action="/search" method="get" class="d-flex">
+                <input id="search-product" class="form-control me-2" name="r" placeholder="<?php if(isset($r) && !empty($r)) echo $r ?>">
+                <button class="btn btn-jct-orange">Rechercher</button>
+            </form>
+        </div>
+    </div>
     <?php
-    include(ROOT . "/views/produit/ficheProduit.inc");
+    if(isset($r) && !empty($r)) {
+        ?>
+        <div class="m-4">
+            <h2>Vous avez cherché <span class="text-blue">"<?php echo $r ?>"</span></h2>
+            <?php
+            if(isset($produits) && count($produits)) {
+                echo "<div id='main_affic'>";
+                foreach($produits as $produit) {
+                    include(VUES . "/produit/ficheProduit.inc");
+                }
+                echo "</div>";
+            } else {
+                ?>
+                <p>Aucun produit ne correspond à votre recherche.</p>
+            <?php
+            }
+            ?>
+        </div>
+        <?php
+    } else {
+        echo "<h1 class='text-center mt-5'>Page d'accueil bozo</h1>";
+    }
     ?>
 </div>

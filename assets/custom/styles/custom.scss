@@ -9,10 +9,15 @@ $hoverNavItemBorder: #515559;
 @import "../../others/bootstrap-5.1.0/scss/variables";
 @import "../../others/bootstrap-5.1.0/scss/mixins";
 
-$custom-bootstrap-colors: (
-        "jct-orange": $myOrange
-);
-$theme-colors: map-merge($theme-colors, $custom-bootstrap-colors);
+$theme-colors: map-merge($theme-colors, (
+        "jct-orange": $myOrange,
+        "blue": #3399FF
+));
+
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
 
 @import "../../others/bootstrap-5.1.0/scss/bootstrap";
 
