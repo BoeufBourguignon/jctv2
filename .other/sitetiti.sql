@@ -80,6 +80,7 @@ ALTER TABLE produit ADD CONSTRAINT fk_produit_difficulte FOREIGN KEY (idDifficul
 CREATE TABLE IF NOT EXISTS `ligneCommande` (
     `idCommande` int(11) NOT NULL,
     `refProduit` varchar(20) NOT NULL,
+    `qte` int(11) NOT NULL,
     PRIMARY KEY (`idCommande`, `refProduit`)
 ) AUTO_INCREMENT=1;
 ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
@@ -89,15 +90,24 @@ ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_produit FOREIGN KEY (r
 DROP VIEW IF EXISTS v_produits;
 CREATE VIEW v_produits
 AS
-SELECT refProduit, p.refCateg as refCateg, null as refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, seuilAlerte, qteStock
-FROM produit p
-    JOIN categorie c on p.refCateg = c.refCateg
-WHERE c.refParent IS NULL
-UNION
-SELECT refProduit, refParent as refCateg, p.refCateg as refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, seuilAlerte, qteStock
-FROM produit p
-    JOIN categorie c on p.refCateg = c.refCateg
-WHERE c.refParent IS NOT NULL
+    SELECT refProduit, p.refCateg as refCateg, null as refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, seuilAlerte, qteStock
+    FROM produit p
+        JOIN categorie c on p.refCateg = c.refCateg
+    WHERE c.refParent IS NULL
+    UNION
+    SELECT refProduit, refParent as refCateg, p.refCateg as refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, seuilAlerte, qteStock
+    FROM produit p
+        JOIN categorie c on p.refCateg = c.refCateg
+    WHERE c.refParent IS NOT NULL
+;
+
+DROP VIEW IF EXISTS v_most_bought_products;
+CREATE VIEW v_most_bought_products
+AS
+    SELECT refProduit, sum(qte) as qteTotale
+    FROM lignecommande
+    GROUP BY refProduit
+    ORDER BY 2 DESC
 ;
 
 

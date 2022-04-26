@@ -153,4 +153,25 @@ class ProduitManager extends BaseManager
 
         return $produits;
     }
+
+    public function GetMostBoughtProduits(int $limit): array
+    {
+        $query = "
+            SELECT p.refProduit, qteTotale, imgPath, libProduit, descProduit, refCateg, prix, idDifficulte, qteStock, seuilAlerte
+            FROM v_most_bought_products v
+                JOIN produit p ON p.refProduit = v.refProduit
+            ORDER BY qteTotale DESC
+            LIMIT " . $limit
+        ;
+        $stmt = $this->cnx->prepare($query);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Produit::class);
+        $stmt->execute();
+
+        $produits = array();
+        while($produit = $stmt->fetch()) {
+           $produits[] = $produit->SetDifficulte($this->DifficultiesManager()->GetDifficulteById($produit->GetIdDifficulte()));
+        }
+
+        return $produits;
+    }
 }

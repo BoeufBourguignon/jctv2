@@ -8,7 +8,9 @@ class indexController extends Controller
      */
     public function draw()
     {
-        $this->render("/accueil/afficAccueil.phtml");
+        $produits = $this->ProduitManager()->GetMostBoughtProduits(5);
+
+        $this->render("/accueil/afficAccueil.phtml", ["produits" => $produits]);
     }
 
     /**
@@ -18,6 +20,9 @@ class indexController extends Controller
     public function search()
     {
         $r = $_GET["r"] ?? null;
+        if($r == null) {
+            $this->redirect("/");
+        }
 
         $produits = $this->ProduitManager()->GetProduitsBySearch($r);
 

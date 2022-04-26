@@ -23,7 +23,7 @@ try {
             $idCommande = $pdo->lastInsertId();
             //On rajoute des produits à la commande
             $nbProduits = random_int(1, 5);
-            $pdo->exec("insert into lignecommande (idCommande, refProduit) select " . $idCommande . ", refProduit from produit order by rand() limit " . $nbProduits);
+            $pdo->exec("insert into lignecommande (idCommande, refProduit, qte) select " . $idCommande . ", refProduit, RAND()*8+1 from produit order by rand() limit " . $nbProduits);
         }
     }
     //Pour chaque commande

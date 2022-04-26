@@ -19,9 +19,10 @@ class Produit
         return $this->refProduit;
     }
 
-    public function SetReference(string $reference)
+    public function SetReference(string $reference): Produit
     {
         $this->refProduit = $reference;
+        return $this;
     }
 
     public function GetImagePath(): string
@@ -29,9 +30,10 @@ class Produit
         return $this->imgPath;
     }
 
-    public function SetImagePath(string $image_path)
+    public function SetImagePath(string $image_path): Produit
     {
         $this->imgPath = $image_path;
+        return $this;
     }
 
     public function GetLibelle(): string
@@ -39,9 +41,10 @@ class Produit
         return $this->libProduit;
     }
 
-    public function SetLibelle(string $libelle)
+    public function SetLibelle(string $libelle): Produit
     {
         $this->libProduit = $libelle;
+        return $this;
     }
 
     public function GetDescription(): string
@@ -49,9 +52,10 @@ class Produit
         return "<ul><li>" . str_replace("§p", "</li><li>", $this->descProduit) . "</li></ul>";
     }
 
-    public function SetDescription(string $description)
+    public function SetDescription(string $description): Produit
     {
         $this->descProduit = $description;
+        return $this;
     }
 
     public function GetCateg(): string
@@ -59,9 +63,10 @@ class Produit
         return $this->refCateg;
     }
 
-    public function SetCateg(string $refCateg)
+    public function SetCateg(string $refCateg): Produit
     {
         $this->refCateg = $refCateg;
+        return $this;
     }
 
     public function GetPrix(): float
@@ -69,9 +74,10 @@ class Produit
         return $this->prix;
     }
 
-    public function SetPrix(float $prix)
+    public function SetPrix(float $prix): Produit
     {
         $this->prix = $prix;
+        return $this;
     }
 
     public function GetDifficulte(): Difficulty
@@ -79,9 +85,10 @@ class Produit
         return $this->difficulte;
     }
 
-    public function SetDifficulte(Difficulty $difficulte)
+    public function SetDifficulte(Difficulty $difficulte): Produit
     {
         $this->difficulte = $difficulte;
+        return $this;
     }
 
     public function GetQteStock(): int
@@ -89,9 +96,10 @@ class Produit
         return $this->qteStock;
     }
 
-    public function SetQteStock(int $qteStock): void
+    public function SetQteStock(int $qteStock): Produit
     {
         $this->qteStock = $qteStock;
+        return $this;
     }
 
     public function GetSeuilAlerte(): ?int
@@ -99,9 +107,10 @@ class Produit
         return $this->seuilAlerte;
     }
 
-    public function SetSeuilAlerte(?int $seuilAlerte): void
+    public function SetSeuilAlerte(?int $seuilAlerte): Produit
     {
         $this->seuilAlerte = $seuilAlerte;
+        return $this;
     }
 
     public function GetIdDifficulte(): int
@@ -109,8 +118,9 @@ class Produit
         return $this->idDifficulte;
     }
 
-    public function SetIdDifficulte(int $idDifficulte): void
+    public function SetIdDifficulte(int $idDifficulte): Produit
     {
         $this->idDifficulte = $idDifficulte;
+        return $this;
     }
 }

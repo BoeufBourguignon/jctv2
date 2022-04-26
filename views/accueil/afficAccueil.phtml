@@ -29,7 +29,15 @@
         </div>
         <?php
     } else {
-        echo "<h1 class='text-center mt-5'>Page d'accueil bozo</h1>";
+        echo "<div class='m-4'>";
+        echo "<h2>Nos articles les plus vendus</h2>";
+        echo "<div id='main_affic'>";
+        /** @var array $produits */
+        foreach($produits as $produit) {
+            include(VUES . "/produit/ficheProduit.inc");
+        }
+        echo "</div>";
+        echo "</div>";
     }
     ?>
 </div>
