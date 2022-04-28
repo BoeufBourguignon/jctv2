@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS `etatCommande`; -- Utilisé dans commande
 DROP TABLE IF EXISTS `produit`; -- Utilisé dans ligneCommande
 DROP TABLE IF EXISTS `difficulte`; -- Utilisée dans produit
 DROP TABLE IF EXISTS `categorie`; -- Utilisé dans produit
+DROP TABLE IF EXISTS `user_connection`;
 DROP TABLE IF EXISTS `client`; -- Utilisé dans commande
 DROP TABLE IF EXISTS `role`; -- Utilisé dans Client
 DROP TABLE IF EXISTS `etatCommande`;
@@ -37,6 +38,13 @@ CREATE TABLE IF NOT EXISTS `client` (
     `idRoleClient` int(11) DEFAULT NULL
 ) AUTO_INCREMENT=1;
 ALTER TABLE client ADD CONSTRAINT fk_client_role FOREIGN KEY (idRoleClient) REFERENCES role(idRole);
+
+CREATE TABLE IF NOT EXISTS `user_connection` (
+    `idClient` int(11),
+    `idConnection` varchar(50),
+    `date` date default NOW(),
+    PRIMARY KEY (`idClient`, `idConnection`)
+);
 
 CREATE TABLE IF NOT EXISTS `difficulte` (
     `idDifficulte` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -128,10 +136,10 @@ INSERT INTO `role` (`idRole`, `libRole`) VALUES
      (2, 'Client');
 
 INSERT INTO `client` (`loginClient`, `passwordClient`, `mailClient`, `idRoleClient`) VALUES
-    ('Thibaud', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'thibaud.leclere@gmail.com', 2),
-    ('Baptiste', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'bapt.bray@gmail.com', 1),
-    ('Gregory', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'grego.mache@gmail.com', 1),
-    ('Dorian', '$2y$10$j9DkKe/R2UfNObhhv2D0ZO.evHWlSDLrAtIQveojcawO7FEu0lJEa', 'dodo.president@gmail.com', 1);
+    ('Thibaud', '$2y$10$.Rsd6h8hV9kmqF73J4CLhe9FU0sZs.o.kQaGDZ2WCNEwYpU0DaVY2', 'thibaud.leclere@gmail.com', 2),
+    ('Baptiste', '$2y$10$.Rsd6h8hV9kmqF73J4CLhe9FU0sZs.o.kQaGDZ2WCNEwYpU0DaVY2', 'bapt.bray@gmail.com', 1),
+    ('Gregory', '$2y$10$.Rsd6h8hV9kmqF73J4CLhe9FU0sZs.o.kQaGDZ2WCNEwYpU0DaVY2', 'grego.mache@gmail.com', 1),
+    ('Dorian', '$2y$10$.Rsd6h8hV9kmqF73J4CLhe9FU0sZs.o.kQaGDZ2WCNEwYpU0DaVY2', 'dodo.president@gmail.com', 1);
 
 INSERT INTO `difficulte` (`idDifficulte`, `libDifficulte`) VALUES
     (1, '&starf;&star;&star;&star;&star;'),

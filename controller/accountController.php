@@ -15,22 +15,15 @@ class accountController extends Controller
     public function draw()
     {
         //Si pas connecté, on redirige vers la page de connexion
-        if (!isset($_SESSION['logged-in-user-id'])) {
+        if ($this->Request()->user() == null) {
             $this->redirect("/account/login");
         } else {
             $this->render(
                 "/account/afficAccount.phtml", [
-                    "client" => ClientManager::GetUserById($_SESSION['logged-in-user-id'])
+                    "client" => $this->Request()->user()
                 ]
             );
         }
-    }
-
-    //Si connecté on redirige vers page du compte
-    private static function isLoggedIn()
-    {
-        if (isset($_SESSION['logged-in-user-id']))
-            Utils::redirect("/account");
     }
 
     /**
@@ -39,79 +32,61 @@ class accountController extends Controller
      */
     public function login()
     {
-        self::isLoggedIn();
+        if($this->Request()->user() != null) {
+            $this->redirect("/account");
+        }
 
-        $params = array();
-
-        $params["jwt"] = Encoder::createJWT();
-        $view = "/account/afficConnect.phtml";
-
-        self::render($view, $params);
-    }
-
-    /**
-     * @return void
-     */
-    public function doLogin()
-    {
-        if ($this->Request()->post("form-login-submitted") != false)
-            //On vient du formulaire de connection
-        {
-            if ($this->Request()->post("jwt") && Encoder::verifyJWT($this->Request()->post("jwt")))
-                //Je vérifie le token
-            {
+        if($this->Request()->post("form-login-submitted") !== false) {
+            $jwt = $this->Request()->post("jwt");
+            if($jwt && Encoder::verifyJWT($jwt)) {
                 try {
                     $inUsername = $this->Request()->post("login") != false ? Utils::nettoyerStr($this->Request()->post("login")) : "";
                     $inPassword = $this->Request()->post("password") != false ? Utils::nettoyerStr($this->Request()->post("password")) : "";
                     $_SESSION["lastUsername"] = $inUsername;
 
-                    if (strlen($inUsername) && strlen($inPassword))
-                    {
-                        if ($client = ClientManager::TryLeClient($inUsername))
-                        {
-                            if (password_verify($inPassword, $client->GetPassword()))
-                            {
-                                //Si les infos sont bonnes / existent
-                                //On met l'id de la personne connectée en session
-                                $_SESSION["logged-in-user-id"] = $client->GetId();
-                            }
-                            else
-                            {
-                                $_SESSION["error-login"] = "Le mot de passe est incorrect";
-                            }
+                    if(strlen($inUsername) && strlen($inPassword)) {
+                        $client = $this->ClientManager()->TryLeClient($inUsername);
+                        if(    $client !== false
+                            && password_verify($inPassword, $client->GetPassword())
+                        ) {
+                            $this->ClientManager()->DoConnect($client);
+                        } else {
+                            $_SESSION["login-error"] = "Le nom d'utilisateur n'existe pas ou le mot de passe est incorrect";
                         }
-                        else
-                        {
-                            $_SESSION["error-login"] = "Le nom d'utilisateur n'existe pas";
-                        }
+                    } else {
+                        $_SESSION["login-error"] = "Les champs ne doivent pas être vides";
                     }
-                    else
-                    {
-                        $_SESSION["error-login"] = "Les champs ne doivent pas être vides";
-                    }
+                } catch(Exception $ex) {
+                    $_SESSION["login-error"] = "Une erreur est survenue, veuillez contacter le webmaster";
                 }
-                catch (Exception $ex)
-                {
-                    $_SESSION["error-login"] = "Une erreur est intervenue, veuillez contacter le webmaster";
-                }
+            } else {
+                $_SESSION["login-error"] = "Une erreur est survenue, veuillez réessayer";
             }
-            else
-                //Erreur à cause du token
-            {
-                $_SESSION["error-login-token"] = true;
-            }
+            $this->redirect("/account");
+        } else {
+            $this->render(
+                "/account/afficConnect.phtml", [
+                    "jwt" => Encoder::createJWT()
+                ]
+            );
         }
-        Utils::redirect("/account");
     }
 
-    public static function create()
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function create()
     {
-        self::isLoggedIn();
+        if($this->Request()->user() != null) {
+            $this->redirect("/account");
+        }
 
-        $params["jwt"] = Encoder::createJWT();
-        $view = ROOT."/views/account/afficCreateAccount.phtml";
-
-        self::render($view, $params);
+        $this->render(
+            "/account/afficCreateAccount.phtml", [
+                "jwt" => Encoder::createJWT()
+            ]
+        );
     }
 
     public static function doCreate()
@@ -227,16 +202,15 @@ class accountController extends Controller
         Utils::redirect("/account");
     }
 
-    //On logout, when clicking disconnect button
-    //Redirect to
-    //  /account
-    public static function doLogout()
+    /**
+     * @return void
+     */
+    public function doLogout()
     {
-        if (isset($_POST["form-disconnect"]))
+        if($this->Request()->post("form-disconnect") !== false)
         {
-            session_destroy();
+            $this->ClientManager()->DoLogout();
         }
-
-        Utils::redirect("/account");
+        $this->redirect("/account");
     }
 }

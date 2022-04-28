@@ -10,14 +10,22 @@ class Request
 
     public function __construct()
     {
+        //GET
         foreach($_GET as $key => $value) {
             if(($key != 'controller') && ($key != 'action')) {
                 $this->get[$key] = $value;
             }
         }
+        //POST
         $this->post = $_POST;
-        $this->user = isset($_SESSION['logged-in-user-id']) ? ClientManager::GetUserById($_SESSION['logged-in-user-id']) : null;
-        if($this->user == false) {
+
+        //USER
+        //Regarde si l'utilisateur peut être connecté (dans la base de données du site)
+        $cid = $_COOKIE["cid"] ?? null;
+        $cuid = $_COOKIE["cuid"] ?? null;
+        if($cid != null && $cuid != null && ClientManager::CanConnect($cid, $cuid)) {
+            $this->user = ClientManager::GetUserById($cuid);
+        } else {
             $this->user = null;
         }
     }

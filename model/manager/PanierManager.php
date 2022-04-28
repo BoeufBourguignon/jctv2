@@ -4,7 +4,7 @@ class PanierManager extends BaseManager
 {
     private ?Client $client;
 
-    private array $panier;
+    private array $panier = array();
 
     public function __construct(?Client $client)
     {

@@ -1,6 +1,11 @@
+<?php
+/**
+ * @var $jwt
+ */
+?>
 <div class="content">
-    <form id="form_login" method="post" action="/account/doLogin">
-        <input type="text" aria-hidden="true" name="jwt" value="<?= $jwt ?>">
+    <form id="form_login" method="post" action="/account/login">
+        <input type="hidden" name="jwt" value="<?= $jwt ?>">
         <h1 class="mb-3">Se connecter</h1>
         <p class="form-text text-danger" id="unknown-field" aria-hidden="true"><strong>Identifiant ou mot de passe inconnu</strong></p>
         <?php
@@ -11,19 +16,12 @@
                 <?php
             unset($_SESSION["success-create"]);
         }
-        if (isset($_SESSION["error-login-token"]) && $_SESSION["error-login-token"])
-        {
-                ?>
-                <p class="form-text text-danger"><strong>Une erreur a eu lieu. Veuillez réessayer</strong></p>
-                <?php
-            unset($_SESSION["error-login-token"]);
-        }
-        if (isset($_SESSION["error-login"]) && !empty($_SESSION["error-login"]))
+        if (isset($_SESSION["login-error"]) && !empty($_SESSION["login-error"]))
         {
             ?>
-            <p class="form-text text-danger"><strong><?= $_SESSION["error-login"]; ?></strong></p>
+            <p class="form-text text-danger"><strong><?= $_SESSION["login-error"]; ?></strong></p>
             <?php
-            unset($_SESSION["error-login"]);
+            unset($_SESSION["login-error"]);
         }
         ?>
         <div class="row mb-3">
