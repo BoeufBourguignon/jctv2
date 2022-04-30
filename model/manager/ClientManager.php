@@ -89,16 +89,18 @@ class ClientManager extends BaseManager
             $stmtDateCommande->execute([":commande" => $idCommande]);
             $date = $stmtDateCommande->fetchColumn();
             $queryDetails = "
-                SELECT refProduit, qte 
-                FROM lignecommande
+                SELECT p.refProduit, qte, libProduit, prix
+                FROM lignecommande lc
+                    JOIN produit p on lc.refProduit = p.refProduit
                 WHERE idCommande = :commande
             ";
             $stmtDetails = $this->cnx->prepare($queryDetails);
             $stmtDetails->setFetchMode(PDO::FETCH_KEY_PAIR);
             $stmtDetails->execute([":commande" => $idCommande]);
+
             $historique[$idCommande] = [
                 "date" => $date,
-                "produits" => $stmtDetails->fetchAll()
+                "produits" => $stmtDetails->fetchAll(PDO::FETCH_ASSOC)
             ];
         }
         return $historique;

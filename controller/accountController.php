@@ -16,7 +16,7 @@ class accountController extends Controller
     {
         //Si pas connecté, on redirige vers la page de connexion
         if ($this->Request()->user() == null) {
-            $this->redirect("/account");
+            $this->redirect("/account/login");
         }
         $this->render(
             "/account/afficAccount.phtml", [
@@ -218,12 +218,10 @@ class accountController extends Controller
     /**
      * @return void
      */
-    public function doLogout()
+    public function logout()
     {
-        if($this->Request()->post("form-disconnect") !== false)
-        {
-            $this->ClientManager()->DoLogout();
-        }
+        $this->ClientManager()->DoLogout();
+
         $this->redirect("/account");
     }
 }

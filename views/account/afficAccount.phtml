@@ -6,25 +6,13 @@
  */
 ?>
 <div class="content">
-    <h1 class="mb-4">Mes informations</h1>
-    <div class="mb-5">
-        <div class="row mb-3">
-            <h2>Nom d'utilisateur</h2>
-            <p><?=$client->GetLogin()?></p>
-        </div>
-        <hr>
-        <div class="row mb-3">
-            <h2>Adresse mail</h2>
-            <p><?=$client->GetMail()?></p>
-        </div>
-    </div>
     <div class="row mb-5">
         <div class="list-group list-group-flush col">
             <a href="/account/historique" class="list-group-item list-group-item-action text-blue">Historique des commandes</a>
+            <a href="/account/logout" class="list-group-item list-group-item-action text-blue">Se déconnecter</a>
         </div>
-        <div class="col"></div>
+        <div class="list-group list-group-flush col">
+            <a href="/account/infos" class="list-group-item list-group-item-action text-blue">Modifier mes informations</a>
+        </div>
     </div>
-    <form action="/account/doLogout" method="post">
-        <button name="form-disconnect" type="submit" class="btn btn-danger">Se déconnecter</button>
-    </form>
 </div>
