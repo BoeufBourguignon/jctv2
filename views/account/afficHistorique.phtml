@@ -1,0 +1,39 @@
+<?php
+// views/account/afficHistorique.phtml
+
+/**
+ * @var array $historique
+ */
+?>
+<div id="main_affic">
+    <h1 class="mb-4">Historique de commandes</h1>
+    <div class="accordion" id="historique">
+        <?php
+        var_dump($historique);
+        foreach($historique as $i => $details) {
+            ?>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="commande<?php echo $i ?>">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#produits<?php echo $i ?>" aria-expanded="true"
+                            aria-controls="produits<?php echo $i ?>">
+                        Le <?php echo date("d/m/Y", strtotime($details["date"])) ?>
+                    </button>
+                </h2>
+                <div id="produits<?php echo $i ?>" class="accordion-collapse collapse"
+                     aria-labelledby="commande<?php echo $i ?>"
+                     data-bs-parent="#historique">
+                    <div class="accordion-body">
+                        <?php
+                        foreach($details["produits"] as $produit => $qte) {
+                            echo "<p>" . $produit  . "</p>";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+</div>

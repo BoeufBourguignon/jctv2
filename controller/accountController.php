@@ -16,14 +16,27 @@ class accountController extends Controller
     {
         //Si pas connecté, on redirige vers la page de connexion
         if ($this->Request()->user() == null) {
-            $this->redirect("/account/login");
-        } else {
-            $this->render(
-                "/account/afficAccount.phtml", [
-                    "client" => $this->Request()->user()
-                ]
-            );
+            $this->redirect("/account");
         }
+        $this->render(
+            "/account/afficAccount.phtml", [
+                "client" => $this->Request()->user()
+            ]
+        );
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function historique()
+    {
+        if ($this->Request()->user() == null) {
+            $this->redirect("/account");
+        }
+        $this->render("/account/afficHistorique.phtml", [
+            "historique" => $this->ClientManager()->GetHistorique($this->Request()->user())
+        ]);
     }
 
     /**

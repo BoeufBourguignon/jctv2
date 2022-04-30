@@ -95,6 +95,7 @@ ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_commande FOREIGN KEY (
 ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_produit FOREIGN KEY (refProduit) REFERENCES produit(refProduit);
 
 
+
 DROP VIEW IF EXISTS v_produits;
 CREATE VIEW v_produits
 AS
@@ -117,6 +118,17 @@ AS
     GROUP BY refProduit
     ORDER BY 2 DESC
 ;
+
+DROP VIEW IF EXISTS v_panier;
+CREATE VIEW v_panier
+AS
+    SELECT c.idCommande, idClient, date
+    FROM commande c
+        JOIN suivietatcommande s ON c.idCommande = s.idCommande
+    GROUP BY c.idCommande, idClient
+    HAVING MAX(idEtatCommande) = 1
+;
+
 
 
 INSERT INTO `categorie` (`refCateg`, `libCateg`) VALUES

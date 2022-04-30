@@ -5,8 +5,11 @@ try {
 
     //Vide les tables concernées
     $pdo->exec("delete from commande");
+    $pdo->exec("alter table commande AUTO_INCREMENT = 1");
     $pdo->exec("delete from lignecommande");
+    $pdo->exec("alter table lignecommande AUTO_INCREMENT = 1");
     $pdo->exec("delete from suivietatcommande");
+    $pdo->exec("alter table suivietatcommande AUTO_INCREMENT = 1");
 
     //Récupère les id de tous les clients
     $reqClients = $pdo->query("select idClient from client");
@@ -31,11 +34,12 @@ try {
     while($idCommande = $reqCommandes->fetch(PDO::FETCH_COLUMN)) {
         $etatCommande = random_int(1, 5);
         for($i = 1; $i <= $etatCommande; $i++) {
+            $date = random_int(strtotime("now - 24 months"), strtotime("now"));
             $reqAddEtat = $pdo->prepare("insert into suivietatcommande (idCommande, idEtatCommande, date) values (:idC, :idE, :date)");
             $reqAddEtat->execute([
                 ":idC" => $idCommande,
                 ":idE" => $i,
-                ":date" => date("Y-m-d", strtotime("today - " . 5 - $i . " weeks"))
+                ":date" => date("Y-m-d", strtotime("- " . 5 - $i . " weeks", $date))
             ]);
         }
     }

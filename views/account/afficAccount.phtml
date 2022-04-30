@@ -2,7 +2,7 @@
 // views/account/afficAccount.phtml
 
 /**
- * @var $client Client
+ * @var Client $client
  */
 ?>
 <div class="content">
@@ -17,6 +17,12 @@
             <h2>Adresse mail</h2>
             <p><?=$client->GetMail()?></p>
         </div>
+    </div>
+    <div class="row mb-5">
+        <div class="list-group list-group-flush col">
+            <a href="/account/historique" class="list-group-item list-group-item-action text-blue">Historique des commandes</a>
+        </div>
+        <div class="col"></div>
     </div>
     <form action="/account/doLogout" method="post">
         <button name="form-disconnect" type="submit" class="btn btn-danger">Se déconnecter</button>

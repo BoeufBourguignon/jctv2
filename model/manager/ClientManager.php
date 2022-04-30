@@ -2,7 +2,7 @@
 require_once(_CLASS . "/Client.php");
 
 
-class ClientManager
+class ClientManager extends BaseManager
 {
     public static function CanConnect(string $cid, string $cuid): bool
     {
@@ -21,13 +21,11 @@ class ClientManager
     {
         $cid = md5(uniqid());
 
-        //Ajout la connexion en BDD
-        $cnx = Database::GetConnection();
         $query = "
             INSERT INTO user_connection (idClient, idConnection) VALUES
             (:cuid, :cid)
         ";
-        $stmt = $cnx->prepare($query);
+        $stmt = $this->cnx->prepare($query);
         $stmt->execute([":cuid" => $client->GetId(), ":cid" => $cid]);
 
         //Ajout de la connexion en cookie
@@ -41,13 +39,12 @@ class ClientManager
         $cuid = $_COOKIE["cuid"] ?? null;
 
         if($cid != null && $cuid != null) {
-            $cnx = Database::GetConnection();
             $query = "
                 DELETE FROM user_connection
                 WHERE idClient = :cuid
                 AND idConnection = :cid
             ";
-            $stmt = $cnx->prepare($query);
+            $stmt = $this->cnx->prepare($query);
             $stmt->execute([":cid" => $cid, ":cuid" => $cuid]);
         }
 
@@ -57,17 +54,54 @@ class ClientManager
 
     public function TryLeClient(string $login): Client|false
     {
-        $cnx = Database::GetConnection();
         $query = "
             SELECT idClient, loginClient, passwordClient, mailClient, idRoleClient
             FROM client
             WHERE loginClient = :l
         ";
-        $stmt = $cnx->prepare($query);
+        $stmt = $this->cnx->prepare($query);
         $stmt->setFetchMode(PDO::FETCH_CLASS, "Client");
         $stmt->execute([":l" => $login]);
 
         return $stmt->fetch();
+    }
+
+    public function GetHistorique(Client $client): array
+    {
+        $historique = array();
+        $queryCommandes = "
+            SELECT idCommande 
+            FROM commande c 
+            WHERE idClient = :client
+            AND NOT EXISTS (SELECT * FROM v_panier p WHERE p.idCommande = c.idCommande)
+        ";
+        $stmtCommandes = $this->cnx->prepare($queryCommandes);
+        $stmtCommandes->execute([":client" => $client->GetId()]);
+        $commandes = $stmtCommandes->fetchAll(PDO::FETCH_COLUMN);
+        foreach($commandes as $idCommande) {
+            $queryDateCommande = "
+                SELECT date
+                FROM suivietatcommande
+                WHERE idCommande = :commande
+                AND idEtatCommande = 2
+            ";
+            $stmtDateCommande = $this->cnx->prepare($queryDateCommande);
+            $stmtDateCommande->execute([":commande" => $idCommande]);
+            $date = $stmtDateCommande->fetchColumn();
+            $queryDetails = "
+                SELECT refProduit, qte 
+                FROM lignecommande
+                WHERE idCommande = :commande
+            ";
+            $stmtDetails = $this->cnx->prepare($queryDetails);
+            $stmtDetails->setFetchMode(PDO::FETCH_KEY_PAIR);
+            $stmtDetails->execute([":commande" => $idCommande]);
+            $historique[$idCommande] = [
+                "date" => $date,
+                "produits" => $stmtDetails->fetchAll()
+            ];
+        }
+        return $historique;
     }
 
 
