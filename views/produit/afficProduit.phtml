@@ -6,26 +6,24 @@
 ?>
 <div id="affic_produit">
     <div id="produit" class="mb-5">
-        <img class="mb-3" src="/assets/<?=$produit->GetImagePath()?>">
-        <h1 class="mb-3"><?=$produit->GetLibelle()?></h1>
+        <img class="mb-3" src="/assets/<?=$produit->GetImgPath()?>">
+        <h1 class="mb-3"><?=$produit->GetLibProduit()?></h1>
         <p class="mb-3">Difficulté <?=$produit->GetDifficulte()->GetLibelle()?></p>
-        <div class="mb-3"><?=$produit->GetDescription()?></div>
+        <div class="mb-3"><?=$produit->GetDescProduit()?></div>
 
         <form class="input-group mb-3 add_to_basket" method="post" action="/panier/add">
             <button type="submit" class="btn btn-primary">Ajouter au panier</button>
             <label class="sr-only" for="qte">Quantité</label>
-            <input type="number" name="qte" id="qte" class="form-control" value="0" min="0">
-            <input type="hidden" name="refProduit" value="<?php echo $produit->GetReference() ?>">
+            <input type="number" name="qte" id="qte" class="form-control" value="<?php
+                echo array_key_exists($produit->GetRefProduit(), $this->Panier()->PanierMin())
+                    ? $this->Panier()->PanierMin()[$produit->GetRefProduit()]
+                    : 0;
+            ?>" min="0">
+            <input type="hidden" name="refProduit" value="<?php echo $produit->GetRefProduit() ?>">
         </form>
     </div>
     <h1>Produits fréquemment achetés ensemble</h1>
     <div id="selection">
-        <?php
-        /** @var Produit $produit */
-        foreach($selection as $produit)
-        {
-            include ROOT."/views/produit/ficheProduit.inc";
-        }
-        ?>
+        TODO
     </div>
 </div>

@@ -9,22 +9,11 @@ class produitController extends Controller
     public function draw()
     {
         $refProduit = $this->Request()->get("produit");
-        $produit = null;
-        $selection = array();
-        if($refProduit != false) {
-            $produit = $this->ProduitManager()->GetProduitByRef($refProduit);
-            for($i = 0; $i < 3; $i++)
-            {
-                $selection[] = $this->ProduitManager()->GetRandomProduit();
-            }
-        } else {
-            throw new Exception("Aucun produit spécifiée");
-        }
+        $produit = ProduitManager::GetProduit($refProduit);
 
         self::render(
             "produit/afficProduit.phtml", [
-                "produit" => $produit,
-                "selection" => $selection
+                "produit" => $produit
         ]);
     }
 }

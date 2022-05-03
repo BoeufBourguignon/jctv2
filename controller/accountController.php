@@ -35,7 +35,7 @@ class accountController extends Controller
             $this->redirect("/account");
         }
         $this->render("/account/afficHistorique.phtml", [
-            "historique" => $this->ClientManager()->GetHistorique($this->Request()->user())
+            "historique" => ClientManager::GetHistorique($this->Request()->user())
         ]);
     }
 
@@ -53,16 +53,19 @@ class accountController extends Controller
             $jwt = $this->Request()->post("jwt");
             if($jwt && Encoder::verifyJWT($jwt)) {
                 try {
-                    $inUsername = $this->Request()->post("login") != false ? Utils::nettoyerStr($this->Request()->post("login")) : "";
-                    $inPassword = $this->Request()->post("password") != false ? Utils::nettoyerStr($this->Request()->post("password")) : "";
+                    $inUsername = $this->Request()->post("login");
+                    $inPassword = $this->Request()->post("password");
                     $_SESSION["lastUsername"] = $inUsername;
 
-                    if(strlen($inUsername) && strlen($inPassword)) {
-                        $client = $this->ClientManager()->TryLeClient($inUsername);
+                    if(    $inUsername !== false && strlen($inUsername) > 0
+                        && $inPassword !== false && strlen($inPassword) > 0
+                    ) {
+                        $client = ClientManager::TryLeClient($inUsername);
                         if(    $client !== false
                             && password_verify($inPassword, $client->GetPassword())
                         ) {
-                            $this->ClientManager()->DoConnect($client);
+                            ClientManager::DoConnect($client);
+                            unset($_SESSION["lastUsername"]);
                         } else {
                             $_SESSION["login-error"] = "Le nom d'utilisateur n'existe pas ou le mot de passe est incorrect";
                         }
@@ -95,124 +98,83 @@ class accountController extends Controller
             $this->redirect("/account");
         }
 
-        $this->render(
-            "/account/afficCreateAccount.phtml", [
-                "jwt" => Encoder::createJWT()
-            ]
-        );
-    }
+        $regexPwd = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/";
+        $regexMail = "/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/";
 
-    public static function doCreate()
-    {
-        if (isset($_POST["form-create-account-submitted"]))
-            //On vient du formulaire de création de compte
-        {
-            if (isset($_POST["jwt"]) && Encoder::verifyJWT($_POST["jwt"]))
-            {
-                $regexPwd = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
-                $regexMail = "/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/";
+        if($this->Request()->post("form-create-account-submitted") !== false) {
+            var_dump("oui");
+            $jwt = $this->Request()->post("jwt");
+            if($jwt && Encoder::verifyJWT($jwt)) {
+                $login = $this->Request()->post("cLogin");
+                $password = $this->Request()->post("cPassword");
+                $passwordVerify = $this->Request()->post("cPasswordVerify");
+                $mail = $this->Request()->post("cMail");
+                $_SESSION["triedUsername"] = $login;
+                $_SESSION["triedMail"] = $mail;
 
-                $login          = isset($_POST["cLogin"])          ? Utils::nettoyerStr($_POST["cLogin"])          : "";
-                $password       = isset($_POST["cPassword"])       ? Utils::nettoyerStr($_POST["cPassword"])       : "";
-                $passwordVerify = isset($_POST["cPasswordVerify"]) ? Utils::nettoyerStr($_POST["cPasswordVerify"]) : "";
-                $mail           = isset($_POST["cMail"])           ? Utils::nettoyerStr($_POST["cMail"])           : "";
-
-                $noError = true;
-
-                if (strlen($login) && strlen($password) && strlen($passwordVerify) && strlen($mail))
-                    //Tous les champs ont été remplis
-                {
-                    try
-                    {
+                if(    $login !== false && strlen($login) > 0
+                    && $password !== false && strlen($password) > 0
+                    && $passwordVerify !== false && strlen($passwordVerify) > 0
+                    && $mail !== false && strlen($mail) > 0
+                ) {
+                    try {
                         $loginExists = ClientManager::UserLoginExists($login);
                         $mailExists = ClientManager::UserMailExists($mail);
 
-                        if (!$loginExists && !$mailExists)
-                            //Si le mail et le login n'existent pas
-                        {
-                            if (preg_match($regexPwd, $password))
-                                //Mot de passe au bon format
-                            {
-                                if ($password !== $passwordVerify)
-                                    //Le mot de passe n'est pas vérifié
-                                {
-                                    $_SESSION["error-create"][] = "Les mots de passe ne correspondent pas";
-                                    $noError = false;
+                        if($loginExists) {
+                            $_SESSION["create-error"][] = "Le nom d'utilisateur existe déjà";
+                        } else if ($mailExists) {
+                            $_SESSION["create-error"][] = "Cette adresse email est déjà prise";
+                        } else {
+                            $passwordVerified = false;
+                            $mailVerified = false;
+
+                            if(preg_match($regexPwd, $password)) {
+                                if($passwordVerify !== $password) {
+                                    $_SESSION["create-error"][] = "Les mots de passes ne correspondent pas";
+                                } else if(strlen($password) >= 40) {
+                                    $_SESSION["create-error"][] = "Le mot de passe doit faire moins de 40 caractères";
+                                } else if(strlen($password) < 6) {
+                                    $_SESSION["create-error"][] = "Le mot de passe doit faire 6 caractères ou plus";
+                                } else if (strlen($login) > 20) {
+                                    $_SESSION["create-error"][] = "L'identifiant doit faire moins de 20 caractères";
+                                } else {
+                                    $passwordVerified = true;
                                 }
-                                else if (strlen($password) >= 40) {
-                                    $_SESSION["error-create"][] = "Le mot de passe doit faire moins de 40 caractères";
-                                    $noError = false;
-                                }
-                                else if (strlen($password) < 6) {
-                                    $_SESSION["error-create"][] = "Le mot de passe doit faire 6 caractères ou plus";
-                                    $noError = false;
-                                }
-                                else if (strlen($login) > 20) {
-                                    $_SESSION["error-create"][] = "L'identifiant doit faire moins de 20 caractères";
-                                    $noError = false;
-                                }
+                            } else {
+                                $_SESSION["create-error"][] = "Le mot de passe doit contenir une majuscule, 
+                                une minuscule, un chiffre, un caractère spécial (@,$,!,%,*,?,&) et faire plus 
+                                de 8 caractères";
                             }
-                            else
-                                //Mot de passe pas au bon format
-                            {
-                                $_SESSION["error-create"][] = "Le mot de passe doit contenir une majuscule, une minuscule, un chiffre, un caractère spécial (@,$,!,%,*,?,&) et faire plus de 8 caractères";
-                                $noError = false;
+                            if(preg_match($regexMail, $mail)) {
+                                $mailVerified = true;
+                            } else {
+                                $_SESSION["create-error"][] = "L'adresse mail n'est pas conforme";
                             }
 
-                            if (!preg_match($regexMail, $mail))
-                                //Mail pas au bon format
-                            {
-                                $_SESSION["error-create"][] = "L'adresse mail n'est pas conforme";
-                                $noError = false;
+                            if($passwordVerified && $mailVerified) {
+                                ClientManager::AddLeClient($login, $password, $mail);
+                                unset($_SESSION["triedMail"]);
+                                unset($_SESSION["triedUsername"]);
+                                $_SESSION["create-success"] = true;
+                                $this->redirect("/account");
                             }
                         }
-                        else
-                        {
-                            if($loginExists)
-                                $_SESSION["error-create"][] = "Le nom d'utilisateur existe déjà";
-                            if($mailExists)
-                                $_SESSION["error-create"][] = "L'adresse mail existe déjà";
-                            $noError = false;
-                        }
+                    } catch(Exception $ex) {
+                        $_SESSION["create-error"] = ["Une erreur est survenue, veuillez contacter le webmaster"];
                     }
-                    catch(Exception $e)
-                        //Problème avec la bdd
-                    {
-                        $_SESSION["error-create"] = "Une erreur est intervenue, veuillez contacter le webmaster";
-                        $noError = false;
-                    }
-                }
-                else
-                    //Un champ est vide
-                {
-                    $_SESSION["error-create"][] = "Aucun champ ne doit être vide";
-                    $noError = false;
-                }
-
-                if($noError)
-                    //Si le compte peut être créé
-                {
-                    try
-                    {
-                        ClientManager::AddLeClient($login, $password, $mail);
-
-                        $_SESSION["success-create"] = true;
-                        Utils::redirect("/account/login");
-                    }
-                    catch(Exception $e)
-                    {
-                        $_SESSION["error-create"] = "Une erreur est intervenue, veuillez contacter le webmaster";
-                    }
+                } else {
+                    $_SESSION["create-error"] = ["Tous les champs doivent être remplis"];
                 }
             }
-            else
-            {
-                $_SESSION["error-create-token"] = true;
-            }
-            Utils::redirect("/account/create");
+            $this->redirect("/account/create");
+        } else {
+            $this->render(
+                "/account/afficCreateAccount.phtml", [
+                    "jwt" => Encoder::createJWT()
+                ]
+            );
         }
-        //Si on ne vient pas du formulaire
-        Utils::redirect("/account");
     }
 
     /**
@@ -220,7 +182,7 @@ class accountController extends Controller
      */
     public function logout()
     {
-        $this->ClientManager()->DoLogout();
+        ClientManager::DoLogout();
 
         $this->redirect("/account");
     }

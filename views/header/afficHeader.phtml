@@ -1,7 +1,8 @@
 <?php
-$categs = $this->CategorieManager()->GetLesCategories();
-$user = $this->Request()->user();
-$panier = $this->Panier()->Panier();
+if(!isset($hasNav) || $hasNav == true) {
+    $categs = CategorieManager::GetLesCategories();
+    $user = $this->Request()->user();
+    $panier = $this->Panier()->Panier();
 ?>
 <header id="main_header">
     <div id="header_left">
@@ -27,7 +28,6 @@ $panier = $this->Panier()->Panier();
         ?>
     </div>
     <div id="header_right">
-<!--        <a href="/panier"><i class="fas fa-shopping-cart"></i> --><?php //echo count($this->Panier()->Panier()); ?><!--</a>-->
         <a data-bs-toggle="offcanvas" href="#offcanvasPanier" role="button" aria-controls="offcanvasPanier">
             <i class="fas fa-shopping-cart"></i> <?php echo $this->Panier()->QteTotale(); ?>
         </a>
@@ -49,9 +49,9 @@ $panier = $this->Panier()->Panier();
                 /** @var Produit $produitPanier */
                 $produitPanier = $lignePanier["produit"];
                 $html  = "<div class='panier_produit py-2'>";
-                $html .= "    <img src='/assets/" . $produitPanier->GetImagePath() . "' alt='" . $produitPanier->GetReference() . "'>";
+                $html .= "    <img src='/assets/" . $produitPanier->GetImgPath() . "' alt='" . $produitPanier->GetRefProduit() . "'>";
                 $html .= "    <div class='ms-2'>";
-                $html .= "        <p class='fs-4 mb-1 fw-bold'>" . $produitPanier->GetLibelle() . "</p>";
+                $html .= "        <p class='fs-4 mb-1 fw-bold'>" . $produitPanier->GetLibProduit() . "</p>";
                 $html .= "        <span class='text-muted'>Qte : " . $lignePanier["qte"] . "</span>";
                 $html .= "    </div>";
                 $html .= "</div>";
@@ -62,3 +62,13 @@ $panier = $this->Panier()->Panier();
         ?>
     </div>
 </div>
+<?php
+} else {
+    ?>
+<header id="main_header">
+    <div id="header_left" class="w-100">
+        <a class="justify-content-center w-100" id="header_title" href="/">Jean Casse-Tête</a>
+    </div>
+</header>
+<?php
+}

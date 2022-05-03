@@ -17,15 +17,14 @@ class ClientManager extends BaseManager
         return !($stmt->fetchColumn() == false);
     }
 
-    public function DoConnect(Client $client)
+    public static function DoConnect(Client $client)
     {
         $cid = md5(uniqid());
 
-        $query = "
+        $stmt = self::$cnx->prepare("
             INSERT INTO user_connection (idClient, idConnection) VALUES
             (:cuid, :cid)
-        ";
-        $stmt = $this->cnx->prepare($query);
+        ");
         $stmt->execute([":cuid" => $client->GetId(), ":cid" => $cid]);
 
         //Ajout de la connexion en cookie
@@ -33,18 +32,19 @@ class ClientManager extends BaseManager
         setcookie("cuid", $client->GetId(), time() + 365*24*60*60, "/");
     }
 
-    public function DoLogout()
+    public static function DoLogout()
     {
+        self::getConnection();
+
         $cid = $_COOKIE["cid"] ?? null;
         $cuid = $_COOKIE["cuid"] ?? null;
 
         if($cid != null && $cuid != null) {
-            $query = "
+            $stmt = self::$cnx->prepare("
                 DELETE FROM user_connection
                 WHERE idClient = :cuid
                 AND idConnection = :cid
-            ";
-            $stmt = $this->cnx->prepare($query);
+            ");
             $stmt->execute([":cid" => $cid, ":cuid" => $cuid]);
         }
 
@@ -52,49 +52,46 @@ class ClientManager extends BaseManager
         setcookie("cuid", "", time() - 1800, "/");
     }
 
-    public function TryLeClient(string $login): Client|false
+    public static function TryLeClient(string $login): Client|false
     {
-        $query = "
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
             SELECT idClient, loginClient, passwordClient, mailClient, idRoleClient
             FROM client
             WHERE loginClient = :l
-        ";
-        $stmt = $this->cnx->prepare($query);
+        ");
         $stmt->setFetchMode(PDO::FETCH_CLASS, "Client");
         $stmt->execute([":l" => $login]);
 
         return $stmt->fetch();
     }
 
-    public function GetHistorique(Client $client): array
+    public static function GetHistorique(Client $client): array
     {
+        self::getConnection();
         $historique = array();
-        $queryCommandes = "
+        $stmtCommandes = self::$cnx->prepare("
             SELECT idCommande 
             FROM commande c 
             WHERE idClient = :client
             AND NOT EXISTS (SELECT * FROM v_panier p WHERE p.idCommande = c.idCommande)
-        ";
-        $stmtCommandes = $this->cnx->prepare($queryCommandes);
+        ");
         $stmtCommandes->execute([":client" => $client->GetId()]);
-        $commandes = $stmtCommandes->fetchAll(PDO::FETCH_COLUMN);
-        foreach($commandes as $idCommande) {
-            $queryDateCommande = "
+        while($idCommande = $stmtCommandes->fetch(PDO::FETCH_COLUMN)) {
+            $stmtDateCommande = self::$cnx->prepare("
                 SELECT date
                 FROM suivietatcommande
                 WHERE idCommande = :commande
                 AND idEtatCommande = 2
-            ";
-            $stmtDateCommande = $this->cnx->prepare($queryDateCommande);
+            ");
             $stmtDateCommande->execute([":commande" => $idCommande]);
             $date = $stmtDateCommande->fetchColumn();
-            $queryDetails = "
+            $stmtDetails = self::$cnx->prepare("
                 SELECT p.refProduit, qte, libProduit, prix
                 FROM lignecommande lc
                     JOIN produit p on lc.refProduit = p.refProduit
                 WHERE idCommande = :commande
-            ";
-            $stmtDetails = $this->cnx->prepare($queryDetails);
+            ");
             $stmtDetails->setFetchMode(PDO::FETCH_KEY_PAIR);
             $stmtDetails->execute([":commande" => $idCommande]);
 
@@ -110,16 +107,16 @@ class ClientManager extends BaseManager
 
     public static function AddLeClient(string $login, string $password, string $mail)
     {
-        $cnx = Database::GetConnection();
-        $query = "
-            INSERT INTO client (loginClient, passwordClient, mailClient, idRoleClient) \n
-            VALUES (:l, :p, :m, 2)";
-        $stmt = $cnx->prepare($query);
-        $stmt->bindParam(":l", $login);
-        $password = password_hash($password, PASSWORD_BCRYPT);
-        $stmt->bindParam(":p", $password);
-        $stmt->bindParam(":m", $mail);
-        $stmt->execute();
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            INSERT INTO client (loginClient, passwordClient, mailClient, idRoleClient)
+            VALUES (:l, :p, :m, 1)
+        ");
+        $stmt->execute([
+            ":l" => $login,
+            ":p" => password_hash($password, PASSWORD_BCRYPT),
+            ":m" => $mail
+        ]);
 
         return $stmt->fetch();
     }
@@ -130,14 +127,13 @@ class ClientManager extends BaseManager
      */
     public static function UserLoginExists(string $login):bool
     {
-        $cnx = Database::GetConnection();
-        $query = "
-            SELECT idClient \n
-            FROM client \n
-            WHERE loginClient = :l";
-        $stmt = $cnx->prepare($query);
-        $stmt->bindParam(":l", $login);
-        $stmt->execute();
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            SELECT idClient
+            FROM client
+            WHERE loginClient = :l
+        ");
+        $stmt->execute([":l" => $login]);
 
         return $stmt->rowCount() > 0;
     }
@@ -148,29 +144,27 @@ class ClientManager extends BaseManager
      */
     public static function UserMailExists(string $mail):bool
     {
-        $cnx = Database::GetConnection();
-        $query = "
-            SELECT idClient \n
-            FROM client \n
-            WHERE mailClient = :m";
-        $stmt = $cnx->prepare($query);
-        $stmt->bindParam(":m", $mail);
-        $stmt->execute();
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            SELECT idClient
+            FROM client
+            WHERE mailClient = :m
+        ");
+        $stmt->execute([":m" => $mail]);
 
         return $stmt->rowCount() > 0;
     }
 
     public static function GetUserById(int $id):Client|bool
     {
-        $cnx = Database::GetConnection();
-        $query = "
-            SELECT idClient, loginClient, passwordClient, mailClient, idRoleClient \n
-            FROM client \n
-            WHERE idClient = :id";
-        $stmt = $cnx->prepare($query);
-        $stmt->bindParam(":id", $id);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, "Client");
-        $stmt->execute();
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            SELECT idClient, loginClient, passwordClient, mailClient, idRoleClient
+            FROM client
+            WHERE idClient = :id
+        ");
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Client::class);
+        $stmt->execute([":id" => $id]);
 
         return $stmt->fetch();
     }

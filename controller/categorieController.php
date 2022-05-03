@@ -9,13 +9,10 @@ class categorieController extends Controller
     public function draw()
     {
         $refCateg = $this->Request()->get("categorie");
-        if($refCateg != false) {
-            $produits = $this->ProduitManager()->GetProduitsByCateg($refCateg);
-            $sousCategs = $this->CategorieManager()->GetSousCategories($refCateg);
-            $difficulties = $this->DifficultiesManager()->GetLesDifficultes();
-        } else {
-            throw new Exception("Aucune catégorie spécifiée");
-        }
+
+        $produits = ProduitManager::GetProduitsByCateg($refCateg);
+        $sousCategs = CategorieManager::GetSousCategories($refCateg);
+        $difficulties = DifficultiesManager::GetLesDifficultes();
 
         $this->render(
             "/categorie/afficCategorie.phtml", [

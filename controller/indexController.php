@@ -8,7 +8,7 @@ class indexController extends Controller
      */
     public function draw()
     {
-        $produits = $this->ProduitManager()->GetMostBoughtProduits(5);
+        $produits = ProduitManager::GetMostBoughtProduits(5);
 
         $this->render("/accueil/afficAccueil.phtml", ["produits" => $produits]);
     }
@@ -24,7 +24,7 @@ class indexController extends Controller
             $this->redirect("/");
         }
 
-        $produits = $this->ProduitManager()->GetProduitsBySearch($r);
+        $produits = ProduitManager::SearchProduits($r);
 
         $this->render("/accueil/afficAccueil.phtml", [
             "r" => $r,

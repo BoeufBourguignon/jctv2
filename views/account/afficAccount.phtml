@@ -9,10 +9,17 @@
     <div class="row mb-5">
         <div class="list-group list-group-flush col">
             <a href="/account/historique" class="list-group-item list-group-item-action text-blue">Historique des commandes</a>
-            <a href="/account/logout" class="list-group-item list-group-item-action text-blue">Se déconnecter</a>
+            <a href="/account/logout" class="list-group-item list-group-item-action text-danger">Se déconnecter</a>
         </div>
         <div class="list-group list-group-flush col">
             <a href="/account/infos" class="list-group-item list-group-item-action text-blue">Modifier mes informations</a>
+            <?php
+            if($this->Request()->user()->GetIdRole() == 2) {
+                ?>
+                <a href="/admin" class="list-group-item list-group-item-action text-blue">Administration</a>
+                <?php
+            }
+            ?>
         </div>
     </div>
 </div>

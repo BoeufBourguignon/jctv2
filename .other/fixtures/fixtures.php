@@ -43,6 +43,16 @@ try {
             ]);
         }
     }
+
+    //On met aussi des qteStock et seuilAlerte aléatoires pour chaque produit
+    $reqProduits = $pdo->query("select refProduit from produit");
+    while($produit = $reqProduits->fetch(PDO::FETCH_COLUMN)) {
+        $qteStock = random_int(1,20) * 5;
+        $seuilAlerte = random_int(1,20) * 5;
+        $reqSeuilQte = $pdo->prepare("update produit set qteStock = :qte, seuilAlerte = :seuil where refProduit = :ref");
+        $reqSeuilQte->execute([":qte" => $qteStock, ":seuil" => $seuilAlerte, ":ref" => $produit]);
+    }
+
 } catch(Exception $e) {
     print("ERREUR Ln. " . $e->getLine() . " :" . $e->getMessage());
 }

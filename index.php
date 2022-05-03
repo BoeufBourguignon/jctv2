@@ -12,10 +12,6 @@ const VUES = ROOT . "/views";
 const DEFAULT_CONTROLLER = "index";
 const DEFAULT_ACTION = "draw";
 
-//Load utils
-//require_once(ROOT.'/model/utils/autoload.php');
-//$modal = new ClassModalManager();
-
 require_once(ROOT . "/autoload.php");
 
 $controller = $_GET["controller"] ?? DEFAULT_CONTROLLER;

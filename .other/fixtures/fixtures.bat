@@ -1,1 +1,2 @@
-php C:\wamp64\www\jctv2\.other\fixtures\fixtures.php
+php .\fixtures.php
+exit

@@ -1,33 +1,17 @@
 <div class="content">
-    <form id="form_login" method="post" action="/account/doCreate">
+    <form id="form_login" method="post">
         <input type="text" aria-hidden="true" name="jwt" value="<?= $jwt ?>">
         <h1 class="mb-3">Créer un compte</h1>
         <?php
-        if (isset($_SESSION["error-create-token"]) && $_SESSION["error-create-token"])
+        if(isset($_SESSION["create-error"]))
         {
-            ?>
-            <p class="form-text text-danger"><strong>Une erreur est survenue, veuillez réessayer</strong></p>
-            <?php
-            unset($_SESSION["error-create-token"]);
-        }
-        if(isset($_SESSION["error-create"]))
-        {
-            if(is_array($_SESSION["error-create"]))
-            {
-                foreach($_SESSION["error-create"] as $str)
-                {
-                    ?>
-                    <p class="form-text text-danger" id="unknown-field"><strong><?=$str?></strong></p>
-                    <?php
-                }
-            }
-            else
+            foreach($_SESSION["create-error"] as $str)
             {
                 ?>
-                <p class="form-text text-danger" id="unknown-field"><strong><?=$_SESSION["error-create"]?></strong></p>
+                <p class="form-text text-danger" id="unknown-field"><strong><?php echo $str?></strong></p>
                 <?php
             }
-        unset($_SESSION["error-create"]);
+            unset($_SESSION["create-error"]);
         }
         ?>
         <p class="form-text text-danger" id="unknown-field"><strong></strong></p>
@@ -36,7 +20,8 @@
         </div>
         <div class="row mb-3">
             <label for="cLogin" class="form-label col mt-2">Identifiant</label>
-            <input type="text" class="form-control col" id="cLogin" name="cLogin">
+            <input type="text" class="form-control col" id="cLogin" name="cLogin"
+                   value="<?php if(isset($_SESSION["triedUsername"])) echo $_SESSION["triedUsername"] ?>">
         </div>
         <div class="row mb-3">
             <label for="cPassword" class="form-label col mt-2">Mot de passe</label>
@@ -48,7 +33,8 @@
         </div>
         <div class="row mb-3">
             <label for="cMail" class="form-label col mt-2">Adresse mail</label>
-            <input type="text" class="form-control col" id="cMail" name="cMail">
+            <input type="text" class="form-control col" id="cMail" name="cMail"
+                   value="<?php if(isset($_SESSION["triedMail"])) echo $_SESSION["triedMail"] ?>">
         </div>
         <button name="form-create-account-submitted" type="submit" class="btn btn-jct-orange" id="btn-connect">Créer mon compte</button>
     </form>

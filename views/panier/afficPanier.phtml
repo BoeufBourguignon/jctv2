@@ -1,28 +1,59 @@
 <div id="main_affic" class="flex-column">
     <h1>Mon panier</h1>
     <div class="container">
-    <?php
-    if(count($this->Panier()->Panier()) == 0) {
-        echo "<p>Votre panier est vide</p>";
-    } else {
-        echo "<form method='post' action='/panier/update' id='update_panier'>";
-        foreach($this->Panier()->Panier() as $lignePanier) {
-            /** @var Produit $produit */
-            $produit = $lignePanier["produit"];
-            $html  = "<div class='panier_produit py-3'>";
-            $html .= "    <img src='/assets/" . $produit->GetImagePath() . "' alt='" . $produit->GetReference() . "'>";
-            $html .= "    <div class='ms-4'>";
-            $html .= "        <p class='fs-3 mb-1 fw-bold'>" . $produit->GetLibelle() . "</p>";
-            $html .= "        <label for='qte' class='text-muted'>Qte :</label>";
-            $html .= "        <input min='0' name='panier[" . $produit->GetReference() . "]' id='qte' class='form-control' type='number' value='" . $lignePanier["qte"] . "'>";
-            $html .= "    </div>";
-            $html .= "</div>";
-            echo $html;
+        <?php
+        if (count($this->Panier()->Panier()) == 0) {
+            echo "<p>Votre panier est vide</p>";
+        } else {
+            ?>
+            <form method="post" action="/panier/update" id="update_panier">
+                <table class="table table-striped table-borderless">
+                    <?php
+                    foreach ($this->Panier()->Panier() as $lignePanier) {
+                        /** @var Produit $produit */
+                        $produit = $lignePanier["produit"];
+                        $qte = $lignePanier["qte"];
+                        ?>
+                        <tr>
+                            <td style="width:calc(127px + 1rem);position:relative;">
+                                <a href="/produit/<?php echo $produit->GetRefProduit() ?>">
+                                    <img src="/assets/<?php echo $produit->GetImgPath() ?>"
+                                         alt="<?php echo $produit->GetRefProduit() ?>"
+                                         style="width:127px;position:absolute;top:50%;transform:translateY(-50%);">
+                                </a>
+                            </td>
+                            <td>
+                                <p class="fs-3 mb-1 fw-bold">
+                                    <a href="/produit/<?php echo $produit->GetRefProduit() ?>"
+                                       class="text-decoration-none">
+                                        <?php echo $produit->GetLibProduit() ?></a>
+                                </p>
+                                <div class="row align-items-center mb-1">
+                                    <div class="col-auto">
+                                        <label for="qte" class="text-muted col-form-label">Qte :</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input min="0" name="panier[<?php echo $produit->GetRefProduit() ?>]" id="qte"
+                                               class="form-control" type="number"
+                                               value="<?php echo $qte ?>">
+                                    </div>
+                                </div>
+                                <p class="text-muted">Total produit :&nbsp;
+                                    <span class="text-jct-orange"><?php echo $produit->GetPrix() * $qte ?>&nbsp;€</span>
+                                </p>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </table>
+                <h2 class="text-end">Total&nbsp;:&nbsp;<span class="text-jct-orange text-decoration-underline"><?php
+                        echo $this->Panier()->PrixTotal() ?>&nbsp;€</span></h2>
+                <button type="submit" class="btn btn-warning mt-3">Mettre à jour le panier</button>
+            </form>
+            <?php
         }
-        echo "<button type='submit' class='btn btn-warning mt-3'>Mettre à jour le panier</button>";
-        echo "</form>";
-    }
-    ?>
+        ?>
     </div>
 </div>
 

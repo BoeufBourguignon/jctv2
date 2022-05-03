@@ -2,47 +2,12 @@
 
 abstract class BaseManager
 {
-    protected PDO $cnx;
+    protected static ?PDO $cnx = null;
 
-    private CategorieManager $CategorieManager;
-    private ClientManager $ClientManager;
-    private DifficultiesManager $DifficultiesManager;
-    private ProduitManager $ProduitManager;
-
-    public function __construct()
+    protected static function getConnection()
     {
-        $this->cnx = Database::GetConnection();
-    }
-
-    protected function CategorieManager(): CategorieManager
-    {
-        if(!isset($this->CategorieManager)) {
-            $this->CategorieManager = new CategorieManager();
+        if(self::$cnx == null) {
+            self::$cnx = Database::GetConnection();
         }
-        return $this->CategorieManager;
-    }
-
-    protected function ClientManager(): ClientManager
-    {
-        if(!isset($this->ClientManager)) {
-            $this->ClientManager = new ClientManager();
-        }
-        return $this->ClientManager;
-    }
-
-    protected function DifficultiesManager(): DifficultiesManager
-    {
-        if(!isset($this->DifficultiesManager)) {
-            $this->DifficultiesManager = new DifficultiesManager();
-        }
-        return $this->DifficultiesManager;
-    }
-
-    protected function ProduitManager(): ProduitManager
-    {
-        if(!isset($this->ProduitManager)) {
-            $this->ProduitManager = new ProduitManager();
-        }
-        return $this->ProduitManager;
     }
 }

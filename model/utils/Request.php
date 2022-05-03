@@ -13,11 +13,21 @@ class Request
         //GET
         foreach($_GET as $key => $value) {
             if(($key != 'controller') && ($key != 'action')) {
-                $this->get[$key] = $value;
+                if(!is_array($value)) {
+                    $this->get[$key] = Utils::nettoyerStr($value);
+                } else {
+                    $this->get[$key] = $value;
+                }
             }
         }
         //POST
-        $this->post = $_POST;
+        foreach($_POST as $key => $value) {
+            if(!is_array($value)) {
+                $this->post[$key] = Utils::nettoyerStr($value);
+            } else {
+                $this->post[$key] = $value;
+            }
+        }
 
         //USER
         //Regarde si l'utilisateur peut être connecté (dans la base de données du site)
