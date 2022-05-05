@@ -33,5 +33,5 @@ try {
         throw new Exception("Le controleur " . $controller . " n'existe pas");
     }
 } catch(Exception $e) {
-    var_dump($e);
+    echo "<pre>" . print_r($e, true) . "</pre>";
 }

@@ -7,9 +7,13 @@ class Request
     private array $get = array();
     private array $post = array();
     private ?Client $user;
+    private string $controller;
 
     public function __construct()
     {
+        //CONTROLLER
+        $this->controller = $_GET["controller"] ?? false;
+
         //GET
         foreach($_GET as $key => $value) {
             if(($key != 'controller') && ($key != 'action')) {
@@ -49,7 +53,7 @@ class Request
         if($key == null) {
             return $this->get;
         } else {
-            return $this->get[$key] ?? false;
+            return $this->get[$key] ?? null;
         }
     }
 
@@ -62,7 +66,7 @@ class Request
         if($key == null) {
             return $this->post;
         } else {
-            return $this->post[$key] ?? false;
+            return $this->post[$key] ?? null;
         }
     }
 
@@ -72,5 +76,13 @@ class Request
     public function user(): Client|null
     {
         return $this->user;
+    }
+
+    /**
+     * @return string
+     */
+    public function controller(): string
+    {
+        return $this->controller;
     }
 }

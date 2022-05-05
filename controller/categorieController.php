@@ -10,7 +10,13 @@ class categorieController extends Controller
     {
         $refCateg = $this->Request()->get("categorie");
 
-        $produits = ProduitManager::GetProduitsByCateg($refCateg);
+        //Filtre
+        $triSousCategs = $this->Request()->get("subcateg");
+        $triDifficulte = $this->Request()->get("difficulty");
+        $triOrder = $this->Request()->get("filters_tri_order");
+        $triWay = $this->Request()->get("filters_tri_way");
+
+        $produits = ProduitManager::GetProduitsByCateg($refCateg, $triSousCategs, $triDifficulte, $triOrder, $triWay);
         $sousCategs = CategorieManager::GetSousCategories($refCateg);
         $difficulties = DifficultiesManager::GetLesDifficultes();
 
@@ -18,7 +24,11 @@ class categorieController extends Controller
             "/categorie/afficCategorie.phtml", [
                 "produits" => $produits,
                 "sousCategs" => $sousCategs,
-                "difficulties" => $difficulties
+                "difficulties" => $difficulties,
+                "triOrder" => $triOrder,
+                "triWay" => $triWay,
+                "triDifficulte" => $triDifficulte,
+                "triSousCategs" => $triSousCategs
         ]);
     }
 }

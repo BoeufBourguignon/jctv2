@@ -24,8 +24,5 @@ echo "<div id='main_wrapper'>";
 require_once(VUES . "/" . $view);
 echo "</div>";
 ?>
-<!--MY JS-->
-<script src="/assets/custom/js/tri.js"></script>
-<script src="/assets/custom/js/mainJS.js"></script>
 </body>
 </html>

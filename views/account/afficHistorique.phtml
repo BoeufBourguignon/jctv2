@@ -7,38 +7,53 @@
 ?>
 <div class="m-4 w-100">
     <h1 class="mb-4">Historique de commandes</h1>
-    <div class="accordion" id="historique">
+    <?php
+    if (empty($historique)) {
+        ?>
+        <p>Vous n'avez jamais commandé de produits sur ce site</p>
         <?php
-        foreach($historique as $i => $details) {
-            ?>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="commande<?php echo $i ?>">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#produits<?php echo $i ?>" aria-expanded="false"
-                            aria-controls="produits<?php echo $i ?>">
-                        Le&nbsp;<span class="fw-bold"><?php echo date("d/m/Y", strtotime($details["date"])) ?></span>
-                    </button>
-                </h2>
-                <div id="produits<?php echo $i ?>" class="accordion-collapse collapse"
-                     aria-labelledby="commande<?php echo $i ?>"
-                     data-bs-parent="#historique">
-                    <div class="accordion-body">
-                        <?php
-                        foreach($details["produits"] as $produit) {
-                            ?>
-                                <div class="row border-bottom">
-                                    <p class="fw-bold col-6 my-2"><?php echo $produit["libProduit"] ?>&nbsp;<a class="fs-low fw-light text-blue text-decoration-none" href="/produit/<?php echo $produit["refProduit"] ?>">...voir plus</a></p>
-                                    <p class="col-3 fs-6 my-2">Qté :&nbsp;<?php echo $produit["qte"] ?></p>
-                                    <p class="col-3 my-2 text-jct-orange fw-bold"><?php echo $produit["prix"] ?>&nbsp;€</p>
-                                </div>
+    } else {
+        ?>
+        <div class="accordion" id="historique">
+            <?php
+            foreach ($historique as $i => $details) {
+                ?>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="commande<?php echo $i ?>">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#produits<?php echo $i ?>" aria-expanded="false"
+                                aria-controls="produits<?php echo $i ?>">
+                            Le&nbsp;<span
+                                    class="fw-bold"><?php echo date("d/m/Y", strtotime($details["date"])) ?></span>
+                        </button>
+                    </h2>
+                    <div id="produits<?php echo $i ?>" class="accordion-collapse collapse"
+                         aria-labelledby="commande<?php echo $i ?>"
+                         data-bs-parent="#historique">
+                        <div class="accordion-body">
                             <?php
-                        }
-                        ?>
+                            foreach ($details["produits"] as $produit) {
+                                ?>
+                                <div class="row border-bottom">
+                                    <p class="fw-bold col-6 my-2"><?php echo $produit["libProduit"] ?>&nbsp;<a
+                                                class="fs-low fw-light text-blue text-decoration-none"
+                                                href="/produit/<?php echo $produit["refProduit"] ?>">...voir plus</a>
+                                    </p>
+                                    <p class="col-3 fs-6 my-2">Qté :&nbsp;<?php echo $produit["qte"] ?></p>
+                                    <p class="col-3 my-2 text-jct-orange fw-bold"><?php echo $produit["prix"] ?>
+                                        &nbsp;€</p>
+                                </div>
+                                <?php
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <?php
-        }
-        ?>
-    </div>
+                <?php
+            }
+            ?>
+        </div>
+        <?php
+    }
+    ?>
 </div>

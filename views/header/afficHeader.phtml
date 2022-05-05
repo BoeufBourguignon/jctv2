@@ -1,74 +1,96 @@
 <?php
-if(!isset($hasNav) || $hasNav == true) {
+if (!isset($hasNav) || $hasNav == true) {
     $categs = CategorieManager::GetLesCategories();
     $user = $this->Request()->user();
     $panier = $this->Panier()->Panier();
-?>
-<header id="main_header">
-    <div id="header_left">
-        <a id="header_title" href="/">
-            Jean Casse-Tête
-        </a>
-        <?php
-        $html = "";
-        /**
-         * @var $categ Categorie
-         */
-        foreach($categs as $categ) {
-            $html .=
-                "<a id=\"".$categ->GetRef()."\" class=\"header_item";
-            if (isset($_GET["categorie"]) && !empty($_GET["categorie"]) && $_GET["categorie"] == $categ->GetRef())
-                $html .= " active";
-            $html .=
-                "\" href=\"/categorie/".$categ->GetRef()."\">\n".
-                $categ->GetLibelle().
-                "</a>\n";
-        }
-        echo $html;
-        ?>
-    </div>
-    <div id="header_right">
-        <a data-bs-toggle="offcanvas" href="#offcanvasPanier" role="button" aria-controls="offcanvasPanier">
-            <i class="fas fa-shopping-cart"></i> <?php echo $this->Panier()->QteTotale(); ?>
-        </a>
-        <a href="/account"><i class="fas fa-user"></i><span id="accountMsg"><?php echo $user ? $user->GetLogin() : "Connectez-vous" ?></span></a>
-    </div>
-</header>
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPanier" aria-labelledby="offcanvasPanierLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasPanierLabel">Panier</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <?php
-        if(count($panier) == 0) {
-            echo "<div>Le panier est vide</div>";
-        } else {
-            foreach($panier as $lignePanier) {
-                /** @var Produit $produitPanier */
-                $produitPanier = $lignePanier["produit"];
-                $html  = "<div class='panier_produit py-2'>";
-                $html .= "    <img src='/assets/" . $produitPanier->GetImgPath() . "' alt='" . $produitPanier->GetRefProduit() . "'>";
-                $html .= "    <div class='ms-2'>";
-                $html .= "        <p class='fs-4 mb-1 fw-bold'>" . $produitPanier->GetLibProduit() . "</p>";
-                $html .= "        <span class='text-muted'>Qte : " . $lignePanier["qte"] . "</span>";
-                $html .= "    </div>";
-                $html .= "</div>";
-                echo $html;
+    ?>
+    <!--Main header-->
+    <header id="main_header">
+        <div id="header_left">
+            <a id="header_title" href="/">
+                Jean Casse-Tête
+            </a>
+            <?php
+            $html = "";
+            /**
+             * @var $categ Categorie
+             */
+            foreach ($categs as $categ) {
+                $html .=
+                    "<a id=\"" . $categ->GetRef() . "\" class=\"header_item";
+                if (isset($_GET["categorie"]) && !empty($_GET["categorie"]) && $_GET["categorie"] == $categ->GetRef())
+                    $html .= " active";
+                $html .=
+                    "\" href=\"/categorie/" . $categ->GetRef() . "\">\n" .
+                    $categ->GetLibelle() .
+                    "</a>\n";
             }
-            echo "<a class='btn btn-warning py-1 px-2 mt-2' href='/panier'>Accèder au panier</a>";
-        }
-        ?>
+            echo $html;
+            ?>
+        </div>
+        <div id="header_right">
+            <a data-bs-toggle="offcanvas" href="#offcanvasPanier" role="button" aria-controls="offcanvasPanier">
+                <i class="fas fa-shopping-cart"></i> <?php echo $this->Panier()->QteTotale(); ?>
+            </a>
+            <a href="/account"><i class="fas fa-user"></i><span
+                        id="accountMsg"><?php echo $user ? $user->GetLogin() : "Connectez-vous" ?></span>
+            </a>
+        </div>
+    </header>
+
+    <div class="offcanvas offcanvas-end" id="offcanvasPanier" tabindex="-1" aria-labelledby="offcanvasPanierLabel">
+        <div class="offcanvas-header">
+            <h1 class="offcanvas-title" id="offcanvasPanierLabel">Panier</h1>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <?php
+            if (count($panier) == 0) {
+                echo "<div>Le panier est vide</div>";
+            } else {
+                ?>
+                <table class="table table-striped table-borderless">
+                    <?php
+                    foreach ($panier as $lignePanier) {
+                        $produit = $lignePanier["produit"];
+                        $qte = $lignePanier["qte"];
+                        ?>
+                        <tr>
+                            <td class="row_panier_image">
+                                <img src="/assets/<?php echo $produit->GetImgPath() ?>"
+                                     alt="<?php echo $produit->GetRefProduit() ?>">
+                            </td>
+                            <td>
+                                <p class="fs-4 mb-1 fw-bold"><?php echo $produit->GetLibProduit() ?></p>
+                                <p class="text-muted">Qté : <?php echo $qte ?>
+                                    -
+                                    <span class="text-jct-orange"><?php echo $produit->GetPrix() * $qte ?> €</span>
+                                </p>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </table>
+                <div class="m-2">
+                    <p class="text-end text-muted fs-5 mb-2">Total : <span class="text-jct-orange"><?php echo $this->Panier()->PrixTotal() ?> €</span></p>
+                    <div class="text-center px-4">
+                        <a class="btn btn-warning w-100 py-1 px-2" href="/panier">Accèder au panier</a>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
     </div>
-</div>
-<?php
+    <?php
 } else {
     ?>
-<header id="main_header">
-    <div id="header_left" class="w-100">
-        <a class="justify-content-center w-100" id="header_title" href="/">Jean Casse-Tête</a>
-    </div>
-</header>
-<?php
+    <!--Simple header (no nav)-->
+    <header id="main_header">
+        <div id="header_left" class="w-100">
+            <a class="justify-content-center w-100" id="header_title" href="/">Jean Casse-Tête</a>
+        </div>
+    </header>
+    <?php
 }

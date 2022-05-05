@@ -178,15 +178,32 @@ class ProduitManager extends BaseManager
      * @param string $refCateg
      * @return Produit[]
      */
-    public static function GetProduitsByCateg(string $refCateg): array
+    public static function GetProduitsByCateg(
+        string $refCateg,
+        array $triSousCategs = null,
+        array $triDifficulte = null,
+        ?string $triOrder = "refProduit",
+        ?string $triWay = "ASC"
+    ): array
     {
         self::getConnection();
+        $triOrder = $triOrder == null ? $triOrder : "refProduit";
+        $triWay = $triWay == null ? $triWay : "ASC";
         $query = "
             SELECT refProduit, refCateg, refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, 
                    seuilAlerte, qteStock
             FROM v_produits
             WHERE refCateg = :categ
         ";
+        if($triSousCategs != null) {
+            $query .= "AND refSousCateg IN ('" . implode("', '", $triSousCategs) . "')\n";
+        }
+        if($triDifficulte != null) {
+            $query .= "AND idDifficulte IN ('" . implode("', '", $triDifficulte) . "')\n";
+        }
+        if(in_array($triWay, ["ASC", "DESC"]) && in_array($triOrder, ["refProduit", "prix", "idDifficulte"])) {
+            $query .= "ORDER BY " . $triOrder . " " . $triWay;
+        }
         $stmt = self::$cnx->prepare($query);
         $stmt->setFetchMode(PDO::FETCH_CLASS, Produit::class);
         $stmt->execute([":categ" => $refCateg]);
@@ -235,8 +252,20 @@ class ProduitManager extends BaseManager
         return $stmt->fetchAll();
     }
 
-    public static function GetAllProduits()
+    /**
+     * @return Produit[]
+     */
+    public static function GetAllProduits(): array
     {
-        //TODO
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            SELECT refProduit, refCateg, refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte,
+                   seuilAlerte, qteStock
+            FROM v_produits
+        ");
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Produit::class);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

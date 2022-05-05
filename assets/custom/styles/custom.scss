@@ -11,7 +11,8 @@ $hoverNavItemBorder: #515559;
 
 $theme-colors: map-merge($theme-colors, (
         "jct-orange": $myOrange,
-        "blue": #3399FF
+        "blue": #3399FF,
+        "grey": #D2D2D2
 ));
 
 $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");

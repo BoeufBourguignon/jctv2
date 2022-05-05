@@ -5,30 +5,34 @@
  */
 ?>
 <div id="filters_panel">
-    <div id="filters_header">
-        <h2>Filtres</h2>
-    </div>
-    <div id="filters_content">
-        <div class="accordion" id="filters_accordion">
-            <?php
-            include(ROOT . "/views/categorie/accordionTri.inc");
-            if (count($sousCategs)) {
-                include($_SERVER["DOCUMENT_ROOT"] . "/views/categorie/accordionCateg.inc");
-            }
-            include(ROOT . "/views/categorie/accordionDifficulte.inc");
-            ?>
+    <form method="get">
+        <div id="filters_header">
+            <h2>Filtres</h2>
         </div>
-    </div>
-    <div id="filters_button">
-        <button class="btn btn-jct-orange">Filtrer</button>
-    </div>
+        <div id="filters_content">
+            <div class="accordion" id="filters_accordion">
+                <?php
+                include(ROOT . "/views/categorie/accordionTri.inc");
+                if (count($sousCategs)) {
+                    include($_SERVER["DOCUMENT_ROOT"] . "/views/categorie/accordionCateg.inc");
+                }
+                include(ROOT . "/views/categorie/accordionDifficulte.inc");
+                ?>
+            </div>
+        </div>
+        <div id="filters_button">
+            <button type="submit" class="btn btn-jct-orange">Filtrer</button>
+            <a href="/categorie/<?php echo $this->Request()->get("categorie") ?>"
+               class="btn btn-grey mt-2">Effacer les filtres</a>
+        </div>
+    </form>
 </div>
 
-<div id="main_affic">
-<?php
-foreach($produits as $produit)
-{
-    include ROOT . "/views/produit/ficheProduit.inc";
-}
-?>
+<div class="liste_produits m-4">
+    <?php
+    foreach($produits as $produit)
+    {
+        include ROOT . "/views/produit/ficheProduit.inc";
+    }
+    ?>
 </div>

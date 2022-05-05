@@ -1,3 +1,10 @@
+$(function() {
+    $("#filters_button>button.btn").on("click", function() {
+
+    });
+});
+
+
 function loadEventsTri() {
     $("#filters_button>.btn").on("click", function () {
         let categ = window.location.href.substring(window.location.href.lastIndexOf('/') + 1),
@@ -6,12 +13,15 @@ function loadEventsTri() {
             order = $("select[name=filters_tri_order]"),
             way = $("input[name=filters_tri_way]:checked"),
             subcategsArray = subcategs.get().map(function (item) {
-                return Number(item.value);
+                if(typeof(item.value) === "number") {
+                    return Number(item.value);
+                }
             }),
             difficultiesArray = difficulties.get().map(function (item) {
-                return Number(item.value);
+                if(typeof(item.value) === "number") {
+                    return Number(item.value);
+                }
             });
-        console.log(categ);
 
         $.post(
             "/model/ajax/doTri.php",

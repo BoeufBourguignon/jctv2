@@ -1,25 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather&family=Merriweather+Sans:wght@300&display=swap');
 @import "custom";
 
+//GLOBAL
 html, body {
-  height:100%;
+  height: 100%;
 }
 body {
   display: flex;
   flex-direction: column;
 }
-
 h1 {
   font-family: 'Merriweather', serif;
 }
 p {
   font-family: 'Merriweather Sans', sans-serif;
 }
-
-.hi, [aria-hidden="true"] {
-  display: none;
-}
-
 .fs-low {
   font-size: .75rem;
 }
@@ -31,6 +26,9 @@ header#main_header {
   color: $secondary;
   display:flex;
   justify-content: space-between;
+  position: relative;
+  top: 0; left: 0;
+  width: 100%;
 
   h1,p {
     margin:0;
@@ -67,10 +65,11 @@ header#main_header {
   }
   #header_right {
     display: flex;
-    align-content: center;
+    align-items: center;
+    min-width: 175px;
 
     a {
-      padding: 16px 16px 0;
+      padding: 0 16px;
     }
     #accountMsg {
       padding-left: 8px;
@@ -78,36 +77,25 @@ header#main_header {
   }
 }
 
+//PANIER
 #offcanvasPanier {
-  .panier_produit {
-    height: 100px;
-    display: flex;
-    border-top: solid 1px whitesmoke;
+  .row_panier_image {
+    position: relative;
+    width: calc(100px + 1rem);
     img {
-      height: 100%;
-    }
-  }
-}
-#update_panier {
-  #panier {
-
-  }
-
-  .panier_produit {
-    height:160px;
-    display: flex;
-    border-top: solid 1px whitesmoke;
-    img {
-      height: 100%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: calc(116px - 1rem);
+      height: calc(96px - 1rem);
+      object-fit: contain;
     }
   }
 }
 
+//MAIN WRAPPER
 div#main_wrapper {
-  flex: 1;
-  display:flex;
-  color: $primaryLight;
-
+  display: flex;
   //ACCUEIL
   div#accueil {
     width: 100%;
@@ -117,7 +105,44 @@ div#main_wrapper {
     }
   }
 
-  //FILTRES
+  //LISTE PRODUITS
+  div.liste_produits {
+    display: flex;
+    align-content: start;
+    flex-wrap: wrap;
+    width: 100%;
+    //FICHE PRODUIT
+    .fiche_produit {
+      margin: 8px;
+      cursor: pointer;
+      display:flex;
+      align-items: center;
+      text-decoration: none;
+
+      img {
+        padding-top: 8px;
+        max-height: 200px;
+        max-width: 200px;
+      }
+      .difficulte {
+        font-size: 1rem;
+        font-family: "Merriweather Sans", sans-serif;
+      }
+      h5.card-title {
+        text-align: center;
+      }
+      .prix_produit {
+        color: $myOrange;
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+    }
+    .fiche_produit:hover {
+      background-color: $secondary;
+    }
+  }
+
+  //FILTRES CATEGORIE
   #filters_panel {
     background-color: $secondary;
     min-width: 200px;
@@ -149,80 +174,236 @@ div#main_wrapper {
     }
   }
 
-  //MAIN_AFFIC
+  //MAIN AFFIC
   div#main_affic {
-    padding: 32px 64px;
     width: 100%;
-    display: flex;
-    align-content: start;
-    flex-wrap: wrap;
-  }
-
-  //AFFICHAGE FICHE PRODUIT
-  #affic_produit {
-    padding: 32px 64px;
-    width: 100%;
-
-    #produit {
-      padding:16px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: $secondary;
-      border-radius: 5px;
-      max-width: 60%;
-
-      img {
-        max-width: 200px;
-        max-height: 200px;
-      }
-
-      .add_to_basket {
-        justify-content: center;
-        input.form-control {
-          width:80px;
-          flex:none;
-        }
-      }
-    }
-    #selection {
-      display: flex;
-    }
-  }
-
-  //FICHE PRODUIT
-  .fiche_produit {
-    margin: 8px;
-    cursor: pointer;
-    display:flex;
-    align-items: center;
-    text-decoration: none;
-
-    img {
-      padding-top: 8px;
-      max-height: 200px;
-      max-width: 200px;
-    }
-    .difficulte {
-      font-size: 1rem;
-      font-family: "Merriweather Sans", sans-serif;
-    }
-    h5.card-title {
-      text-align: center;
-    }
-    .prix_produit {
-      color: $myOrange;
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-  }
-  .fiche_produit:hover {
-    background-color: $secondary;
-  }
-
-  .content {
-    width: 60%;
-    margin: 128px auto 0;
+    margin: 1.5rem;
   }
 }
+
+
+//html, body {
+//  height:100%;
+//}
+//body {
+//  display: flex;
+//  flex-direction: column;
+//}
+//
+//h1 {
+//  font-family: 'Merriweather', serif;
+//}
+//p {
+//  font-family: 'Merriweather Sans', sans-serif;
+//}
+//
+//.hi, [aria-hidden="true"] {
+//  display: none;
+//}
+//
+//.fs-low {
+//  font-size: .75rem;
+//}
+//
+////HEADER
+//header#main_header {
+//  padding:0 8px;
+//  background-color: $primary;
+//  color: $secondary;
+//  display:flex;
+//  justify-content: space-between;
+//
+//  h1,p {
+//    margin:0;
+//  }
+//  a {
+//    color: $secondary;
+//    text-decoration: none;
+//  }
+//  #header_left {
+//    display:flex;
+//
+//    .header_item.active {
+//      border-color: $myOrange;
+//    }
+//    #header_title,
+//    .header_item {
+//      display: flex;
+//      align-items: center;
+//      padding: 12px 20px;
+//      cursor: pointer;
+//    }
+//    #header_title:hover,
+//    .header_item:hover {
+//      background-color: $hoverNavItem;
+//      border-color: $hoverNavItemBorder;
+//    }
+//    #header_title {
+//      font-size: 1.8rem;
+//    }
+//    .header_item {
+//      border-top:solid 3px $primary;
+//      font-size: 1.2rem;
+//    }
+//  }
+//  #header_right {
+//    display: flex;
+//    align-content: center;
+//
+//    a {
+//      padding: 16px 16px 0;
+//    }
+//    #accountMsg {
+//      padding-left: 8px;
+//    }
+//  }
+//}
+//
+//#offcanvasPanier {
+//  .panier_produit {
+//    height: 100px;
+//    display: flex;
+//    border-top: solid 1px whitesmoke;
+//    img {
+//      height: 100%;
+//    }
+//  }
+//}
+//#update_panier {
+//  #panier {
+//
+//  }
+//
+//  .panier_produit {
+//    height:160px;
+//    display: flex;
+//    border-top: solid 1px whitesmoke;
+//    img {
+//      height: 100%;
+//    }
+//  }
+//}
+//
+//div#main_wrapper {
+//  flex: 1;
+//  display:flex;
+//  color: $primaryLight;
+//
+//  //ACCUEIL
+//  div#accueil {
+//    width: 100%;
+//    div#search_accueil {
+//      text-align: center;
+//      background-color: whitesmoke;
+//    }
+//  }
+//
+//  //FILTRES
+//  #filters_panel {
+//    background-color: $secondary;
+//    min-width: 200px;
+//    #filters_header {
+//      padding:12px 0;
+//      text-align: center;
+//      border-bottom: solid 2px;
+//      h2 {
+//        margin: 0;
+//        font-size: 1.2rem;
+//      }
+//    }
+//    #filters_content {
+//      #filters_accordion {
+//        .filters_select_all {
+//          font-size:.8rem;
+//          color: #2873e2;
+//          cursor: pointer;
+//          margin: 8px 0 0 0;
+//        }
+//        .filters_select_all:hover {
+//          text-decoration: underline;
+//        }
+//      }
+//    }
+//    #filters_button {
+//      padding: 16px 0;
+//      text-align: center;
+//    }
+//  }
+//
+//  //MAIN_AFFIC
+//  div#main_affic {
+//    padding: 32px 64px;
+//    width: 100%;
+//    display: flex;
+//    align-content: start;
+//    flex-wrap: wrap;
+//  }
+//
+//  //AFFICHAGE FICHE PRODUIT
+//  #affic_produit {
+//    padding: 32px 64px;
+//    width: 100%;
+//
+//    #produit {
+//      padding:16px;
+//      margin: 0 auto;
+//      display: flex;
+//      flex-direction: column;
+//      align-items: center;
+//      background-color: $secondary;
+//      border-radius: 5px;
+//      max-width: 60%;
+//
+//      img {
+//        max-width: 200px;
+//        max-height: 200px;
+//      }
+//
+//      .add_to_basket {
+//        justify-content: center;
+//        input.form-control {
+//          width:80px;
+//          flex:none;
+//        }
+//      }
+//    }
+//    #selection {
+//      display: flex;
+//    }
+//  }
+//
+//  //FICHE PRODUIT
+//  .fiche_produit {
+//    margin: 8px;
+//    cursor: pointer;
+//    display:flex;
+//    align-items: center;
+//    text-decoration: none;
+//
+//    img {
+//      padding-top: 8px;
+//      max-height: 200px;
+//      max-width: 200px;
+//    }
+//    .difficulte {
+//      font-size: 1rem;
+//      font-family: "Merriweather Sans", sans-serif;
+//    }
+//    h5.card-title {
+//      text-align: center;
+//    }
+//    .prix_produit {
+//      color: $myOrange;
+//      font-size: 1.4rem;
+//      font-weight: bold;
+//    }
+//  }
+//  .fiche_produit:hover {
+//    background-color: $secondary;
+//  }
+//
+//  .content {
+//    width: 60%;
+//    margin: 128px auto 0;
+//  }
+//}

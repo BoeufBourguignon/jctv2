@@ -49,7 +49,7 @@ class accountController extends Controller
             $this->redirect("/account");
         }
 
-        if($this->Request()->post("form-login-submitted") !== false) {
+        if($this->Request()->post("form-login-submitted") !== null) {
             $jwt = $this->Request()->post("jwt");
             if($jwt && Encoder::verifyJWT($jwt)) {
                 try {
@@ -57,8 +57,8 @@ class accountController extends Controller
                     $inPassword = $this->Request()->post("password");
                     $_SESSION["lastUsername"] = $inUsername;
 
-                    if(    $inUsername !== false && strlen($inUsername) > 0
-                        && $inPassword !== false && strlen($inPassword) > 0
+                    if(    $inUsername !== null && strlen($inUsername) > 0
+                        && $inPassword !== null && strlen($inPassword) > 0
                     ) {
                         $client = ClientManager::TryLeClient($inUsername);
                         if(    $client !== false
@@ -101,7 +101,7 @@ class accountController extends Controller
         $regexPwd = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/";
         $regexMail = "/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/";
 
-        if($this->Request()->post("form-create-account-submitted") !== false) {
+        if($this->Request()->post("form-create-account-submitted") !== null) {
             var_dump("oui");
             $jwt = $this->Request()->post("jwt");
             if($jwt && Encoder::verifyJWT($jwt)) {
@@ -112,10 +112,10 @@ class accountController extends Controller
                 $_SESSION["triedUsername"] = $login;
                 $_SESSION["triedMail"] = $mail;
 
-                if(    $login !== false && strlen($login) > 0
-                    && $password !== false && strlen($password) > 0
-                    && $passwordVerify !== false && strlen($passwordVerify) > 0
-                    && $mail !== false && strlen($mail) > 0
+                if(    $login !== null && strlen($login) > 0
+                    && $password !== null && strlen($password) > 0
+                    && $passwordVerify !== null && strlen($passwordVerify) > 0
+                    && $mail !== null && strlen($mail) > 0
                 ) {
                     try {
                         $loginExists = ClientManager::UserLoginExists($login);

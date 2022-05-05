@@ -1,1 +1,23 @@
 <?php
+/**
+ * @var Produit[] $produits
+ */
+?>
+<div class="text-center">
+    <div class="m-4 row">
+        <div class="col-auto">
+            <label for="select_produits" class="col-form-label">Produit :</label>
+        </div>
+        <div class="col-auto">
+            <select id="select_produits" name="produits" class="form-select">
+                <?php
+                foreach($produits as $produit) {
+                    ?>
+                    <option value="<?php echo $produit->GetRefProduit() ?>"><?php echo $produit->GetLibProduit() ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+</div>
