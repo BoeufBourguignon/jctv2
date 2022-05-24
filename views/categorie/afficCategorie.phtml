@@ -21,9 +21,13 @@
             </div>
         </div>
         <div id="filters_button">
-            <button type="submit" class="btn btn-jct-orange">Filtrer</button>
-            <a href="/categorie/<?php echo $this->Request()->get("categorie") ?>"
-               class="btn btn-grey mt-2">Effacer les filtres</a>
+            <div>
+                <button type="submit" class="btn btn-jct-orange">Filtrer</button>
+            </div>
+            <div class="mt-2">
+                <a href="/categorie/<?php echo $this->Request()->get("categorie") ?>"
+                   class="btn btn-grey">Effacer les filtres</a>
+            </div>
         </div>
     </form>
 </div>

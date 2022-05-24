@@ -3,18 +3,18 @@
  * @var $jwt
  */
 ?>
-<div class="content">
+<div id="center_block">
     <form id="form_login" method="post" action="/account/login">
         <input type="hidden" name="jwt" value="<?= $jwt ?>">
         <h1 class="mb-3">Se connecter</h1>
-        <p class="form-text text-danger" id="unknown-field" aria-hidden="true"><strong>Identifiant ou mot de passe inconnu</strong></p>
         <?php
-        if (isset($_SESSION["success-create"]) && $_SESSION["success-create"])
+        //Messages de succès/d'erreur
+        if (isset($_SESSION["create-success"]) && $_SESSION["create-success"])
         {
                 ?>
                 <p class="form-text text-success"><strong>Votre compte a été correctement créé !</strong></p>
                 <?php
-            unset($_SESSION["success-create"]);
+            unset($_SESSION["create-success"]);
         }
         if (isset($_SESSION["login-error"]) && !empty($_SESSION["login-error"]))
         {
@@ -25,12 +25,17 @@
         }
         ?>
         <div class="row mb-3">
-            <label for="login" class="form-label col mt-2">Identifiant</label>
-            <input type="text" class="form-control col" id="login" name="login" value="<?php if(isset($_SESSION["lastUsername"])) echo $_SESSION["lastUsername"] ?>">
+            <label for="login" class="col-form-label col-lg-2">Identifiant</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="login" name="login"
+                       value="<?php if(isset($_SESSION["lastUsername"])) echo $_SESSION["lastUsername"] ?>">
+            </div>
         </div>
         <div class="row mb-3">
-            <label for="password" class="form-label col mt-2">Mot de passe</label>
-            <input type="password" class="form-control col" id="password" name="password">
+            <label for="password" class="col-form-label col-lg-2">Mot de passe</label>
+            <div class="col-lg-10">
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
         </div>
         <div class="mb-3">
             <a href="/account/create" class="form-text">Pas de compte ? Créez-en un</a>

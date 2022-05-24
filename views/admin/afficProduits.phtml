@@ -1,23 +1,122 @@
 <?php
 /**
  * @var Produit[] $produits
+ * @var Categorie[] $categories
+ * @var Difficulty[] $difficultes
  */
 ?>
-<div class="text-center">
-    <div class="m-4 row">
-        <div class="col-auto">
-            <label for="select_produits" class="col-form-label">Produit :</label>
+<div class="w-100 m-4">
+    <div class="list-group list-group-flush">
+        <a href="/admin" class="list-group-item list-group-item-action text-center border rounded mb-2"><< Retour</a>
+    </div>
+    <ul class="nav nav-tabs" id="admin_produits" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="modifier-tab" data-bs-toggle="tab" data-bs-target="#modifier" type="button" role="tab" aria-controls="modifier" aria-selected="true">Modifier</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ajouter-tab" data-bs-toggle="tab" data-bs-target="#ajouter" type="button" role="tab" aria-controls="ajouter" aria-selected="false">Ajouter</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="admin_produits_content">
+        <div class="tab-pane fade show active" id="modifier" role="tabpanel" aria-labelledby="modifier-tab">
+
+            <div class="container-fluid my-3">
+                <div class="row mb-3 w-50 mx-auto">
+                    <select id="admin_edit_select_produits" name="produits" class="form-select text-center">
+                        <?php
+                        foreach($produits as $produit) {
+                            ?>
+                            <option value="<?php echo $produit->GetRefProduit() ?>"><?php echo $produit->GetLibProduit() ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="border rounded w-25 mx-auto p-3">
+
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_ref_produit" class="col-lg-5 col-form-label">Ref</label>
+                        <div class="col-lg-7">
+                            <input id="admin_edit_ref_produit" type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_libelle_produit" class="col-lg-5 col-form-label">Libellé</label>
+                        <div class="col-lg-7">
+                            <input id="admin_edit_libelle_produit" type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_categ_produit" class="col-lg-5 col-form-label">Catégorie</label>
+                        <div class="col-lg-7">
+                            <select id="admin_edit_categ_produit" class="form-select form-select-sm">
+                                <option value="null">Aucun</option>
+                                <?php
+                                foreach($categories as $categorie) {
+                                    ?>
+                                    <option value="<?php echo $categorie->GetRef() ?>">
+                                        <?php echo $categorie->GetLibelle() ?>
+                                    </option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_categ_produit" class="col-lg-5 col-form-label">Sous-catégorie</label>
+                        <div class="col-lg-7">
+                            <select id="admin_edit_categ_produit" class="form-select form-select-sm" disabled>
+                                <option value="null">Aucune</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_desc_produit" class="col-lg-5 col-form-label">Description</label>
+                        <div class="col-lg-7">
+                            <textarea id="admin_edit_desc_produit" class="form-control form-control-sm"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_prix_produit" class="col-lg-5 col-form-label">Prix</label>
+                        <div class="col-lg-7 d-flex align-items-center">
+                            <input type="number" min="0" id="admin_edit_prix_produit" class="form-control form-control-sm me-1">
+                            €
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_difficulte_produit" class="col-lg-5 col-form-label">Difficulté</label>
+                        <div class="col-lg-7 d-flex align-items-center">
+                            <select id="admin_edit_difficulte_produit" name="difficulte" class="form-select form-select-sm">
+                                <?php
+                                foreach($difficultes as $difficulte) {
+                                    ?>
+                                    <option value="<?php echo $difficulte->GetId() ?>">
+                                        <?php echo $difficulte->GetLibelle() ?>
+                                    </option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_seuil_produit" class="col-lg-5 col-form-label">Seuil alerte</label>
+                        <div class="col-lg-7">
+                            <input type="number" min="0" id="admin_edit_seuil_produit" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_stock_produit" class="col-lg-5 col-form-label">Quantité stock</label>
+                        <div class="col-lg-7">
+                            <input type="number" min="0" id="admin_edit_stock_produit" class="form-control form-control-sm">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
-        <div class="col-auto">
-            <select id="select_produits" name="produits" class="form-select">
-                <?php
-                foreach($produits as $produit) {
-                    ?>
-                    <option value="<?php echo $produit->GetRefProduit() ?>"><?php echo $produit->GetLibProduit() ?></option>
-                    <?php
-                }
-                ?>
-            </select>
-        </div>
+        <div class="tab-pane fade" id="ajouter" role="tabpanel" aria-labelledby="ajouter-tab">...</div>
     </div>
 </div>

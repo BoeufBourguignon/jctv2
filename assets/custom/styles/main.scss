@@ -1,13 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather&family=Merriweather+Sans:wght@300&display=swap');
 @import "custom";
 
+$headerHeight: 67.19px;
+
 //GLOBAL
 html, body {
   height: 100%;
-}
-body {
-  display: flex;
-  flex-direction: column;
 }
 h1 {
   font-family: 'Merriweather', serif;
@@ -26,9 +24,7 @@ header#main_header {
   color: $secondary;
   display:flex;
   justify-content: space-between;
-  position: relative;
-  top: 0; left: 0;
-  width: 100%;
+  height: $headerHeight;
 
   h1,p {
     margin:0;
@@ -96,6 +92,7 @@ header#main_header {
 //MAIN WRAPPER
 div#main_wrapper {
   display: flex;
+  height: calc(100% - 67.19px);
   //ACCUEIL
   div#accueil {
     width: 100%;
@@ -145,7 +142,7 @@ div#main_wrapper {
   //FILTRES CATEGORIE
   #filters_panel {
     background-color: $secondary;
-    min-width: 200px;
+    width: 250px;
     #filters_header {
       padding:12px 0;
       text-align: center;
@@ -178,6 +175,11 @@ div#main_wrapper {
   div#main_affic {
     width: 100%;
     margin: 1.5rem;
+  }
+
+  div#center_block {
+    width: 50%;
+    margin: 6rem auto 0;
   }
 }
 

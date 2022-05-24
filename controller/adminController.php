@@ -27,7 +27,9 @@ class adminController extends Controller
         $this->canAccess();
 
         $this->render("admin/afficProduits.phtml", [
-            "produits" => ProduitManager::GetAllProduits()
+            "produits" => ProduitManager::GetAllProduits(),
+            "categories" => CategorieManager::GetLesCategories(),
+            "difficultes" => DifficultiesManager::GetLesDifficultes()
         ], false);
     }
 }

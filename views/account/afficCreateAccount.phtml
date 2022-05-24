@@ -1,6 +1,6 @@
-<div class="content">
+<div id="center_block">
     <form id="form_login" method="post">
-        <input type="text" aria-hidden="true" name="jwt" value="<?= $jwt ?>">
+        <input type="hidden" aria-hidden="true" name="jwt" value="<?= $jwt ?>">
         <h1 class="mb-3">Créer un compte</h1>
         <?php
         if(isset($_SESSION["create-error"]))
