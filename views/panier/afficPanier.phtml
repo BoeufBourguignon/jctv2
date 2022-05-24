@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <p class="text-muted">Total produit :&nbsp;
-                                <span class="text-jct-orange"><?php echo $produit->GetPrix() * $qte ?>&nbsp;€</span>
+                                <span class="text-jct-orange"><?php echo number_format($produit->GetPrix() * $qte, 2) ?>&nbsp;€</span>
                             </p>
                         </td>
                     </tr>
@@ -47,7 +47,7 @@
                 ?>
             </table>
             <h2 class="text-end">Total&nbsp;:&nbsp;<span class="text-jct-orange text-decoration-underline"><?php
-                    echo $this->Panier()->PrixTotal() ?>&nbsp;€</span></h2>
+                    echo $this->Panier()->PrixTotalFormatted() ?>&nbsp;€</span></h2>
             <button type="submit" class="btn btn-warning mt-3">Mettre à jour le panier</button>
         </form>
         <?php

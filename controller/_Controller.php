@@ -34,6 +34,16 @@ abstract class Controller
     }
 
     /**
+     * @param mixed $value
+     * @return string
+     */
+    protected function renderAPI(mixed $value)
+    {
+        $json = json_encode($value);
+        echo $json !== false ? $json : "[]";
+    }
+
+    /**
      * @param string $url
      * @return void
      */

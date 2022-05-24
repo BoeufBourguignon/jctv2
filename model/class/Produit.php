@@ -17,12 +17,31 @@ class Produit
     private int         $qteStock;
 
     /**
+     * @return array
+     */
+    public function ToArray(): array
+    {
+        return [
+            "refProduit"    => $this->refProduit,
+            "refCateg"      => $this->refCateg,
+            "refSousCateg"  => $this->refSousCateg,
+            "imgPath"       => $this->imgPath,
+            "libProduit"    => $this->libProduit,
+            "descProduit"   => $this->descProduit,
+            "prix"          => $this->prix,
+            "idDifficulte"  => $this->idDifficulte,
+            "seuilAlerte"   => $this->seuilAlerte,
+            "qteStock"      => $this->qteStock
+        ];
+    }
+
+    /**
      * @return Categorie
      */
     public function GetCategorie(): Categorie
     {
         if($this->categ == null || $this->categ->GetRef() != $this->refCateg) {
-            $this->categ = $this->CategorieManager()->GetCategorie($this->refCateg);
+            $this->categ = CategorieManager::GetCategorie($this->refCateg);
         }
         return $this->categ;
     }
@@ -44,7 +63,7 @@ class Produit
     public function GetSousCategorie(): Categorie
     {
         if($this->sousCateg == null || $this->sousCateg->GetRef() != $this->refSousCateg) {
-            $this->sousCateg = $this->CategorieManager()->GetCategorie($this->refSousCateg);
+            $this->sousCateg = CategorieManager::GetCategorie($this->refSousCateg);
         }
         return $this->sousCateg;
     }
@@ -195,6 +214,11 @@ class Produit
     public function GetPrix(): float
     {
         return $this->prix;
+    }
+
+    public function GetPrixFormatted(): string
+    {
+        return number_format($this->prix, 2);
     }
 
     /**

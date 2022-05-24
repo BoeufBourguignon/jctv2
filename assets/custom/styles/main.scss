@@ -181,6 +181,39 @@ div#main_wrapper {
     width: 50%;
     margin: 6rem auto 0;
   }
+
+  //AFFICHAGE FICHE PRODUIT
+  #affic_produit {
+    padding: 32px 64px;
+    width: 100%;
+
+    #produit {
+      padding:16px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: $secondary;
+      border-radius: 5px;
+      max-width: 60%;
+
+      img {
+        max-width: 200px;
+        max-height: 200px;
+      }
+
+      .add_to_basket {
+        justify-content: center;
+        input.form-control {
+          width:80px;
+          flex:none;
+        }
+      }
+    }
+    #selection {
+      display: flex;
+    }
+  }
 }
 
 

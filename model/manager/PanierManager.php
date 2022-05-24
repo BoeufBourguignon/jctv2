@@ -84,6 +84,11 @@ class PanierManager extends BaseManager
         return $total;
     }
 
+    public function PrixTotalFormatted(): string
+    {
+        return number_format($this->PrixTotal(), 2);
+    }
+
     public function Add(string $refProduit, int $qte)
     {
         if($qte != 0) {

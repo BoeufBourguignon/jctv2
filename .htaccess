@@ -12,3 +12,5 @@ RewriteRule ^panier$   index.php?controller=panier [nc]
 RewriteRule ^search$   index.php?controller=index&action=search [nc,qsa]
 RewriteRule ^admin/(.*)$   index.php?controller=admin&action=$1 [nc,qsa]
 RewriteRule ^admin$   index.php?controller=admin [nc,qsa]
+
+RewriteRule ^api/(.*)$ index.php?controller=ajax&action=$1 [nc,qsa]

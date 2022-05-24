@@ -11575,5 +11575,33 @@ div#main_wrapper div#center_block {
   width: 50%;
   margin: 6rem auto 0;
 }
+div#main_wrapper #affic_produit {
+  padding: 32px 64px;
+  width: 100%;
+}
+div#main_wrapper #affic_produit #produit {
+  padding: 16px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  max-width: 60%;
+}
+div#main_wrapper #affic_produit #produit img {
+  max-width: 200px;
+  max-height: 200px;
+}
+div#main_wrapper #affic_produit #produit .add_to_basket {
+  justify-content: center;
+}
+div#main_wrapper #affic_produit #produit .add_to_basket input.form-control {
+  width: 80px;
+  flex: none;
+}
+div#main_wrapper #affic_produit #selection {
+  display: flex;
+}
 
 /*# sourceMappingURL=main.css.map */

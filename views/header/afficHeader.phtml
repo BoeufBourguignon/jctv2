@@ -64,7 +64,7 @@ if (!isset($hasNav) || $hasNav == true) {
                                 <p class="fs-4 mb-1 fw-bold"><?php echo $produit->GetLibProduit() ?></p>
                                 <p class="text-muted">Qté : <?php echo $qte ?>
                                     -
-                                    <span class="text-jct-orange"><?php echo $produit->GetPrix() * $qte ?> €</span>
+                                    <span class="text-jct-orange"><?php echo number_format($produit->GetPrix() * $qte, 2) ?> €</span>
                                 </p>
                             </td>
                         </tr>
@@ -73,7 +73,7 @@ if (!isset($hasNav) || $hasNav == true) {
                     ?>
                 </table>
                 <div class="m-2">
-                    <p class="text-end text-muted fs-5 mb-2">Total : <span class="text-jct-orange"><?php echo $this->Panier()->PrixTotal() ?> €</span></p>
+                    <p class="text-end text-muted fs-5 mb-2">Total : <span class="text-jct-orange"><?php echo $this->Panier()->PrixTotalFormatted() ?> €</span></p>
                     <div class="text-center px-4">
                         <a class="btn btn-warning w-100 py-1 px-2" href="/panier">Accèder au panier</a>
                     </div>

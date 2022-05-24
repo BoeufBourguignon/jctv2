@@ -21,7 +21,7 @@
         <div class="tab-pane fade show active" id="modifier" role="tabpanel" aria-labelledby="modifier-tab">
 
             <div class="container-fluid my-3">
-                <div class="row mb-3 w-50 mx-auto">
+                <div class="row mb-3 w-25 mx-auto">
                     <select id="admin_edit_select_produits" name="produits" class="form-select text-center">
                         <?php
                         foreach($produits as $produit) {
@@ -32,12 +32,12 @@
                         ?>
                     </select>
                 </div>
-                <div class="border rounded w-25 mx-auto p-3">
+                <div class="border rounded w-50 mx-auto p-3">
 
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_ref_produit" class="col-lg-5 col-form-label">Ref</label>
                         <div class="col-lg-7">
-                            <input id="admin_edit_ref_produit" type="text" class="form-control form-control-sm">
+                            <input id="admin_edit_ref_produit" type="text" class="form-control form-control-sm" readonly>
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
@@ -74,7 +74,7 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_desc_produit" class="col-lg-5 col-form-label">Description</label>
                         <div class="col-lg-7">
-                            <textarea id="admin_edit_desc_produit" class="form-control form-control-sm"></textarea>
+                            <textarea id="admin_edit_desc_produit" class="form-control form-control-sm" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
@@ -112,6 +112,10 @@
                             <input type="number" min="0" id="admin_edit_stock_produit" class="form-control form-control-sm">
                         </div>
                     </div>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-jct-orange" id="admin_edit_save_produit">Enregistrer</button>
+                        <button class="btn btn-secondary" id="admin_edit_cancel_edit_produit">Annuler</button>
+                    </div>
 
                 </div>
             </div>
@@ -120,3 +124,5 @@
         <div class="tab-pane fade" id="ajouter" role="tabpanel" aria-labelledby="ajouter-tab">...</div>
     </div>
 </div>
+
+<script src="/assets/custom/js/admin/produits/modifier.js"></script>
