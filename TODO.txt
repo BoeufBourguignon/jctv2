@@ -1,30 +1,16 @@
-Produits
--Ajouter fiche descriptive par produit *
-    -Ajouter controller produit *
-    -BDD : Ajouter table Review (PK addrIP, PK idProduit, note)
-    -Fiche produit :
-        -Image *
-        -Nom produit *
-        -Difficulté *
-        -Prix *
-        -Btn ajouter au panier + sélecteur qte *
-        -Note (à ajouter aussi sur la fiche produit dans le categController)
-        -Souvent achetés ensembles
-        -Fiche technique
+admin
+ crud
+  produits
+   ajouter produit
+   vérifier champs:
+    -pas vides,
+    -bon type de donnée
+  catégorie
+ changement mot de passe (backoffice)
 
-Panier *
--Si pas connecté
-    -On rajoute les produits en COOKIE
--Si connecté
-    -Si il y a un panier en COOKIE, on le rajoute à la BDD
-    -Quand on ajoute qqch au panier :
-        -On regarde si l'utilisateur a déjà un panier de commencé sinon on en commence un (Commande avec EtatCommande à 0)
-        -On ajoute le produit au panier
-    -Le panier est récupéré depuis la BDD
+changement mot de passe (user)
 
-Mettre class Produit à jour avec la vue *
+validation commande
 
-Fixtures
--Ajouter des notes randoms aux produits
--Ajouter des commandes randoms
 
+demande confirmation déconnexion
