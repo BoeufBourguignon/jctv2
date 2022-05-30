@@ -15,4 +15,23 @@ class ajaxController extends Controller
 
         $this->renderAPI($produit);
     }
+
+    public function getSousCategoriesByCategorie()
+    {
+        $refCateg = filter_input(INPUT_GET, "refCateg") ?? "";
+
+        $sousCategs_obj = CategorieManager::GetSousCategories($refCateg);
+        $sousCategs = array();
+        foreach($sousCategs_obj as $sousCateg) {
+            $sousCategs[] = $sousCateg->ToArray();
+        }
+
+        $this->renderAPI($sousCategs);
+    }
+
+    public function test()
+    {
+        var_dump($_GET);
+        var_dump($_POST);
+    }
 }

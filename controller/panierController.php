@@ -15,6 +15,7 @@ class panierController extends Controller
     {
         $produit = $this->Request()->post("refProduit");
         $qte = $this->Request()->post("qte");
+
         if($produit != false && $qte != false) {
             $this->Panier()->Add($produit, $qte);
         }

@@ -7,7 +7,6 @@ class Produit
     private ?Categorie  $categ = null;
     private ?string     $refSousCateg;
     private ?Categorie  $sousCateg = null;
-    private string      $imgPath;
     private string      $libProduit;
     private string      $descProduit;
     private float       $prix;
@@ -25,7 +24,6 @@ class Produit
             "refProduit"    => $this->refProduit,
             "refCateg"      => $this->refCateg,
             "refSousCateg"  => $this->refSousCateg,
-            "imgPath"       => $this->imgPath,
             "libProduit"    => $this->libProduit,
             "descProduit"   => $this->descProduit,
             "prix"          => $this->prix,
@@ -159,17 +157,13 @@ class Produit
      */
     public function GetImgPath(): string
     {
-        return $this->imgPath;
-    }
-
-    /**
-     * @param string $imgPath
-     * @return Produit
-     */
-    public function SetImgPath(string $imgPath): static
-    {
-        $this->imgPath = $imgPath;
-        return $this;
+        $imgPath = "img/produits/";
+        if($this->refSousCateg == null) {
+            $imgPath .= $this->refCateg . "/" . $this->refProduit . ".png";
+        } else {
+            $imgPath .= $this->refCateg . "/" . $this->refSousCateg . "/" . $this->refProduit . ".png";
+        }
+        return $imgPath;
     }
 
     /**
@@ -191,11 +185,16 @@ class Produit
     }
 
     /**
+     * @param bool $format
      * @return string
      */
-    public function GetDescProduit(): string
+    public function GetDescProduit(bool $format = true): string
     {
-        return "<ul><li>" . str_replace("§p", "</li><li>", $this->descProduit) . "</li></ul>";
+        $desc = $this->descProduit;
+        if($format) {
+            $desc = "<ul><li>" . str_replace("§p", "</li><li>", $this->descProduit) . "</li></ul>";
+        }
+        return $desc;
     }
 
     /**

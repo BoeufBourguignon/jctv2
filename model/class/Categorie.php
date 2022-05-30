@@ -7,6 +7,18 @@ class Categorie
     private ?string $refParent;
     private ?Categorie $parent = null;
 
+    /**
+     * @return array
+     */
+    public function ToArray()
+    {
+        return [
+            "refCateg" => $this->refCateg,
+            "libCateg" => $this->libCateg,
+            "refParent" => $this->refParent
+        ];
+    }
+
     public function GetParent(): Categorie
     {
         return $this->parent;
