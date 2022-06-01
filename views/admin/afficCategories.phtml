@@ -35,7 +35,7 @@
 
             <div class="container-fluid my-3">
                 <div class="row mb-3 w-25 mx-auto">
-                    <select id="admin_edit_select_categorie" name="categories" class="form-select text-center">
+                    <select required id="admin_edit_select_categorie" name="categories" class="form-select text-center">
                         <?php
                         foreach($categories as $categorie) {
                             ?>
@@ -55,19 +55,19 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_ref_categorie" class="col-lg-5 col-form-label">Ref</label>
                         <div class="col-lg-7">
-                            <input id="admin_edit_ref_categorie" name="admin_edit_ref_categorie" type="text" class="form-control form-control-sm" readonly>
+                            <input required id="admin_edit_ref_categorie" name="admin_edit_ref_categorie" type="text" class="form-control form-control-sm" readonly>
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_libelle_categorie" class="col-lg-5 col-form-label">Libellé</label>
                         <div class="col-lg-7">
-                            <input id="admin_edit_libelle_categorie" name="admin_edit_libelle_categorie" type="text" class="form-control form-control-sm">
+                            <input required id="admin_edit_libelle_categorie" name="admin_edit_libelle_categorie" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_parent_categorie" class="col-lg-5 col-form-label">Catégorie parent</label>
                         <div class="col-lg-7">
-                            <select id="admin_edit_parent_categorie" name="admin_edit_parent_categorie" class="form-select form-select-sm">
+                            <select required id="admin_edit_parent_categorie" name="admin_edit_parent_categorie" class="form-select form-select-sm">
                                 <option value="null">Aucune</option>
                                 <?php
                                 foreach($categories as $categorie) {
@@ -99,19 +99,19 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_ref_categorie" class="col-lg-5 col-form-label">Ref</label>
                         <div class="col-lg-7">
-                            <input id="admin_new_ref_categorie" name="admin_new_ref_categorie" type="text" class="form-control form-control-sm">
+                            <input required id="admin_new_ref_categorie" name="admin_new_ref_categorie" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_libelle_categorie" class="col-lg-5 col-form-label">Libellé</label>
                         <div class="col-lg-7">
-                            <input id="admin_new_libelle_categorie" name="admin_new_libelle_categorie" type="text" class="form-control form-control-sm">
+                            <input required id="admin_new_libelle_categorie" name="admin_new_libelle_categorie" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_parent_categorie" class="col-lg-5 col-form-label">Catégorie parent</label>
                         <div class="col-lg-7">
-                            <select id="admin_new_parent_categorie" name="admin_new_parent_categorie" class="form-select form-select-sm">
+                            <select required id="admin_new_parent_categorie" name="admin_new_parent_categorie" class="form-select form-select-sm">
                                 <option value="null">Aucune</option>
                                 <?php
                                 foreach($categories as $categorie) {

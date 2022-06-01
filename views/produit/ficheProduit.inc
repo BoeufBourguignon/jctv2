@@ -6,7 +6,7 @@ $qteRestante = $produit->GetQteStock() - $produit->GetQteCommandee();
 ?>
 
 <a class="card fiche_produit <?php if($qteRestante <= 0) { echo "border-danger"; } ?>" style="width: 18rem;"
-   <?php if($qteRestante > 0) { ?> href="/produit/<?php echo $produit->GetRefProduit()?>" <?php } ?>>
+   href="/produit/<?php echo $produit->GetRefProduit()?>">
     <img src="/assets/<?php echo $produit->GetImgPath()?>" class="card-img-top" alt="<?php echo $produit->GetRefProduit()?>">
     <div class="card-body">
         <h5 class="card-title"><?php echo $produit->GetLibProduit()?></h5>

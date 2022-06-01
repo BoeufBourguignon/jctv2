@@ -15,7 +15,7 @@
             <h2>Vous avez cherché <span class="text-blue">"<?php echo $r ?>"</span></h2>
             <?php
             if(isset($produits) && count($produits)) {
-                echo "<div id='main_affic'>";
+                echo "<div class='liste_produits m-4'>";
                 foreach($produits as $produit) {
                     include(VUES . "/produit/ficheProduit.inc");
                 }

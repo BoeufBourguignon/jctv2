@@ -77,6 +77,9 @@ class PanierManager extends BaseManager
      */
     public function PrixTotal(): float
     {
+        if($this->panierComplet == null) {
+            $this->Panier();
+        }
         $total = 0;
         foreach($this->panierComplet as $infos) {
             /** @var Produit $produit */

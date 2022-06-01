@@ -140,8 +140,11 @@ CREATE PROCEDURE quantiteCommandee (IN inRefProduit varchar(20))
 BEGIN
     SELECT IFNULL(sum(qte), 0) as quantiteCommandee
     FROM lignecommande lc
-             JOIN produit p ON lc.refProduit = p.refProduit
-    WHERE p.refProduit = inRefProduit;
+    WHERE refProduit = inRefProduit
+      AND EXISTS (SELECT idCommande
+                  FROM suivietatcommande s1
+                  WHERE lc.idCommande = s1.idCommande
+                    AND idEtatCommande != 1);
 END ; &&
 
 

@@ -47,6 +47,11 @@ class Produit
         return $this->qteCommandee;
     }
 
+    public function GetQteRestante(): int
+    {
+        return $this->qteStock - $this->GetQteCommandee();
+    }
+
     /**
      * @return Categorie
      */

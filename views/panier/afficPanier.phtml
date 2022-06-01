@@ -34,12 +34,22 @@
                                 <div class="col-auto">
                                     <input min="0" name="panier[<?php echo $produit->GetRefProduit() ?>]" id="qte"
                                            class="form-control" type="number"
-                                           value="<?php echo $qte ?>">
+                                           value="<?php echo $qte ?>" max="<?php echo $produit->GetQteRestante() ?>">
                                 </div>
                             </div>
-                            <p class="text-muted">Total produit :&nbsp;
-                                <span class="text-jct-orange"><?php echo number_format($produit->GetPrix() * $qte, 2) ?>&nbsp;€</span>
-                            </p>
+                            <?php
+                            if($produit->GetQteRestante() < $qte) {
+                                ?>
+                                <p class="text-danger">Il ne reste que <?php echo $produit->GetQteRestante() ?> exemplaires en stock</p>
+                                <?php
+                            } else {
+                                ?>
+                                <p class="text-muted">Total produit :&nbsp;
+                                    <span class="text-jct-orange"><?php echo number_format($produit->GetPrix() * $qte, 2) ?>&nbsp;€</span>
+                                </p>
+                                <?php
+                            }
+                            ?>
                         </td>
                     </tr>
                     <?php

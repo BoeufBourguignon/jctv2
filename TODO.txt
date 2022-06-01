@@ -9,15 +9,18 @@ admin
   SUPPRESSION                             |v
  changement mot de passe (backoffice)     |v
 
-changement mot de passe (user)            |🤔
-
 validation commande                       |v
 
 vérifier les stocks quand on ajoute
-au panier ou quand on consulte le panier  |v?
+au panier ou quand on consulte le panier  |v
 
 demande confirmation déconnexion          |v
 
-passer tous les champs en required        |
+!!!!!!!! style recherche                  |v
 
-!!!!!!!! style recherche                  |
+passer tous les champs en required        |v
+
+changement infos user                     |
+changement roles users par admins         |
+
+probleme tri produits                     |

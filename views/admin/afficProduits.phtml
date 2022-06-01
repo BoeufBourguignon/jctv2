@@ -57,19 +57,19 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_ref_produit" class="col-lg-5 col-form-label">Ref</label>
                         <div class="col-lg-7">
-                            <input maxlength="20" id="admin_edit_ref_produit" name="admin_edit_ref_produit" type="text" class="form-control form-control-sm" readonly>
+                            <input required maxlength="20" id="admin_edit_ref_produit" name="admin_edit_ref_produit" type="text" class="form-control form-control-sm" readonly>
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_libelle_produit" class="col-lg-5 col-form-label">Libellé</label>
                         <div class="col-lg-7">
-                            <input maxlength="50" id="admin_edit_libelle_produit" name="admin_edit_libelle_produit" type="text" class="form-control form-control-sm">
+                            <input required maxlength="50" id="admin_edit_libelle_produit" name="admin_edit_libelle_produit" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_categ_produit" class="col-lg-5 col-form-label">Catégorie</label>
                         <div class="col-lg-7">
-                            <select id="admin_edit_categ_produit" name="admin_edit_categ_produit" class="form-select form-select-sm">
+                            <select required id="admin_edit_categ_produit" name="admin_edit_categ_produit" class="form-select form-select-sm">
                                 <?php
                                 foreach($categories as $categorie) {
                                     ?>
@@ -85,7 +85,7 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_souscateg_produit" class="col-lg-5 col-form-label">Sous-catégorie</label>
                         <div class="col-lg-7">
-                            <select id="admin_edit_souscateg_produit" name="admin_edit_souscateg_produit" class="form-select form-select-sm" disabled>
+                            <select required id="admin_edit_souscateg_produit" name="admin_edit_souscateg_produit" class="form-select form-select-sm" disabled>
                                 <option value="null">Aucune</option>
                             </select>
                         </div>
@@ -99,14 +99,14 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_prix_produit" class="col-lg-5 col-form-label">Prix</label>
                         <div class="col-lg-7 d-flex align-items-center">
-                            <input step=".01" type="number" min="0" id="admin_edit_prix_produit" name="admin_edit_prix_produit" class="form-control form-control-sm me-1">
+                            <input required step=".01" type="number" min="0" id="admin_edit_prix_produit" name="admin_edit_prix_produit" class="form-control form-control-sm me-1">
                             €
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_difficulte_produit" class="col-lg-5 col-form-label">Difficulté</label>
                         <div class="col-lg-7 d-flex align-items-center">
-                            <select id="admin_edit_difficulte_produit" name="admin_edit_difficulte_produit" class="form-select form-select-sm">
+                            <select required id="admin_edit_difficulte_produit" name="admin_edit_difficulte_produit" class="form-select form-select-sm">
                                 <?php
                                 foreach($difficultes as $difficulte) {
                                     ?>
@@ -122,19 +122,19 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_seuil_produit" class="col-lg-5 col-form-label">Seuil alerte</label>
                         <div class="col-lg-7">
-                            <input type="number" min="0" id="admin_edit_seuil_produit" name="admin_edit_seuil_produit" class="form-control form-control-sm">
+                            <input required type="number" min="0" id="admin_edit_seuil_produit" name="admin_edit_seuil_produit" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_stock_produit" class="col-lg-5 col-form-label">Quantité stock</label>
                         <div class="col-lg-7">
-                            <input type="number" min="0" id="admin_edit_stock_produit" name="admin_edit_stock_produit" class="form-control form-control-sm">
+                            <input required type="number" min="0" id="admin_edit_stock_produit" name="admin_edit_stock_produit" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_photo_produit" class="col-lg-5 col-form-label">Image du produit</label>
                         <div class="col-lg-7">
-                            <input type="file" name="admin_edit_photo_produit" id="admin_edit_photo_produit" class="form-control-file">
+                            <input required type="file" name="admin_edit_photo_produit" id="admin_edit_photo_produit" class="form-control-file">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
@@ -161,19 +161,19 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_ref_produit" class="col-lg-5 col-form-label">Ref</label>
                         <div class="col-lg-7">
-                            <input maxlength="20" id="admin_new_ref_produit" name="admin_new_ref_produit" type="text" class="form-control form-control-sm">
+                            <input required maxlength="20" id="admin_new_ref_produit" name="admin_new_ref_produit" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_libelle_produit" class="col-lg-5 col-form-label">Libellé</label>
                         <div class="col-lg-7">
-                            <input maxlength="50" id="admin_new_libelle_produit" name="admin_new_libelle_produit" type="text" class="form-control form-control-sm">
+                            <input required maxlength="50" id="admin_new_libelle_produit" name="admin_new_libelle_produit" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_categ_produit" class="col-lg-5 col-form-label">Catégorie</label>
                         <div class="col-lg-7">
-                            <select id="admin_new_categ_produit" name="admin_new_categ_produit" class="form-select form-select-sm">
+                            <select required id="admin_new_categ_produit" name="admin_new_categ_produit" class="form-select form-select-sm">
                                 <?php
                                 foreach($categories as $categorie) {
                                     ?>
@@ -189,7 +189,7 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_souscateg_produit" class="col-lg-5 col-form-label">Sous-catégorie</label>
                         <div class="col-lg-7">
-                            <select id="admin_new_souscateg_produit" name="admin_new_souscateg_produit" class="form-select form-select-sm" disabled>
+                            <select required id="admin_new_souscateg_produit" name="admin_new_souscateg_produit" class="form-select form-select-sm" disabled>
                                 <option value="null">Aucune</option>
                             </select>
                         </div>
@@ -197,20 +197,20 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_desc_produit" class="col-lg-5 col-form-label">Description</label>
                         <div class="col-lg-7">
-                            <textarea id="admin_new_desc_produit" name="admin_new_desc_produit" class="form-control form-control-sm" rows="10"></textarea>
+                            <textarea required id="admin_new_desc_produit" name="admin_new_desc_produit" class="form-control form-control-sm" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_prix_produit" class="col-lg-5 col-form-label">Prix</label>
                         <div class="col-lg-7 d-flex align-items-center">
-                            <input step="0.01" type="number" min="0" id="admin_new_prix_produit" name="admin_new_prix_produit" class="form-control form-control-sm me-1">
+                            <input required step="0.01" type="number" min="0" id="admin_new_prix_produit" name="admin_new_prix_produit" class="form-control form-control-sm me-1">
                             €
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_difficulte_produit" class="col-lg-5 col-form-label">Difficulté</label>
                         <div class="col-lg-7 d-flex align-items-center">
-                            <select id="admin_new_difficulte_produit" name="admin_new_difficulte_produit" class="form-select form-select-sm">
+                            <select required id="admin_new_difficulte_produit" name="admin_new_difficulte_produit" class="form-select form-select-sm">
                                 <?php
                                 foreach($difficultes as $difficulte) {
                                     ?>
@@ -226,19 +226,19 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_seuil_produit" class="col-lg-5 col-form-label">Seuil alerte</label>
                         <div class="col-lg-7">
-                            <input type="number" min="0" id="admin_new_seuil_produit" name="admin_new_seuil_produit" class="form-control form-control-sm">
+                            <input required type="number" min="0" id="admin_new_seuil_produit" name="admin_new_seuil_produit" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_stock_produit" class="col-lg-5 col-form-label">Quantité stock</label>
                         <div class="col-lg-7">
-                            <input type="number" min="0" id="admin_new_stock_produit" name="admin_new_stock_produit" class="form-control form-control-sm">
+                            <input required type="number" min="0" id="admin_new_stock_produit" name="admin_new_stock_produit" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_photo_produit" class="col-lg-5 col-form-label">Image du produit</label>
                         <div class="col-lg-7">
-                            <input type="file" name="admin_new_photo_produit" id="admin_new_photo_produit" class="form-control-file">
+                            <input required type="file" name="admin_new_photo_produit" id="admin_new_photo_produit" class="form-control-file">
                         </div>
                     </div>
                     <div class="text-center mt-4">

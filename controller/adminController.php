@@ -52,23 +52,23 @@ class adminController extends Controller
 
             $verif = true;
             //Vérification des inputs
-            if($ref == null || strlen($ref) > 20) {
+            if($ref == null || ctype_space($ref) || strlen($ref) > 20) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la référence";
             }
-            if($libelle == null || strlen($libelle) > 50) {
+            if($libelle == null || ctype_space($libelle) || strlen($libelle) > 50) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur le libelle";
             }
-            if($categ == null || strlen($categ) > 20) {
+            if($categ == null || ctype_space($categ) || strlen($categ) > 20) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la catégorie";
             }
-            if($sousCateg != null && strlen($sousCateg) > 20) {
+            if($sousCateg != null && (strlen($sousCateg) > 20 || ctype_space($sousCateg))) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la catégorie";
             }
-            if($desc == null || strlen($desc) > 2000) {
+            if($desc == null || ctype_space($desc) || strlen($desc) > 2000) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la description";
             }
@@ -156,19 +156,19 @@ class adminController extends Controller
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la référence";
             }
-            if($libelle == null || strlen($libelle) > 50) {
+            if($libelle == null || ctype_space($libelle) || strlen($libelle) > 50) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur le libelle";
             }
-            if($categ == null || strlen($categ) > 20) {
+            if($categ == null || ctype_space($categ) || strlen($categ) > 20) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la catégorie";
             }
-            if($sousCateg != null && strlen($sousCateg) > 20) {
+            if($sousCateg != null && (ctype_space($sousCateg) || strlen($sousCateg)) > 20) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la catégorie";
             }
-            if($desc == null || strlen($desc) > 2000) {
+            if($desc == null || ctype_space($desc) || strlen($desc) > 2000) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la description";
             }
@@ -262,15 +262,15 @@ class adminController extends Controller
             $parent = $this->Request()->post("admin_edit_parent_categorie");
 
             $verif = true;
-            if($ref == null || strlen($ref) > 20) {
+            if($ref == null || ctype_space($ref) || strlen($ref) > 20) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la référence";
             }
-            if($libelle == null || strlen($libelle) > 50) {
+            if($libelle == null || ctype_space($libelle) || strlen($libelle) > 50) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la référence";
             }
-            if($parent != null && strlen($parent) > 20) {
+            if($parent != null && (ctype_space($parent) || strlen($parent) > 20)) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la catégorie parente";
             }
@@ -307,15 +307,15 @@ class adminController extends Controller
             $parent = $this->Request()->post("admin_new_parent_categorie");
 
             $verif = true;
-            if($ref == null || strlen($ref) > 20) {
+            if($ref == null || ctype_space($ref) || strlen($ref) > 20) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la référence";
             }
-            if($libelle == null || strlen($libelle) > 50) {
+            if($libelle == null || ctype_space($libelle) || strlen($libelle) > 50) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la référence";
             }
-            if($parent != null && strlen($parent) > 20) {
+            if($parent != null && (ctype_space($parent) || strlen($parent) > 20)) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la catégorie parente";
             }

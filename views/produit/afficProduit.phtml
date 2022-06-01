@@ -12,8 +12,7 @@
         <div class="mb-3"><?=$produit->GetDescProduit()?></div>
 
         <?php
-        $qteRestante = $produit->GetQteStock() - $produit->GetQteCommandee();
-        if ($qteRestante <= 0) {
+        if ($produit->GetQteRestante() <= 0) {
             ?>
             <div class="mb-3">
                 <button disabled class="btn btn-danger">Rupture de stock</button>
@@ -24,11 +23,11 @@
             <form class="input-group mb-3 add_to_basket" method="post" action="/panier/add">
                 <button type="submit" class="btn btn-primary">Ajouter au panier</button>
                 <label class="sr-only" for="qte">Quantité</label>
-                <input type="number" name="qte" id="qte" class="form-control" value="<?php
+                <input required type="number" name="qte" id="qte" class="form-control" value="<?php
                 echo array_key_exists($produit->GetRefProduit(), $this->Panier()->PanierMin())
                     ? $this->Panier()->PanierMin()[$produit->GetRefProduit()]
                     : 0;
-                ?>" min="0" max="<?php echo $qteRestante ?>">
+                ?>" min="0" max="<?php echo $produit->GetQteRestante() ?>">
                 <input type="hidden" name="refProduit" value="<?php echo $produit->GetRefProduit() ?>">
             </form>
             <?php
