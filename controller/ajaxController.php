@@ -29,6 +29,20 @@ class ajaxController extends Controller
         $this->renderAPI($sousCategs);
     }
 
+    public function getCategorieByRef()
+    {
+        $ref = $this->Request()->get("ref");
+
+        $categorie = CategorieManager::GetCategorie($ref);
+        if($categorie !== false) {
+            $categorie = $categorie->ToArray();
+        } else {
+            $categorie = [];
+        }
+
+        $this->renderAPI($categorie);
+    }
+
     public function test()
     {
         var_dump($_GET);

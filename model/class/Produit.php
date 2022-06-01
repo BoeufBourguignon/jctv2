@@ -14,6 +14,7 @@ class Produit
     private ?Difficulty $difficulte = null;
     private int         $seuilAlerte;
     private int         $qteStock;
+    private ?int        $qteCommandee = null;
 
     /**
      * @return array
@@ -31,6 +32,19 @@ class Produit
             "seuilAlerte"   => $this->seuilAlerte,
             "qteStock"      => $this->qteStock
         ];
+    }
+
+    public function EstEnRupture(): bool
+    {
+        return $this->GetQteStock() - $this->GetQteCommandee() <= 0;
+    }
+
+    public function GetQteCommandee(): int
+    {
+        if($this->qteCommandee == null) {
+            $this->qteCommandee = ProduitManager::GetQteCommandee($this->refProduit);
+        }
+        return $this->qteCommandee;
     }
 
     /**
@@ -192,7 +206,7 @@ class Produit
     {
         $desc = $this->descProduit;
         if($format) {
-            $desc = "<ul><li>" . str_replace("§p", "</li><li>", $this->descProduit) . "</li></ul>";
+            $desc = "<ul><li>" . str_replace("\n", "</li><li>", $this->descProduit) . "</li></ul>";
         }
         return $desc;
     }

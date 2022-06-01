@@ -38,52 +38,9 @@ if (!isset($hasNav) || $hasNav == true) {
         </div>
     </header>
 
-    <div class="offcanvas offcanvas-end" id="offcanvasPanier" tabindex="-1" aria-labelledby="offcanvasPanierLabel">
-        <div class="offcanvas-header">
-            <h1 class="offcanvas-title" id="offcanvasPanierLabel">Panier</h1>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body p-0">
-            <?php
-            if (count($panier) == 0) {
-                echo "<div>Le panier est vide</div>";
-            } else {
-                ?>
-                <table class="table table-striped table-borderless">
-                    <?php
-                    foreach ($panier as $lignePanier) {
-                        $produit = $lignePanier["produit"];
-                        $qte = $lignePanier["qte"];
-                        ?>
-                        <tr>
-                            <td class="row_panier_image">
-                                <img src="/assets/<?php echo $produit->GetImgPath() ?>"
-                                     alt="<?php echo $produit->GetRefProduit() ?>">
-                            </td>
-                            <td>
-                                <p class="fs-4 mb-1 fw-bold"><?php echo $produit->GetLibProduit() ?></p>
-                                <p class="text-muted">Qté : <?php echo $qte ?>
-                                    -
-                                    <span class="text-jct-orange"><?php echo number_format($produit->GetPrix() * $qte, 2) ?> €</span>
-                                </p>
-                            </td>
-                        </tr>
-                        <?php
-                    }
-                    ?>
-                </table>
-                <div class="m-2">
-                    <p class="text-end text-muted fs-5 mb-2">Total : <span class="text-jct-orange"><?php echo $this->Panier()->PrixTotalFormatted() ?> €</span></p>
-                    <div class="text-center px-4">
-                        <a class="btn btn-warning w-100 py-1 px-2" href="/panier">Accèder au panier</a>
-                    </div>
-                </div>
-                <?php
-            }
-            ?>
-        </div>
-    </div>
     <?php
+    include VUES . "/header/afficPanierOffcanvas.phtml";
+
 } else {
     ?>
     <!--Simple header (no nav)-->

@@ -10,6 +10,20 @@
     <div class="list-group list-group-flush">
         <a href="/admin" class="list-group-item list-group-item-action text-center border rounded mb-2"><< Retour</a>
     </div>
+    <?php
+    if( isset($_SESSION["admin_produits_erreur"]) && count($_SESSION["admin_produits_erreur"]) > 0) {
+        ?>
+        <div class="alert-danger rounded border p-2 mb-2">
+            <?php
+            foreach($_SESSION["admin_produits_erreur"] as $msg) {
+                echo "<p class='mb-0'>" . $msg . "</p>";
+            }
+            ?>
+        </div>
+    <?php
+    }
+    unset($_SESSION["admin_produits_erreur"]);
+    ?>
     <ul class="nav nav-tabs" id="admin_produits" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="modifier-tab" data-bs-toggle="tab" data-bs-target="#modifier" type="button" role="tab" aria-controls="modifier" aria-selected="true">Modifier</button>
@@ -38,18 +52,18 @@
                         ?>
                     </select>
                 </div>
-                <form class="border rounded w-50 mx-auto p-3 mb-5" method="post" enctype="multipart/form-data">
+                <form class="border rounded w-50 mx-auto p-3 mb-5" id="form_edit_produits" method="post" action="/admin/updateProduit" enctype="multipart/form-data">
 
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_ref_produit" class="col-lg-5 col-form-label">Ref</label>
                         <div class="col-lg-7">
-                            <input id="admin_edit_ref_produit" name="admin_edit_ref_produit" type="text" class="form-control form-control-sm" readonly>
+                            <input maxlength="20" id="admin_edit_ref_produit" name="admin_edit_ref_produit" type="text" class="form-control form-control-sm" readonly>
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_libelle_produit" class="col-lg-5 col-form-label">Libellé</label>
                         <div class="col-lg-7">
-                            <input id="admin_edit_libelle_produit" name="admin_edit_libelle_produit" type="text" class="form-control form-control-sm">
+                            <input maxlength="50" id="admin_edit_libelle_produit" name="admin_edit_libelle_produit" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
@@ -79,13 +93,13 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_desc_produit" class="col-lg-5 col-form-label">Description</label>
                         <div class="col-lg-7">
-                            <textarea id="admin_edit_desc_produit" name="admin_edit_desc_produit" class="form-control form-control-sm" rows="10"></textarea>
+                            <textarea maxlength="2000" id="admin_edit_desc_produit" name="admin_edit_desc_produit" class="form-control form-control-sm" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_edit_prix_produit" class="col-lg-5 col-form-label">Prix</label>
                         <div class="col-lg-7 d-flex align-items-center">
-                            <input type="number" min="0" id="admin_edit_prix_produit" name="admin_edit_prix_produit" class="form-control form-control-sm me-1">
+                            <input step=".01" type="number" min="0" id="admin_edit_prix_produit" name="admin_edit_prix_produit" class="form-control form-control-sm me-1">
                             €
                         </div>
                     </div>
@@ -123,9 +137,16 @@
                             <input type="file" name="admin_edit_photo_produit" id="admin_edit_photo_produit" class="form-control-file">
                         </div>
                     </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_thumbnail_photo_produit" class="col-lg-5 col-form-label">Image actuelle</label>
+                        <div class="col-lg-7">
+                            <img id="admin_thumbnail_photo_produit" alt="Aucune image" style="max-width:100%;max-height:200px;">
+                        </div>
+                    </div>
                     <div class="text-center mt-4">
-                        <button class="btn btn-jct-orange" id="admin_edit_save_produit" name="submit_update">Enregistrer</button>
-                        <button class="btn btn-secondary" id="admin_edit_cancel_edit_produit">Annuler</button>
+                        <button type="submit" class="btn btn-jct-orange" id="admin_edit_save_produit" name="submit_update">Enregistrer</button>
+                        <button type="submit" class="btn btn-secondary" id="admin_edit_cancel_edit_produit" name="annuler_update">Annuler</button>
+                        <button type="button" class="btn btn-danger" id="admin_edit_supprimer_produit" name="supprimer_produit">Supprimer</button>
                     </div>
 
                 </form>
@@ -135,18 +156,18 @@
         <div class="tab-pane fade" id="ajouter" role="tabpanel" aria-labelledby="ajouter-tab">
 
             <div class="container-fluid my-3">
-                <form class="border rounded w-50 mx-auto p-3 mb-5" method="post" enctype="multipart/form-data">
+                <form class="border rounded w-50 mx-auto p-3 mb-5" action="/admin/addProduit" method="post" enctype="multipart/form-data">
 
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_ref_produit" class="col-lg-5 col-form-label">Ref</label>
                         <div class="col-lg-7">
-                            <input id="admin_new_ref_produit" name="admin_new_ref_produit" type="text" class="form-control form-control-sm">
+                            <input maxlength="20" id="admin_new_ref_produit" name="admin_new_ref_produit" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_libelle_produit" class="col-lg-5 col-form-label">Libellé</label>
                         <div class="col-lg-7">
-                            <input id="admin_new_libelle_produit" name="admin_new_libelle_produit" type="text" class="form-control form-control-sm">
+                            <input maxlength="50" id="admin_new_libelle_produit" name="admin_new_libelle_produit" type="text" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="row mb-1 align-items-center">
@@ -182,7 +203,7 @@
                     <div class="row mb-1 align-items-center">
                         <label for="admin_new_prix_produit" class="col-lg-5 col-form-label">Prix</label>
                         <div class="col-lg-7 d-flex align-items-center">
-                            <input type="number" min="0" id="admin_new_prix_produit" name="admin_new_prix_produit" class="form-control form-control-sm me-1">
+                            <input step="0.01" type="number" min="0" id="admin_new_prix_produit" name="admin_new_prix_produit" class="form-control form-control-sm me-1">
                             €
                         </div>
                     </div>
@@ -221,8 +242,8 @@
                         </div>
                     </div>
                     <div class="text-center mt-4">
-                        <button class="btn btn-jct-orange" id="admin_new_save_produit" name="submit_add">Enregistrer</button>
-                        <button class="btn btn-secondary" id="admin_new_cancel_edit_produit">Annuler</button>
+                        <button type="submit" class="btn btn-jct-orange" id="admin_new_save_produit" name="submit_add">Enregistrer</button>
+                        <button type="submit" class="btn btn-secondary" id="admin_new_cancel_edit_produit" name="annuler_add">Annuler</button>
                     </div>
 
                 </form>

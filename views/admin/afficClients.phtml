@@ -1,0 +1,51 @@
+<?php
+/**
+ * @var Client[] $clients
+ */
+?>
+<div class="w-100 m-4">
+    <div class="list-group list-group-flush">
+        <a href="/admin" class="list-group-item list-group-item-action text-center border rounded mb-2"><< Retour</a>
+    </div>
+    <form action="/admin/changePassword" method="post" class="w-50 mx-auto">
+        <select name="select_client" class="text-center form-select mx-auto mb-4">
+            <?php
+            foreach($clients as $client) {
+                echo "<option value='" . $client->GetId() . "'>" . $client->GetMail() . "</option>";
+            }
+            ?>
+        </select>
+        <h1 class="text-center">Mot de passe</h1>
+        <div>
+            <div class="row mb-1 align-items-center">
+                <label for="admin_client_mdp" class="col-lg-5 col-form-label">Mot de passe</label>
+                <div class="col-lg-7">
+                    <input id="admin_client_mdp" name="admin_client_mdp" type="password" class="form-control form-control-sm">
+                </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+                <label for="admin_client_mdp_verif" class="col-lg-5 col-form-label">Vérification du mot de passe</label>
+                <div class="col-lg-7">
+                    <input id="admin_client_mdp_verif" name="admin_client_mdp_verif" type="password" class="form-control form-control-sm">
+                </div>
+            </div>
+            <?php
+            if( isset($_SESSION["admin_erreur_client_password"]) && !empty($_SESSION["admin_erreur_client_password"])) {
+                ?>
+                <div class="alert-danger rounded border p-2 mb-2">
+                    <?php
+                    foreach($_SESSION["admin_erreur_client_password"] as $msg) {
+                        echo "<p class='mb-1'>" . $msg . "</p>";
+                    }
+                    ?>
+                </div>
+                <?php
+            }
+            unset($_SESSION["admin_erreur_client_password"]);
+            ?>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-jct-orange">Changer de mot de passe</button>
+            </div>
+        </div>
+    </form>
+</div>

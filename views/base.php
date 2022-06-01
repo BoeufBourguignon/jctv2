@@ -18,7 +18,6 @@
 require_once(VUES . "/header/afficHeader.phtml");
 /**
  * @var $view
- * @var $params
  */
 echo "<div id='main_wrapper'>";
 require_once(VUES . "/" . $view);

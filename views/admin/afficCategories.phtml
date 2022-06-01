@@ -1,0 +1,140 @@
+<?php
+/**
+ * @var Categorie[] $categories
+ * @var string $selectedCategorie
+ */
+?>
+<div class="w-100 m-4">
+    <div class="list-group list-group-flush">
+        <a href="/admin" class="list-group-item list-group-item-action text-center border rounded mb-2"><< Retour</a>
+    </div>
+    <?php
+    if( isset($_SESSION["admin_categories_erreur"]) && count($_SESSION["admin_categories_erreur"]) > 0) {
+        ?>
+        <div class="alert-danger rounded border p-2 mb-2">
+            <?php
+            foreach($_SESSION["admin_categories_erreur"] as $msg) {
+                echo "<p class='mb-0'>" . $msg . "</p>";
+            }
+            ?>
+        </div>
+        <?php
+    }
+    unset($_SESSION["admin_categories_erreur"]);
+    ?>
+    <ul class="nav nav-tabs" id="admin_categories" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="modifier-tab" data-bs-toggle="tab" data-bs-target="#modifier" type="button" role="tab" aria-controls="modifier" aria-selected="true">Modifier</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ajouter-tab" data-bs-toggle="tab" data-bs-target="#ajouter" type="button" role="tab" aria-controls="ajouter" aria-selected="false">Ajouter</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="admin_categories_content">
+        <div class="tab-pane fade show active" id="modifier" role="tabpanel" aria-labelledby="modifier-tab">
+
+            <div class="container-fluid my-3">
+                <div class="row mb-3 w-25 mx-auto">
+                    <select id="admin_edit_select_categorie" name="categories" class="form-select text-center">
+                        <?php
+                        foreach($categories as $categorie) {
+                            ?>
+                            <option value="<?php echo $categorie->GetRef() ?>" <?php
+                            if(isset($_SESSION["selectedCategorie"]) && $_SESSION["selectedCategorie"] == $categorie->GetRef()) {
+                                echo "selected";
+                                unset($_SESSION["selectedCategorie"]);
+                            }
+                            ?>><?php echo $categorie->GetLibelle() ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+                <form class="border rounded w-50 mx-auto p-3 mb-5" method="post" action="/admin/updateCategorie" enctype="multipart/form-data">
+
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_ref_categorie" class="col-lg-5 col-form-label">Ref</label>
+                        <div class="col-lg-7">
+                            <input id="admin_edit_ref_categorie" name="admin_edit_ref_categorie" type="text" class="form-control form-control-sm" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_libelle_categorie" class="col-lg-5 col-form-label">Libellé</label>
+                        <div class="col-lg-7">
+                            <input id="admin_edit_libelle_categorie" name="admin_edit_libelle_categorie" type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_edit_parent_categorie" class="col-lg-5 col-form-label">Catégorie parent</label>
+                        <div class="col-lg-7">
+                            <select id="admin_edit_parent_categorie" name="admin_edit_parent_categorie" class="form-select form-select-sm">
+                                <option value="null">Aucune</option>
+                                <?php
+                                foreach($categories as $categorie) {
+                                    ?>
+                                    <option value="<?php echo $categorie->GetRef() ?>">
+                                        <?php echo $categorie->GetLibelle() ?>
+                                    </option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-jct-orange" id="admin_edit_save_categorie" name="submit_update">Enregistrer</button>
+                        <button type="submit" class="btn btn-secondary" id="admin_edit_cancel_edit_categorie" name="annuler_update">Annuler</button>
+                        <button type="button" class="btn btn-danger" id="admin_edit_supprimer_categorie" name="supprimer_categorie">Supprimer</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="ajouter" role="tabpanel" aria-labelledby="ajouter-tab">
+
+            <div class="container-fluid my-3">
+                <form class="border rounded w-50 mx-auto p-3 mb-5" method="post" action="/admin/addCategorie" enctype="multipart/form-data">
+
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_new_ref_categorie" class="col-lg-5 col-form-label">Ref</label>
+                        <div class="col-lg-7">
+                            <input id="admin_new_ref_categorie" name="admin_new_ref_categorie" type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_new_libelle_categorie" class="col-lg-5 col-form-label">Libellé</label>
+                        <div class="col-lg-7">
+                            <input id="admin_new_libelle_categorie" name="admin_new_libelle_categorie" type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="row mb-1 align-items-center">
+                        <label for="admin_new_parent_categorie" class="col-lg-5 col-form-label">Catégorie parent</label>
+                        <div class="col-lg-7">
+                            <select id="admin_new_parent_categorie" name="admin_new_parent_categorie" class="form-select form-select-sm">
+                                <option value="null">Aucune</option>
+                                <?php
+                                foreach($categories as $categorie) {
+                                    ?>
+                                    <option value="<?php echo $categorie->GetRef() ?>">
+                                        <?php echo $categorie->GetLibelle() ?>
+                                    </option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-jct-orange" id="admin_edit_save_produit" name="submit_add">Enregistrer</button>
+                        <button type="submit" class="btn btn-secondary" id="admin_edit_cancel_edit_produit" name="annuler_add">Annuler</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="/assets/custom/js/admin/categories/modifier.js"></script>

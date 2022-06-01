@@ -18,7 +18,7 @@ class Request
         foreach($_GET as $key => $value) {
             if(($key != 'controller') && ($key != 'action')) {
                 if(!is_array($value)) {
-                    $this->get[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_ENCODED);
+                    $this->get[$key] = filter_input(INPUT_GET, $key);
                 } else {
                     $this->get[$key] = $value;
                 }
@@ -27,7 +27,7 @@ class Request
         //POST
         foreach($_POST as $key => $value) {
             if(!is_array($value)) {
-                $this->post[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_ENCODED);
+                $this->post[$key] = filter_input(INPUT_POST, $key);
             } else {
                 $this->post[$key] = $value;
             }

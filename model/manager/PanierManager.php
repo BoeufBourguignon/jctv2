@@ -79,7 +79,11 @@ class PanierManager extends BaseManager
     {
         $total = 0;
         foreach($this->panierComplet as $infos) {
-            $total += $infos["produit"]->GetPrix() * $infos["qte"];
+            /** @var Produit $produit */
+            $produit = $infos["produit"];
+            if(!$produit->EstEnRupture() && $produit->GetQteStock() - $produit->GetQteCommandee() >= $infos["qte"]) {
+                $total += $infos["produit"]->GetPrix() * $infos["qte"];
+            }
         }
         return $total;
     }
@@ -149,5 +153,33 @@ class PanierManager extends BaseManager
                 ]);
             }
         }
+    }
+
+    public function PasserCommande(string $destinataire, string $ville, string $adresse, string $cp): bool
+    {
+        if($this->idCommande != 0) {
+            self::getConnection();
+            $stmt = self::$cnx->prepare("
+                UPDATE commande
+                SET destinataire = :d,
+                    adresse = :a,
+                    ville = :v,
+                    cp = :cp
+                WHERE idCommande = :idC
+            ");
+            $stmt->bindParam(":d", $destinataire);
+            $stmt->bindParam(":a", $ville);
+            $stmt->bindParam(":v", $adresse);
+            $stmt->bindParam(":cp", $cp);
+            $stmt->bindParam(":idC", $this->idCommande);
+
+            $stmtPrepCommande = self::$cnx->prepare("
+                INSERT INTO suivietatcommande (idCommande, idEtatCommande, date) 
+                VALUES (:idC, 2, NOW())
+            ");
+            $stmtPrepCommande->bindParam(":idC", $this->idCommande);
+            $stmtPrepCommande->execute();
+        }
+        return $this->idCommande != 0;
     }
 }

@@ -1,0 +1,13 @@
+<div>
+    <?php
+    if($_SESSION["commande_passee"] === true) {
+        ?>
+        <h1 class="text-success">Votre commande a été passée !</h1>
+        <?php
+    } else {
+        ?>
+        <h1 class="text-danger">Une erreur est survenue lors de la validation de votre commande</h1>
+        <?php
+    }
+    ?>
+</div>

@@ -1,0 +1,80 @@
+<div id="main_affic" class="d-flex flex-auto">
+    <div class="w-50 me-2">
+        <h1>Informations</h1>
+        <form action="/panier/passerCommande" method="post">
+            <div class="row mb-1 align-items-center">
+                <label for="commande_destinataire" class="col-lg-5 col-form-label">Destinataire</label>
+                <div class="col-lg-7">
+                    <input max="50" id="commande_destinataire" name="commande_destinataire" type="text" class="form-control form-control-sm" required>
+                </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+                <label for="commande_adresse" class="col-lg-5 col-form-label">Adresse</label>
+                <div class="col-lg-7">
+                    <input max="50" id="commande_adresse" name="commande_adresse" type="text" class="form-control form-control-sm" required>
+                </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+                <label for="commande_ville" class="col-lg-5 col-form-label">Ville</label>
+                <div class="col-lg-7">
+                    <input max="50" id="commande_ville" name="commande_ville" type="text" class="form-control form-control-sm" required>
+                </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+                <label for="commande_cp" class="col-lg-5 col-form-label">Code postal</label>
+                <div class="col-lg-7">
+                    <input max="5" id="commande_cp" name="commande_cp" type="text" class="form-control form-control-sm" required>
+                </div>
+            </div>
+            <button name="passer_commande_panier" type="submit" class="btn btn-success mt-4">Passer la commande</button>
+        </form>
+    </div>
+    <div class="w-50 ms-2">
+        <h2>Total : <span class="text-jct-orange"><?php echo $this->Panier()->PrixTotalFormatted() ?> €</span></h2>
+        <table class="table table-striped table-borderless">
+            <?php
+            foreach ($this->Panier()->Panier() as $lignePanier) {
+                /** @var Produit $produit */
+                $produit = $lignePanier["produit"];
+                $qte = $lignePanier["qte"];
+                ?>
+                <tr>
+                    <td style="width:calc(127px + 1rem);position:relative;">
+                        <a href="/produit/<?php echo $produit->GetRefProduit() ?>">
+                            <img src="/assets/<?php echo $produit->GetImgPath() ?>"
+                                 alt="<?php echo $produit->GetRefProduit() ?>"
+                                 style="max-width:127px;height:auto;">
+                        </a>
+                    </td>
+                    <td>
+                        <p class="fs-3 mb-1 fw-bold">
+                            <a href="/produit/<?php echo $produit->GetRefProduit() ?>"
+                               class="text-decoration-none">
+                                <?php echo $produit->GetLibProduit() ?></a>
+                        </p>
+                        <?php
+                        if($produit->EstEnRupture()) {
+                            ?>
+                            <p class="text-danger">Rupture de stock</p>
+                            <?php
+                        } else if($produit->GetQteStock() - $produit->GetQteCommandee() < $qte) {
+                            ?>
+                            <p class="text-danger">Il n'y a plus assez d'article en stock</p>
+                            <?php
+                        } else {
+                            ?>
+                            <p>Qté : <?php echo $qte ?></p>
+                            <p class="text-muted">Total produit :&nbsp;
+                                <span class="text-jct-orange"><?php echo number_format($produit->GetPrix() * $qte, 2) ?>&nbsp;€</span>
+                            </p>
+                            <?php
+                        }
+                        ?>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
+        </table>
+    </div>
+</div>

@@ -9,7 +9,8 @@ $(function() {
         prix = $("#admin_edit_prix_produit"),
         difficulte = $("#admin_edit_difficulte_produit"),
         seuil = $("#admin_edit_seuil_produit"),
-        stock = $("#admin_edit_stock_produit");
+        stock = $("#admin_edit_stock_produit"),
+        thumbnail = $("#admin_thumbnail_photo_produit");
     //endregion
 
     //region Selection catégorie
@@ -51,26 +52,33 @@ $(function() {
             },
             dataType: "json",
             success: function(data) {
-                console.log(data);
                 ref.val(data["refProduit"]);
                 libelle.val(data["libProduit"]);
                 categ.val(data["refCateg"]);
                 categ.trigger("change");
-                if($("#admin_edit_souscateg_produit>option").length > 1) {
+                if(data["refSousCateg"] !== null) {
                     sousCateg.val(data["refSousCateg"]);
                 }
-                desc.val(data["descProduit"].replace("§p", "\n"));
+                desc.val(data["descProduit"]);
                 prix.val(data["prix"]);
                 difficulte.val(data["idDifficulte"]);
                 seuil.val(data["seuilAlerte"]);
                 stock.val(data["qteStock"]);
+
+                if(data["refSousCateg"] === null) {
+                    thumbnail.attr("src",
+                        "/assets/img/produits/" + data["refCateg"] + "/" + data["refProduit"] + ".png");
+                } else {
+                    thumbnail.attr("src",
+                        "/assets/img/produits/" + data["refCateg"] + "/" + data["refSousCateg"] + "/" + data["refProduit"] + ".png");
+                }
 
                 //Si le produit a des sous catégories, il faut les mettre dans le select et l'activer
                 //Sinon on remet "Aucune" comme seule option et on désactive le select
 
             },
             error: function(data) {
-                console.log(data.errorText);
+                console.log(data.responseText);
             }
         });
     });
@@ -78,4 +86,11 @@ $(function() {
     //Au chargement de la page on affiche les infos du produit sélectionné
     selectProduit.trigger("change");
     //endregion
+
+    let btnSupprimer = $("#admin_edit_supprimer_produit");
+    btnSupprimer.on("click", function() {
+        if(confirm("Etes-vous sûr de vouloir supprimer ce produit ?")) {
+            window.location.href = "/admin/deleteProduit?ref=" + ref.val();
+        }
+    });
 });

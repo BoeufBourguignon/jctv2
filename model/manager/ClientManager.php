@@ -4,6 +4,31 @@ require_once(_CLASS . "/Client.php");
 
 class ClientManager extends BaseManager
 {
+    public static function GetLesClients(): bool|array
+    {
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            SELECT idClient, loginClient, passwordClient, mailClient, idRoleClient
+            FROM client
+        ");
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS, Client::class);
+        return $stmt->fetchAll();
+    }
+
+    public static function ChangerPassword(int $idClient, string $pwd): bool
+    {
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            UPDATE client
+            SET passwordClient = :pwd
+            WHERE idClient = :id
+        ");
+        $stmt->bindParam(":id", $idClient);
+        $stmt->bindValue(":pwd", password_hash($pwd, PASSWORD_BCRYPT));
+        return $stmt->execute();
+    }
+
     public static function CanConnect(string $cid, string $cuid): bool
     {
         $cnx = Database::GetConnection();

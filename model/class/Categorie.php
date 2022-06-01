@@ -4,7 +4,7 @@ class Categorie
 {
     private string $refCateg;
     private string $libCateg;
-    private ?string $refParent;
+    private ?string $refParent = null;
     private ?Categorie $parent = null;
 
     /**
@@ -37,7 +37,7 @@ class Categorie
         $this->refCateg = $ref;
     }
 
-    public function getRefParent(): ?string
+    public function GetRefParent(): ?string
     {
         return $this->refParent;
     }

@@ -58,7 +58,11 @@ CREATE TABLE IF NOT EXISTS `etatCommande` (
 
 CREATE TABLE IF NOT EXISTS `commande` (
     `idCommande` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `idClient` int(11) NOT NULL
+    `idClient` int(11) NOT NULL,
+    `adresse` varchar(50) NULL,
+    `ville` varchar(50) NULL,
+    `cp` varchar(5) NULL,
+    `destinataire` varchar(50) NULL
 ) AUTO_INCREMENT=1;
 ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFERENCES client(idClient);
 
@@ -130,6 +134,18 @@ AS
 ;
 
 
+DROP PROCEDURE IF EXISTS quantiteCommandee;
+DELIMITER &&
+CREATE PROCEDURE quantiteCommandee (IN inRefProduit varchar(20))
+BEGIN
+    SELECT IFNULL(sum(qte), 0) as quantiteCommandee
+    FROM lignecommande lc
+             JOIN produit p ON lc.refProduit = p.refProduit
+    WHERE p.refProduit = inRefProduit;
+END ; &&
+
+
+
 
 INSERT INTO `categorie` (`refCateg`, `libCateg`) VALUES
     ('bois', 'Casse tête en bois'),
@@ -167,63 +183,64 @@ INSERT INTO `etatCommande` (`libelleEtatCommande`) VALUES
     ('En cours d\'acheminement'),
     ('Livré');
 
-INSERT INTO `produit` (`refProduit`, `imgPath`, `libProduit`, `descProduit`, `refCateg`, `prix`, `idDifficulte`) VALUES
-    ('RC2', 'img/produits/rc/2.png', 'Rubik’s Cube 2x2x2',
+INSERT INTO `produit` (`refProduit`, `libProduit`, `descProduit`, `refCateg`, `prix`, `idDifficulte`) VALUES
+    ('RC2', 'Rubik’s Cube 2x2x2',
         'Le Rubik’s Cube est un casse-tête composé de 8 petits cubes de couleur, chaque face comportant 4 cubes, fixés à un axe central qui permet leur déplacement, afin de les disposer par couleur sur chaque face du cube.
-        §pParfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
+        Parfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
         , 'rubiks-cube', '6.00', 2),
-    ('RC3', 'img/produits/rc/3.png', 'Rubik’s Cube 3x3x3',
+    ('RC3', 'Rubik’s Cube 3x3x3',
         'Le Rubik’s Cube est un casse-tête composé de 26 petits cubes de couleur, chaque face comportant 9 cubes, fixés à un axe central qui permet leur déplacement, afin de les disposer par couleur sur chaque face du cube.
-        §pParfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
+        Parfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
         , 'rubiks-cube', '12.00', 3),
-    ('RC4', 'img/produits/rc/4.png', 'Rubik’s Cube 4x4x4',
+    ('RC4', 'Rubik’s Cube 4x4x4',
         'Le Rubik’s Cube est un casse-tête composé de 60 petits cubes de couleur, chaque face comportant 16 cubes, fixés à un axe central qui permet leur déplacement, afin de les disposer par couleur sur chaque face du cube.
-        §pParfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
+        Parfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
         , 'rubiks-cube', '20.00', 4),
-    ('RC5', 'img/produits/rc/5.png', 'Rubik’s Cube 5x5x5',
+    ('RC5', 'Rubik’s Cube 5x5x5',
         'Le Rubik’s Cube est un casse-tête composé de 99 petits cubes de couleur, chaque face comportant 25 cubes, fixés à un axe central qui permet leur déplacement, afin de les disposer par couleur sur chaque face du cube.
-        §pParfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
+        Parfait pour débuter, comprendre le fonctionnement des Rubik’s cube et se perfectionner. Combinant les mathématiques, l’art et la science, le Rubik’s Cube emblématique stimule votre cerveau et vous met au défi.'
         , 'rubiks-cube', '24.00', 5),
-    ('b-etoile', 'img/produits/bois/classique/etoile.png', 'Etoile de Galilée',
+    ('b-etoile', 'Etoile de Galilée',
         'Dans la somptueuse galaxie des Casse-têtes en bois, se niche une étoile singulière qui brille par la logique de sa solution. On ne l’appelle pas étoile de Galilée en référence à sa complexité, mais plutôt en hommage à la subtilité géométrique dont il faut faire preuve pour espérer la dompter.
-        §pSix blocs identiques en bois massif formeront, avec un peu de patience, beaucoup de logique et un minimum de dextérité, deux parties dissemblables qu’il faudra réassembler pour reconstituer l’astre galiléen.'
+        Six blocs identiques en bois massif formeront, avec un peu de patience, beaucoup de logique et un minimum de dextérité, deux parties dissemblables qu’il faudra réassembler pour reconstituer l’astre galiléen.'
         , 'classique', '8.00', 2),
-    ('b-boule', 'img/produits/bois/classique/boule.png', 'Boule infernale',
+    ('b-boule', 'Boule infernale',
         'Voici un incontournable du monde des casse-têtes : la boule en bois. Vous cherchez un casse-tête amusant et aux finitions de qualité ? Cet objet est conçu en bois de bambou lisse au toucher, pour vous garantir la plus grande satisfaction possible. Ce casse-tête en bois, suffisamment complexe mais très accessible, est parfait pour les enfants ! Il vous faudra séparer les 12 pièces du casse-tête, puis reformer la boule.
-        §pAucune forme géométrique n''est plus simple qu''une boule. Mais lorsque les créateurs de casse-tête s''en mêlent, rien n''est plus incertain... Commandez votre boule en bois, et entrez dans l''univers des jeux de réflexion par la grande porte !'
+        Aucune forme géométrique n''est plus simple qu''une boule. Mais lorsque les créateurs de casse-tête s''en mêlent, rien n''est plus incertain... Commandez votre boule en bois, et entrez dans l''univers des jeux de réflexion par la grande porte !'
         , 'classique', '7.50', 3),
-    ('b-diamant', 'img/produits/bois/classique/diamant.png', 'Cube diamant',
+    ('b-diamant', 'Cube diamant',
         'Un casse-tête difficile à l’esthétique particulièrement soignée grâce à des bois de plusieurs couleurs.
-        §pIl vous faudra de la patience et de la logique. Mais n''oubliez pas, pour résoudre un casse-tête, vous n''avez pas besoin de forcer et il y a toujours une solution !§pLe casse-tête "Diamant" est composé de 12 pièces. Il est fabriqué dans un bois issu de forêts gérées durablement.'
+        Il vous faudra de la patience et de la logique. Mais n''oubliez pas, pour résoudre un casse-tête, vous n''avez pas besoin de forcer et il y a toujours une solution !
+        Le casse-tête "Diamant" est composé de 12 pièces. Il est fabriqué dans un bois issu de forêts gérées durablement.'
         , 'classique', '8.50', 2),
-    ('bt-pandore', 'img/produits/bois/boite/pandore.png', 'Boite de pandore',
+    ('bt-pandore', 'Boite de pandore',
         'Cet article est une boîte magique, qui est idéal pour cacher des choses que vous ne voulez pas être facilement vu par les curieux d''autres
-        §pIl est encore plus sécurisé à être verrouillé par trois mécanismes de verrouillage séparées et véritable tiroir à l''intérieur pour vous de garder vos affaires en sécurité
-        §pIdéal pour cacher des choses que vous ne voulez pas être facilement vu par les curieux d''autres'
+        Il est encore plus sécurisé à être verrouillé par trois mécanismes de verrouillage séparées et véritable tiroir à l''intérieur pour vous de garder vos affaires en sécurité
+        Idéal pour cacher des choses que vous ne voulez pas être facilement vu par les curieux d''autres'
         , 'boite', '8.50', 1),
-    ('bt-yosegi', 'img/produits/bois/boite/yosegi.png', 'Yosegi box',
+    ('bt-yosegi', 'Yosegi box',
          'Véritable boîte de puzzle artisanale fabriquée au Japon. Tous les panneaux se déplacent en glissant. S’ouvre au 21e mouvement.
-         §pLa surface est recouverte de feuilles de mosaïque de bois de toutes les couleurs.'
+         La surface est recouverte de feuilles de mosaïque de bois de toutes les couleurs.'
         , 'boite', '40', 4),
-    ('h-ring', 'img/produits/metal/hanayama/ring.png', 'Cast ring',
+    ('h-ring', 'Cast ring',
      'Ce puzzle est basé sur un original appelé le "Puzz-Ring". Popularisé dans l''Europe du XVe siècle, ce style de bague était en fait utilisé pour les bagues de fiançailles et de mariage officielles.
-     §pLe réformateur chrétien, Martin Luther, était même connu pour en porter un. Il est également répandu pour prouver l''adultère de son porteur… quand il se désagrège en morceaux'
+     Le réformateur chrétien, Martin Luther, était même connu pour en porter un. Il est également répandu pour prouver l''adultère de son porteur… quand il se désagrège en morceaux'
         , 'hanayama', '16', 4),
-    ('h-key', 'img/produits/metal/hanayama/key.png', 'Cast key',
+    ('h-key', 'Cast key',
      'Le Cast key est l''un des puzzles les plus vendus des Hanayama. Nous avons créé une nouvelle version de ce puzzle mettant l''accent sur le style et la précision, en tant que PARTIE II. Conçu par Otake et Wong.
-     §pL''objectif est de séparer les deux clés puis de les remettre dans leur état initial. Cela a l''air simple, mais en fait, il s''agit d''une petite astuce. Les débutants doivent donc faire attention à ne pas les séparer de force.'
+     L''objectif est de séparer les deux clés puis de les remettre dans leur état initial. Cela a l''air simple, mais en fait, il s''agit d''une petite astuce. Les débutants doivent donc faire attention à ne pas les séparer de force.'
         , 'hanayama', '14', 3),
-    ('h-chain', 'img/produits/metal/hanayama/chain.png', 'Cast chain',
+    ('h-chain', 'Cast chain',
      'Il y a toute une sagesse enveloppée dans ce chef-d''œuvre d''Oskar. Les trois pièces peuvent être séparées puis assemblées à nouveau dans leur forme originale. La particularité de ce puzzle est qu''il peut être résolu de trois manières différentes, selon laquelle des trois pièces est choisie comme pièce centrale.
-     §pRésoudre ce casse-tête nécessite un travail particulièrement subtil des pièces, le genre qui laisse souvent la victime aux prises avec la frustration.'
+     Résoudre ce casse-tête nécessite un travail particulièrement subtil des pièces, le genre qui laisse souvent la victime aux prises avec la frustration.'
         , 'hanayama', '14', 5),
-    ('c-trick5', 'img/produits/metal/cadenas/trick5.png', 'Trick lock 5',
+    ('c-trick5', 'Trick lock 5',
      'Le Push Trick Lock 5 est un cadenas Casse-tête à 7 leviers de difficulté modérée. Toutefois, sa taille de 10 cm et son poids de 600 grammes sauront opposer une résistance sérieuse à tes tentatives désespérées de crochetage.
-     §pEn regardant la bête de plus près, tu constateras qu’il y a trois clés pour deux serrures… Lesquelles te faut-il utiliser ? Dans quel ordre ? De quelle façon ? Et d’ailleurs ces serrures et ces clés ne sont-elles pas des leurres ?'
+     En regardant la bête de plus près, tu constateras qu’il y a trois clés pour deux serrures… Lesquelles te faut-il utiliser ? Dans quel ordre ? De quelle façon ? Et d’ailleurs ces serrures et ces clés ne sont-elles pas des leurres ?'
         , 'cadenas', '22.50', 4),
-    ('c-superlock', 'img/produits/metal/cadenas/superlock.png', 'Super Lock',
+    ('c-superlock', 'Super Lock',
      'Ce Super Lock impressionne tout d’abord par son aspect massif, son poids et ses dimensions… 17 cm de haut et 1,4kg de plaques d’acier et de laiton…
-     §pVoilà de quoi chagriner le cambrioleur le plus endurci.'
+     Voilà de quoi chagriner le cambrioleur le plus endurci.'
         , 'cadenas', '500', 4);
 
 

@@ -1,16 +1,23 @@
 admin
  crud
   produits
-   ajouter produit
-   vérifier champs:
-    -pas vides,
-    -bon type de donnée
-  catégorie
- changement mot de passe (backoffice)
+   ajouter produit                        |v
+   vérifier champs:                       |v
+    -pas vides,                           |v
+    -bon type de donnée                   |v
+  catégorie                               |v
+  SUPPRESSION                             |v
+ changement mot de passe (backoffice)     |v
 
-changement mot de passe (user)
+changement mot de passe (user)            |🤔
 
-validation commande
+validation commande                       |v
 
+vérifier les stocks quand on ajoute
+au panier ou quand on consulte le panier  |v?
 
-demande confirmation déconnexion
+demande confirmation déconnexion          |v
+
+passer tous les champs en required        |
+
+!!!!!!!! style recherche                  |

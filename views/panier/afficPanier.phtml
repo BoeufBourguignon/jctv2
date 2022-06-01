@@ -18,7 +18,7 @@
                             <a href="/produit/<?php echo $produit->GetRefProduit() ?>">
                                 <img src="/assets/<?php echo $produit->GetImgPath() ?>"
                                      alt="<?php echo $produit->GetRefProduit() ?>"
-                                     style="width:127px;position:absolute;top:50%;transform:translateY(-50%);">
+                                     style="max-width:127px;height:auto;">
                             </a>
                         </td>
                         <td>
@@ -53,4 +53,5 @@
         <?php
     }
     ?>
+    <a class="btn btn-success mt-3 <?php if($this->Panier()->PrixTotal() == 0) echo "disabled" ?>" href="/panier/infosCommande">Passer la commande</a>
 </div>

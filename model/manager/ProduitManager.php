@@ -121,7 +121,8 @@ class ProduitManager extends BaseManager
         return $stmt->fetchAll();
     }
 
-    public static function SaveProduit(Produit $p): bool {
+    public static function SaveProduit(Produit $p): bool
+    {
         self::getConnection();
         $stmt = self::$cnx->prepare("
             UPDATE produit
@@ -147,5 +148,59 @@ class ProduitManager extends BaseManager
         $stmt->bindValue(":seuil", $p->GetSeuilAlerte());
         $stmt->bindValue(":ref", $p->GetRefProduit());
         return $stmt->execute();
+    }
+
+    public static function AddProduit(Produit $p)
+    {
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            INSERT INTO produit (refProduit, libProduit, descProduit, refCateg, prix, idDifficulte, qteStock, seuilAlerte)
+            VALUES (:ref, :lib, :desc, :categ, :prix, :difficulte, :qteStock, :seuil)
+        ");
+        if($p->GetRefSousCateg() === null) {
+            $stmt->bindValue(":categ", $p->GetRefCateg());
+        } else {
+            $stmt->bindValue(":categ", $p->GetRefSousCateg());
+        }
+        $stmt->bindValue(":lib", $p->GetLibProduit());
+        $stmt->bindValue(":desc", $p->GetDescProduit(false));
+        $stmt->bindValue(":prix", $p->GetPrix());
+        $stmt->bindValue(":difficulte", $p->GetIdDifficulte());
+        $stmt->bindValue(":qteStock", $p->GetQteStock());
+        $stmt->bindValue(":seuil", $p->GetSeuilAlerte());
+        $stmt->bindValue(":ref", $p->GetRefProduit());
+        return $stmt->execute();
+    }
+
+    public static function DeleteProduit(string $ref): bool
+    {
+        self::getConnection();
+        //Si le produit a déjà été commande, il ne peut pas être supprimé
+        $stmtExiste = self::$cnx->prepare("
+            SELECT count(*) FROM lignecommande WHERE refProduit = :ref
+        ");
+        $stmtExiste->bindParam(":ref", $ref);
+        $stmtExiste->execute();
+        $nbCommandes = $stmtExiste->fetchColumn();
+        $peutSupprimer = $nbCommandes == 0;
+        if($peutSupprimer) {
+            $stmt = self::$cnx->prepare("
+                DELETE FROM produit
+                WHERE refProduit = :ref
+            ");
+            $stmt->bindParam(":ref", $ref);
+            $peutSupprimer = $stmt->execute();
+            $stmt->debugDumpParams();
+        }
+        return $peutSupprimer;
+    }
+
+    public static function GetQteCommandee(string $ref): int
+    {
+        self::getConnection();
+        $stmt = self::$cnx->prepare("CALL quantiteCommandee(:ref)");
+        $stmt->bindParam(":ref", $ref);
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 }
