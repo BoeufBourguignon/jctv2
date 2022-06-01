@@ -1,6 +1,6 @@
 <?php
 try {
-    $dsn = 'mysql:host=localhost;port=3307;dbname=jeancassetete;charset=utf8';
+    $dsn = 'mysql:host=localhost;port=3307;dbname=jct;charset=utf8';
     $pdo = new PDO($dsn, 'root', '');
 
     //Vide les tables concernées

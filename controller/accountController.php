@@ -186,4 +186,37 @@ class accountController extends Controller
 
         $this->redirect("/account");
     }
+
+    public function infos()
+    {
+        if($this->Request()->user() == null) {
+            $this->redirect("/account");
+        }
+
+        if(isset($_POST["account_changer_infos"])) {
+            $login = $this->Request()->post("account_identifiant");
+            $mail = $this->Request()->post("account_mail");
+
+            $verif = true;
+            if($login == null || ctype_space($login) || strlen($login) > 20) {
+                $verif = false;
+                $_SESSION["account_changer_infos_login"] = "Erreur sur le login. Il doit faire moins de 20 caractères"
+                    . " et ne pas être vide";
+            }
+            if($mail == null || !preg_match("/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/", $mail)) {
+                $verif = false;
+                $_SESSION["account_changer_infos_mail"] = "Erreur sur le mail. Il ne doit pas être vide et être"
+                    . " bien formaté";
+
+            }
+
+            if($verif) {
+                ClientManager::ChangerInfos($this->Request()->user()->GetId(), $login, $mail);
+                $_SESSION["account_changer_infos"] = true;
+            }
+            $this->redirect("/account/infos");
+        }
+
+        $this->render("/account/afficInfos.phtml");
+    }
 }

@@ -29,6 +29,21 @@ class ClientManager extends BaseManager
         return $stmt->execute();
     }
 
+    public static function ChangerInfos(int $idClient, string $login, string $mail): bool
+    {
+        self::getConnection();
+        $stmt = self::$cnx->prepare("
+            UPDATE client
+            SET loginClient = :login,
+                mailClient = :mail
+            WHERE idClient = :idC
+        ");
+        $stmt->bindParam(":login", $login);
+        $stmt->bindParam(":mail", $mail);
+        $stmt->bindParam(":idC", $idClient);
+        return $stmt->execute();
+    }
+
     public static function CanConnect(string $cid, string $cuid): bool
     {
         $cnx = Database::GetConnection();

@@ -1,7 +1,7 @@
 -- Base de données : `sitetiti`
 
-CREATE DATABASE IF NOT EXISTS `JeanCasseTete`;
-USE `JeanCasseTete`;
+CREATE DATABASE IF NOT EXISTS `jct`;
+USE `jct`;
 
 
 DROP TABLE IF EXISTS `ligneCommande`; -- Pas utilisé
@@ -248,4 +248,5 @@ INSERT INTO `produit` (`refProduit`, `libProduit`, `descProduit`, `refCateg`, `p
 
 
 # CREATE USER IF NOT EXISTS 'AppJCT'@'localhost' IDENTIFIED BY 'sk4#Srvmpcrci';
-# GRANT SELECT, INSERT, DELETE ON jeancassetete.* TO 'AppJCT'@'localhost';
+GRANT SELECT, INSERT, DELETE, UPDATE ON jct.* TO 'AppJCT'@'localhost';
+GRANT EXECUTE ON PROCEDURE jct.quantiteCommandee TO 'AppJCT'@'localhost';

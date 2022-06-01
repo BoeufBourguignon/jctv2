@@ -34,13 +34,13 @@ class ProduitManager extends BaseManager
         string $refCateg,
         array $triSousCategs = null,
         array $triDifficulte = null,
-        ?string $triOrder = "refProduit",
+        ?string $triOrder = "idDifficulte",
         ?string $triWay = "ASC"
     ): array
     {
         self::getConnection();
-        $triOrder = $triOrder == null ? $triOrder : "refProduit";
-        $triWay = $triWay == null ? $triWay : "ASC";
+        $triOrder = $triOrder != null ? $triOrder : "idDifficulte";
+        $triWay = $triWay != null ? $triWay : "ASC";
         $query = "
             SELECT refProduit, refCateg, refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, 
                    seuilAlerte, qteStock
@@ -53,7 +53,7 @@ class ProduitManager extends BaseManager
         if($triDifficulte != null) {
             $query .= "AND idDifficulte IN ('" . implode("', '", $triDifficulte) . "')\n";
         }
-        if(in_array($triWay, ["ASC", "DESC"]) && in_array($triOrder, ["refProduit", "prix", "idDifficulte"])) {
+        if(in_array($triWay, ["ASC", "DESC"]) && in_array($triOrder, ["prix", "idDifficulte"])) {
             $query .= "ORDER BY " . $triOrder . " " . $triWay;
         }
         $stmt = self::$cnx->prepare($query);

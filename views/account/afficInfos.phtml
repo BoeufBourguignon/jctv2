@@ -1,0 +1,37 @@
+<?php
+/** @var Client $user */
+$user = $this->Request()->user()
+?>
+<div class="w-50 mt-5 mx-auto">
+    <h1>Vos informations</h1>
+    <form method="post">
+        <div class="mb-3 align-items-center">
+            <label for="account_identifiant" class="form-label">Identifiant</label>
+            <input required id="account_identifiant" name="account_identifiant" type="text"
+                   class="form-control" value="<?php echo $user->GetLogin() ?>" max="20">
+            <?php
+            if(isset($_SESSION["account_changer_infos_login"])) {
+                echo "<p class='text-danger'>" . $_SESSION["account_changer_infos_login"] . "</p>";
+                unset($_SESSION["account_changer_infos_login"]);
+            }
+            ?>
+        </div>
+        <div class="mb-3 align-items-center">
+            <label for="account_mail" class="form-label">Adresse email</label>
+            <input required id="account_mail" name="account_mail" type="email" class="form-control"
+                   value="<?php echo $user->GetMail() ?>" max="40">
+            <?php
+            if(isset($_SESSION["account_changer_infos_mail"])) {
+                echo "<p class='text-danger'>" . $_SESSION["account_changer_infos_mail"] . "</p>";
+                unset($_SESSION["account_changer_infos_mail"]);
+            }
+            ?>
+        </div>
+        <?php
+        if(isset($_SESSION["account_changer_infos"]) && $_SESSION["account_changer_infos"] === true) {
+            echo "<p class='text-success'>Vos informations ont bien été enregistrées</p>";
+        }
+        ?>
+        <button type="submit" name="account_changer_infos" class="btn btn-jct-orange">Enregistrer</button>
+    </form>
+</div>

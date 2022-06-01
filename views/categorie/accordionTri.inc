@@ -17,17 +17,19 @@ $isTriCollapsed = !($triOrder !== false || $triWay !== false);
          aria-labelledby="filters_heading_tri">
         <div class="accordion-body">
             <select name="filters_tri_order" class="form-select" aria-label="Default select example">
-                <option value="prix" selected>Prix</option>
-                <option value="idDifficulte">Difficulté</option>
+                <option value="prix" <?php if(isset($triOrder) && $triOrder == "prix") echo "selected" ?>>Prix</option>
+                <option value="idDifficulte" <?php if(isset($triOrder) && $triOrder == "idDifficulte") echo "selected" ?>>Difficulté</option>
             </select>
             <div class="form-check">
-                <input value="ASC" class="form-check-input" type="radio" name="filters_tri_way" id="order_asc" checked>
+                <input value="ASC" class="form-check-input" type="radio" name="filters_tri_way" id="order_asc"
+                    <?php if(isset($triWay) && $triWay == "ASC") echo "checked" ?>>
                 <label class="form-check-label" for="order_asc">
                     Du - au +
                 </label>
             </div>
             <div class="form-check">
-                <input value="DESC" class="form-check-input" type="radio" name="filters_tri_way" id="order_desc">
+                <input value="DESC" class="form-check-input" type="radio" name="filters_tri_way" id="order_desc"
+                    <?php if(isset($triWay) && $triWay == "DESC") echo "checked" ?>>
                 <label class="form-check-label" for="order_desc">
                     Du + au -
                 </label>

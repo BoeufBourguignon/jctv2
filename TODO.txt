@@ -20,7 +20,9 @@ demande confirmation déconnexion          |v
 
 passer tous les champs en required        |v
 
-changement infos user                     |
-changement roles users par admins         |
+gaffe à la ref (tout en min, des tirets   |v
 
-probleme tri produits                     |
+changement infos user                     |v
+changement roles users par admins         |je fais pas
+
+probleme tri produits                     |v

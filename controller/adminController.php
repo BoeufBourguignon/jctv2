@@ -152,7 +152,7 @@ class adminController extends Controller
 
             $verif = true;
             //Vérification des inputs
-            if($ref == null || strlen($ref) > 20) {
+            if($ref == null || strlen($ref) > 20 || !preg_match("/^[a-zA-Z\s]*$/g", $ref)) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la référence";
             }
@@ -307,7 +307,7 @@ class adminController extends Controller
             $parent = $this->Request()->post("admin_new_parent_categorie");
 
             $verif = true;
-            if($ref == null || ctype_space($ref) || strlen($ref) > 20) {
+            if($ref == null || ctype_space($ref) || strlen($ref || !preg_match("/^[a-zA-Z\s]*$/g", $ref)) > 20) {
                 $verif = false;
                 $_SESSION["admin_produits_erreur"][] = "Erreur sur la référence";
             }
