@@ -30,6 +30,7 @@ $user = $this->Request()->user()
         <?php
         if(isset($_SESSION["account_changer_infos"]) && $_SESSION["account_changer_infos"] === true) {
             echo "<p class='text-success'>Vos informations ont bien été enregistrées</p>";
+            unset($_SESSION["account_changer_infos"]);
         }
         ?>
         <button type="submit" name="account_changer_infos" class="btn btn-jct-orange">Enregistrer</button>

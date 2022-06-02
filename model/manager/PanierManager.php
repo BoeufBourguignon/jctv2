@@ -81,14 +81,17 @@ class PanierManager extends BaseManager
             $this->Panier();
         }
         $total = 0;
+        $peutCommander = true;
         foreach($this->panierComplet as $infos) {
             /** @var Produit $produit */
             $produit = $infos["produit"];
-            if(!$produit->EstEnRupture() && $produit->GetQteStock() - $produit->GetQteCommandee() >= $infos["qte"]) {
+            if(!$produit->EstEnRupture() && ($produit->GetQteStock() - $produit->GetQteCommandee()) >= $infos["qte"]) {
                 $total += $infos["produit"]->GetPrix() * $infos["qte"];
+            } else {
+                $peutCommander = false;
             }
         }
-        return $total;
+        return $peutCommander ? $total : 0;
     }
 
     public function PrixTotalFormatted(): string
@@ -117,6 +120,7 @@ class PanierManager extends BaseManager
             }
         }
         $this->panier = $newPanier;
+
         $this->UpdateCookieOrBDD();
     }
 

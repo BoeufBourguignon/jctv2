@@ -22,13 +22,14 @@ CREATE TABLE IF NOT EXISTS `categorie` (
     `refCateg` varchar(20) NOT NULL PRIMARY KEY,
     `libCateg` varchar(50) NOT NULL,
     `refParent` varchar(20) NULL
-);
-ALTER TABLE `categorie` ADD CONSTRAINT `fk_categorie_parent` FOREIGN KEY (`refCateg`) REFERENCES `categorie`(`refParent`);
+) ENGINE=InnoDB;
+ALTER TABLE `categorie`
+    ADD CONSTRAINT `fk_categorie_parent` FOREIGN KEY (`refParent`) REFERENCES `categorie`(`refCateg`);
 
 CREATE TABLE IF NOT EXISTS `role` (
     `idRole` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `libRole` varchar(20) DEFAULT NULL
-) AUTO_INCREMENT=1;
+) AUTO_INCREMENT=1, ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `client` (
     `idClient` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -36,25 +37,28 @@ CREATE TABLE IF NOT EXISTS `client` (
     `passwordClient` varchar(100) DEFAULT NULL,
     `mailClient` varchar(40) DEFAULT NULL,
     `idRoleClient` int(11) DEFAULT NULL
-) AUTO_INCREMENT=1;
-ALTER TABLE client ADD CONSTRAINT fk_client_role FOREIGN KEY (idRoleClient) REFERENCES role(idRole);
+) AUTO_INCREMENT=1, ENGINE=InnoDB;
+ALTER TABLE client
+    ADD CONSTRAINT `fk_client_role` FOREIGN KEY (idRoleClient) REFERENCES role(idRole);
 
 CREATE TABLE IF NOT EXISTS `user_connection` (
     `idClient` int(11),
     `idConnection` varchar(50),
     `date` date default NOW(),
     PRIMARY KEY (`idClient`, `idConnection`)
-);
+) ENGINE=InnoDB;
+ALTER TABLE user_connection
+    ADD CONSTRAINT `fk_userConnection_client` FOREIGN KEY (idClient) REFERENCES client(idClient);
 
 CREATE TABLE IF NOT EXISTS `difficulte` (
     `idDifficulte` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `libDifficulte` varchar(50) NOT NULL
-) AUTO_INCREMENT=1;
+) AUTO_INCREMENT=1, ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `etatCommande` (
     `idEtatCommande` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `libelleEtatCommande` VARCHAR(30) NOT NULL
-) AUTO_INCREMENT=1;
+) AUTO_INCREMENT=1, ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `commande` (
     `idCommande` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -63,17 +67,19 @@ CREATE TABLE IF NOT EXISTS `commande` (
     `ville` varchar(50) NULL,
     `cp` varchar(5) NULL,
     `destinataire` varchar(50) NULL
-) AUTO_INCREMENT=1;
-ALTER TABLE commande ADD CONSTRAINT fk_commande_client FOREIGN KEY (idClient) REFERENCES client(idClient);
+) AUTO_INCREMENT=1, ENGINE=InnoDB;
+ALTER TABLE commande
+    ADD CONSTRAINT `fk_commande_client` FOREIGN KEY (idClient) REFERENCES client(idClient);
 
 CREATE TABLE IF NOT EXISTS `suiviEtatCommande` (
     `idCommande` int(11) NOT NULL,
     `idEtatCommande` int(11) NOT NULL,
     `date` datetime NOT NULL,
     PRIMARY KEY (`idCommande`, `idEtatCommande`)
-);
-ALTER TABLE suiviEtatCommande ADD CONSTRAINT fk_suivietatcommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
-ALTER TABLE suiviEtatCommande ADD CONSTRAINT fk_suivietatcommande_etatcommande FOREIGN KEY (idEtatCommande) REFERENCES etatCommande(idEtatCommande);
+) ENGINE=InnoDB;
+ALTER TABLE `suiviEtatCommande`
+    ADD CONSTRAINT `fk_suivietatcommande_commande` FOREIGN KEY (idCommande) REFERENCES commande(idCommande),
+    ADD CONSTRAINT `fk_suivietatcommande_etatcommande` FOREIGN KEY (idEtatCommande) REFERENCES etatCommande(idEtatCommande);
 
 CREATE TABLE IF NOT EXISTS `produit` (
     `refProduit` varchar(20) NOT NULL PRIMARY KEY,
@@ -85,30 +91,34 @@ CREATE TABLE IF NOT EXISTS `produit` (
     `idDifficulte` int(11) DEFAULT NULL,
     `qteStock` int(11) DEFAULT 0,
     `seuilAlerte` int(11) DEFAULT NULL
-);
-ALTER TABLE produit ADD CONSTRAINT fk_produit_categorie FOREIGN KEY (refCateg) REFERENCES categorie(refCateg);
-ALTER TABLE produit ADD CONSTRAINT fk_produit_difficulte FOREIGN KEY (idDifficulte) REFERENCES difficulte(idDifficulte);
+) ENGINE=InnoDB;
+ALTER TABLE produit
+    ADD CONSTRAINT `fk_produit_categorie` FOREIGN KEY (refCateg) REFERENCES categorie(refCateg),
+    ADD CONSTRAINT `fk_produit_difficulte` FOREIGN KEY (idDifficulte) REFERENCES difficulte(idDifficulte);
 
 CREATE TABLE IF NOT EXISTS `ligneCommande` (
     `idCommande` int(11) NOT NULL,
     `refProduit` varchar(20) NOT NULL,
     `qte` int(11) NOT NULL,
     PRIMARY KEY (`idCommande`, `refProduit`)
-) AUTO_INCREMENT=1;
-ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_commande FOREIGN KEY (idCommande) REFERENCES commande(idCommande);
-ALTER TABLE ligneCommande ADD CONSTRAINT fk_lignecommande_produit FOREIGN KEY (refProduit) REFERENCES produit(refProduit);
+) AUTO_INCREMENT=1, ENGINE=InnoDB;
+ALTER TABLE ligneCommande
+    ADD CONSTRAINT `fk_lignecommande_commande` FOREIGN KEY (idCommande) REFERENCES commande(idCommande),
+    ADD CONSTRAINT `fk_lignecommande_produit` FOREIGN KEY (refProduit) REFERENCES produit(refProduit);
 
 
 
 DROP VIEW IF EXISTS v_produits;
 CREATE VIEW v_produits
 AS
-    SELECT refProduit, p.refCateg as refCateg, null as refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, seuilAlerte, qteStock
+    SELECT refProduit, p.refCateg as refCateg, null as refSousCateg, imgPath, libProduit, descProduit, prix,
+           idDifficulte, seuilAlerte, qteStock
     FROM produit p
         JOIN categorie c on p.refCateg = c.refCateg
     WHERE c.refParent IS NULL
     UNION
-    SELECT refProduit, refParent as refCateg, p.refCateg as refSousCateg, imgPath, libProduit, descProduit, prix, idDifficulte, seuilAlerte, qteStock
+    SELECT refProduit, refParent as refCateg, p.refCateg as refSousCateg, imgPath, libProduit, descProduit, prix,
+           idDifficulte, seuilAlerte, qteStock
     FROM produit p
         JOIN categorie c on p.refCateg = c.refCateg
     WHERE c.refParent IS NOT NULL
@@ -118,9 +128,10 @@ DROP VIEW IF EXISTS v_most_bought_products;
 CREATE VIEW v_most_bought_products
 AS
     SELECT refProduit, sum(qte) as qteTotale
-    FROM lignecommande
+    FROM lignecommande lc
+    WHERE 1 != (SELECT max(idEtatCommande) FROM suivietatcommande sec WHERE sec.idCommande = lc.idCommande)
     GROUP BY refProduit
-    ORDER BY 2 DESC
+    ORDER BY 2 desc;
 ;
 
 DROP VIEW IF EXISTS v_panier;
@@ -159,8 +170,7 @@ INSERT INTO `categorie` (`refCateg`, `libCateg`, `refParent`) VALUES
     ('classique', 'Classique', 'bois'),
     ('boite', 'Boites secrètes', 'bois'),
     ('hanayama', 'Hanayama', 'metal'),
-    ('cadenas', 'Cadenas', 'metal'),
-    ('cryptex', 'Cryptex', 'metal');
+    ('cadenas', 'Cadenas', 'metal');
 
 INSERT INTO `role` (`idRole`, `libRole`) VALUES
      (1, 'Admin'),
@@ -248,5 +258,45 @@ INSERT INTO `produit` (`refProduit`, `libProduit`, `descProduit`, `refCateg`, `p
 
 
 # CREATE USER IF NOT EXISTS 'AppJCT'@'localhost' IDENTIFIED BY 'sk4#Srvmpcrci';
-GRANT SELECT, INSERT, DELETE, UPDATE ON jct.* TO 'AppJCT'@'localhost';
-GRANT EXECUTE ON PROCEDURE jct.quantiteCommandee TO 'AppJCT'@'localhost';
+GRANT SELECT, INSERT, DELETE, UPDATE
+    ON jct.categorie
+    TO 'AppJCT'@'localhost';
+GRANT SELECT, UPDATE
+    ON jct.client
+    TO 'AppJCT'@'localhost';
+GRANT SELECT, INSERT, UPDATE
+    ON jct.commande
+    TO 'AppJCT'@'localhost';
+GRANT SELECT
+    ON jct.difficulte
+    TO 'AppJCT'@'localhost';
+GRANT SELECT
+    ON jct.etatCommande
+    TO 'AppJCT'@'localhost';
+GRANT SELECT, INSERT, DELETE, UPDATE
+    ON jct.ligneCommande
+    TO 'AppJCT'@'localhost';
+GRANT SELECT, INSERT, DELETE, UPDATE
+    ON jct.produit
+    TO 'AppJCT'@'localhost';
+GRANT SELECT
+    ON jct.role
+    TO 'AppJCT'@'localhost';
+GRANT SELECT, INSERT
+    ON jct.suiviEtatCommande
+    TO 'AppJCT'@'localhost';
+GRANT SELECT, INSERT
+    ON jct.user_connection
+    TO 'AppJCT'@'localhost';
+GRANT SELECT
+    ON jct.v_panier
+    TO 'AppJCT'@'localhost';
+GRANT SELECT
+    ON jct.v_produits
+    TO 'AppJCT'@'localhost';
+GRANT SELECT
+    ON jct.v_most_bought_products
+    TO 'AppJCT'@'localhost';
+GRANT EXECUTE
+    ON PROCEDURE jct.quantiteCommandee
+    TO 'AppJCT'@'localhost';
