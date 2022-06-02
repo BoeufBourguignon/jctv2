@@ -34,13 +34,13 @@
                                 <div class="col-auto">
                                     <input min="0" name="panier[<?php echo $produit->GetRefProduit() ?>]" id="qte"
                                            class="form-control" type="number"
-                                           value="<?php echo $qte ?>" max="<?php echo $produit->GetQteRestante() ?>">
+                                           value="<?php echo $qte ?>" max="<?php echo $produit->GetQteStock() ?>">
                                 </div>
                             </div>
                             <?php
-                            if($produit->GetQteRestante() < $qte) {
+                            if($produit->GetQteStock() < $qte) {
                                 ?>
-                                <p class="text-danger">Il ne reste que <?php echo $produit->GetQteRestante() ?> exemplaires en stock</p>
+                                <p class="text-danger">Il ne reste que <?php echo $produit->GetQteStock() ?> exemplaires en stock</p>
                                 <?php
                             } else {
                                 ?>

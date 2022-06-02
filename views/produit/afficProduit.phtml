@@ -12,7 +12,7 @@
         <div class="mb-3"><?=$produit->GetDescProduit()?></div>
 
         <?php
-        if ($produit->GetQteRestante() <= 0) {
+        if ($produit->GetQteStock() <= 0) {
             ?>
             <div class="mb-3">
                 <button disabled class="btn btn-danger">Rupture de stock</button>
@@ -27,7 +27,7 @@
                 echo array_key_exists($produit->GetRefProduit(), $this->Panier()->PanierMin())
                     ? $this->Panier()->PanierMin()[$produit->GetRefProduit()]
                     : 0;
-                ?>" min="0" max="<?php echo $produit->GetQteRestante() ?>">
+                ?>" min="0" max="<?php echo $produit->GetQteStock() ?>">
                 <input type="hidden" name="refProduit" value="<?php echo $produit->GetRefProduit() ?>">
             </form>
             <?php

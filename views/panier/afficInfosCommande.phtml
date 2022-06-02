@@ -53,11 +53,11 @@
                                 <?php echo $produit->GetLibProduit() ?></a>
                         </p>
                         <?php
-                        if($produit->EstEnRupture()) {
+                        if($produit->GetQteStock() <= 0) {
                             ?>
                             <p class="text-danger">Rupture de stock</p>
                             <?php
-                        } else if($produit->GetQteStock() - $produit->GetQteCommandee() < $qte) {
+                        } else if($produit->GetQteStock() < $qte) {
                             ?>
                             <p class="text-danger">Il n'y a plus assez d'article en stock</p>
                             <?php

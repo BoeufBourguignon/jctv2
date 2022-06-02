@@ -34,23 +34,23 @@ class Produit
         ];
     }
 
-    public function EstEnRupture(): bool
-    {
-        return $this->GetQteStock() - $this->GetQteCommandee() <= 0;
-    }
+//    public function EstEnRupture(): bool
+//    {
+//        return $this->GetQteStock() - $this->GetQteCommandee() <= 0;
+//    }
 
-    public function GetQteCommandee(): int
-    {
-        if($this->qteCommandee == null) {
-            $this->qteCommandee = ProduitManager::GetQteCommandee($this->refProduit);
-        }
-        return $this->qteCommandee;
-    }
+//    public function GetQteCommandee(): int
+//    {
+//        if($this->qteCommandee == null) {
+//            $this->qteCommandee = ProduitManager::GetQteCommandee($this->refProduit);
+//        }
+//        return $this->qteCommandee;
+//    }
 
-    public function GetQteRestante(): int
-    {
-        return $this->qteStock - $this->GetQteCommandee();
-    }
+//    public function GetQteRestante(): int
+//    {
+//        return $this->qteStock - $this->GetQteCommandee();
+//    }
 
     /**
      * @return Categorie

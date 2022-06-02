@@ -85,10 +85,10 @@ class PanierManager extends BaseManager
         foreach($this->panierComplet as $infos) {
             /** @var Produit $produit */
             $produit = $infos["produit"];
-            if(!$produit->EstEnRupture() && ($produit->GetQteStock() - $produit->GetQteCommandee()) >= $infos["qte"]) {
-                $total += $infos["produit"]->GetPrix() * $infos["qte"];
-            } else {
+            if($produit->GetQteStock() <= 0 || $produit->GetQteStock() < $infos["qte"]) {
                 $peutCommander = false;
+            } else {
+                $total += $infos["produit"]->GetPrix() * $infos["qte"];
             }
         }
         return $peutCommander ? $total : 0;
@@ -190,7 +190,16 @@ class PanierManager extends BaseManager
             $stmtPrepCommande->execute();
 
             //On met à jour les quantités de chaque produit commandé en BDD
-
+            foreach($this->panier as $refProduit => $qte) {
+                $stmtUpdateQte = self::$cnx->prepare("
+                    UPDATE produit
+                    SET qteStock = qteStock - :qte
+                    WHERE refProduit = :ref
+                ");
+                $stmtUpdateQte->bindParam(":qte", $qte);
+                $stmtUpdateQte->bindParam(":ref", $refProduit);
+                $stmtUpdateQte->execute();
+            }
         }
         return $this->idCommande != 0;
     }

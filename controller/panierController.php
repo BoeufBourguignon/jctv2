@@ -69,7 +69,7 @@ class panierController extends Controller
             if($ville == null || ctype_space($ville) || strlen($ville) == 0 || strlen($ville) > 50) {
                 $verif = $_SESSION["commande_passee"] = false;
             }
-            if($cp == null || ctype_space($cp) || strlen($cp) == 0 || strlen($cp) > 5) {
+            if($cp == null || !is_numeric($cp) || strlen($cp) == 0 || strlen($cp) > 5) {
                 $verif = $_SESSION["commande_passee"] = false;
             }
 

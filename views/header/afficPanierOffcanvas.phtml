@@ -30,12 +30,11 @@
                         <td>
                             <p class="fs-4 mb-1 fw-bold"><?php echo $produitPanier->GetLibProduit() ?></p>
                             <?php
-                            $qteRestante = $produitPanier->GetQteStock() - $produitPanier->GetQteCommandee();
-                            if($produitPanier->EstEnRupture()) {
+                            if($produitPanier->GetQteStock() <= 0) {
                                 ?>
                                 <p class="text-danger">Rupture de stock</p>
                                 <?php
-                            } else if($qteRestante < $qte) {
+                            } else if($produitPanier->GetQteStock() < $qte) {
                                 ?>
                                 <p class="text-danger">Il n'y a plus assez d'article en stock</p>
                                 <?php

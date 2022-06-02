@@ -2,10 +2,9 @@
 /**
  * @var Produit $produit
  */
-$qteRestante = $produit->GetQteStock() - $produit->GetQteCommandee();
 ?>
 
-<a class="card fiche_produit <?php if($qteRestante <= 0) { echo "border-danger"; } ?>" style="width: 18rem;"
+<a class="card fiche_produit <?php if($produit->GetQteStock() <= 0) { echo "border-danger"; } ?>" style="width: 18rem;"
    href="/produit/<?php echo $produit->GetRefProduit()?>">
     <img src="/assets/<?php echo $produit->GetImgPath()?>" class="card-img-top" alt="<?php echo $produit->GetRefProduit()?>">
     <div class="card-body">
@@ -14,7 +13,7 @@ $qteRestante = $produit->GetQteStock() - $produit->GetQteCommandee();
     </div>
     <div class="card-body">
         <?php
-        if($qteRestante <= 0) {
+        if($produit->GetQteStock() <= 0) {
             ?>
             <p class="text-danger">Rupture de stock</p>
             <?php
