@@ -166,6 +166,7 @@ class PanierManager extends BaseManager
     {
         if($this->idCommande != 0) {
             self::getConnection();
+            //On met à jour la commande avec les infos de livraison
             $stmt = self::$cnx->prepare("
                 UPDATE commande
                 SET destinataire = :d,
@@ -180,12 +181,16 @@ class PanierManager extends BaseManager
             $stmt->bindParam(":cp", $cp);
             $stmt->bindParam(":idC", $this->idCommande);
 
+            //On met à jour le suivi de l'état de la commande
             $stmtPrepCommande = self::$cnx->prepare("
                 INSERT INTO suivietatcommande (idCommande, idEtatCommande, date) 
                 VALUES (:idC, 2, NOW())
             ");
             $stmtPrepCommande->bindParam(":idC", $this->idCommande);
             $stmtPrepCommande->execute();
+
+            //On met à jour les quantités de chaque produit commandé en BDD
+
         }
         return $this->idCommande != 0;
     }
