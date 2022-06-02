@@ -1,7 +1,7 @@
 -- Base de données : `sitetiti`
 
-CREATE DATABASE IF NOT EXISTS `jct`;
-USE `jct`;
+CREATE DATABASE IF NOT EXISTS `exams_jct`;
+USE `exams_jct`;
 
 
 DROP TABLE IF EXISTS `ligneCommande`; -- Pas utilisé
@@ -257,46 +257,46 @@ INSERT INTO `produit` (`refProduit`, `libProduit`, `descProduit`, `refCateg`, `p
         , 'cadenas', '500', 4);
 
 
-# CREATE USER IF NOT EXISTS 'AppJCT'@'localhost' IDENTIFIED BY 'sk4#Srvmpcrci';
+CREATE USER IF NOT EXISTS 'AppJCT'@'localhost' IDENTIFIED BY 'sk4#Srvmpcrci';
 GRANT SELECT, INSERT, DELETE, UPDATE
-    ON jct.categorie
+    ON categorie
     TO 'AppJCT'@'localhost';
 GRANT SELECT, UPDATE
-    ON jct.client
+    ON client
     TO 'AppJCT'@'localhost';
 GRANT SELECT, INSERT, UPDATE
-    ON jct.commande
+    ON commande
     TO 'AppJCT'@'localhost';
 GRANT SELECT
-    ON jct.difficulte
+    ON difficulte
     TO 'AppJCT'@'localhost';
 GRANT SELECT
-    ON jct.etatCommande
+    ON etatCommande
     TO 'AppJCT'@'localhost';
 GRANT SELECT, INSERT, DELETE, UPDATE
-    ON jct.ligneCommande
+    ON ligneCommande
     TO 'AppJCT'@'localhost';
 GRANT SELECT, INSERT, DELETE, UPDATE
-    ON jct.produit
+    ON produit
     TO 'AppJCT'@'localhost';
 GRANT SELECT
-    ON jct.role
+    ON role
     TO 'AppJCT'@'localhost';
 GRANT SELECT, INSERT
-    ON jct.suiviEtatCommande
+    ON suiviEtatCommande
     TO 'AppJCT'@'localhost';
-GRANT SELECT, INSERT
-    ON jct.user_connection
-    TO 'AppJCT'@'localhost';
-GRANT SELECT
-    ON jct.v_panier
+GRANT SELECT, INSERT, DELETE
+    ON user_connection
     TO 'AppJCT'@'localhost';
 GRANT SELECT
-    ON jct.v_produits
+    ON v_panier
     TO 'AppJCT'@'localhost';
 GRANT SELECT
-    ON jct.v_most_bought_products
+    ON v_produits
+    TO 'AppJCT'@'localhost';
+GRANT SELECT
+    ON v_most_bought_products
     TO 'AppJCT'@'localhost';
 GRANT EXECUTE
-    ON PROCEDURE jct.quantiteCommandee
+    ON PROCEDURE quantiteCommandee
     TO 'AppJCT'@'localhost';
