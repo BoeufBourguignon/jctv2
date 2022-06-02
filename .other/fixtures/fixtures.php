@@ -1,7 +1,6 @@
 <?php
 try {
-    //$dsn = 'mysql:host=localhost;port=3307;dbname=exams_jct;charset=utf8'; //lycée
-    $dsn = 'mysql:host=localhost;port=3307;dbname=jct;charset=utf8'; //maison
+    $dsn = 'mysql:host=localhost;port=3307;dbname=jeancassetete;charset=utf8';
     $pdo = new PDO($dsn, 'root', '');
 
     //Vide les tables concernées

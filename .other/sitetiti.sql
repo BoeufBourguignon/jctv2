@@ -1,7 +1,7 @@
 -- Base de données : `sitetiti`
 
-CREATE DATABASE IF NOT EXISTS `exams_jct`;
-USE `exams_jct`;
+CREATE DATABASE IF NOT EXISTS `jeancassetete`;
+USE `jeancassetete`;
 
 
 DROP TABLE IF EXISTS `ligneCommande`; -- Pas utilisé
