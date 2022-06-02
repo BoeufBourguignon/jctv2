@@ -1,4 +1,4 @@
--- Base de données : `sitetiti`
+-- Base de données : `jct-script`
 
 CREATE DATABASE IF NOT EXISTS `jeancassetete`;
 USE `jeancassetete`;

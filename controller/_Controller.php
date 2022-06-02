@@ -35,7 +35,6 @@ abstract class Controller
 
     /**
      * @param mixed $value
-     * @return string
      */
     protected function renderAPI(mixed $value)
     {
